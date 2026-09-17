@@ -14,6 +14,8 @@ interface ChatTurn {
     role: 'user' | 'model';
     text: string;
     html?: string;
+    reasoning?: string;
+    reasoningHtml?: string;
 }
 
 interface ChatData {
@@ -31,8 +33,10 @@ const isChatTurn = (value: unknown): value is ChatTurn => {
     const hasValidRole = candidate.role === 'user' || candidate.role === 'model';
     const hasValidText = typeof candidate.text === 'string';
     const hasValidHtml = candidate.html === undefined || typeof candidate.html === 'string';
+    const hasValidReasoning = candidate.reasoning === undefined || typeof candidate.reasoning === 'string';
+    const hasValidReasoningHtml = candidate.reasoningHtml === undefined || typeof candidate.reasoningHtml === 'string';
 
-    return hasValidRole && hasValidText && hasValidHtml;
+    return hasValidRole && hasValidText && hasValidHtml && hasValidReasoning && hasValidReasoningHtml;
 };
 
 const isChatData = (data: unknown): data is ChatData => {
@@ -193,7 +197,11 @@ export default class ExportManager {
         for (const turn of data.conversation) {
             const role = turn.role === 'user' ? '## You' : '## DeepSeek';
             const content = turn.html ? this.turndown.turndown(turn.html) : turn.text;
-            markdown += `${role}\n\n${content}\n\n---\n\n`;
+            const reasoning = turn.reasoning
+                ? `### Reasoning\n\n${turn.reasoningHtml ? this.turndown.turndown(turn.reasoningHtml) : turn.reasoning}\n\n`
+                : '';
+            const answer = turn.reasoning && content ? `### Answer\n\n${content}` : content;
+            markdown += `${role}\n\n${reasoning}${answer}\n\n---\n\n`;
         }
 
         const { filePath, canceled } = await dialog.showSaveDialog({
@@ -256,11 +264,18 @@ export default class ExportManager {
                 const roleClass = turn.role === 'user' ? 'user-role' : 'model-role';
                 // Use the extracted HTML if available, otherwise convert Markdown to HTML
                 const contentHtml = turn.html || marked.parse(turn.text);
+                const reasoningHtml = turn.reasoning
+                    ? `<div class="reasoning"><div class="reasoning-label">Reasoning</div>${
+                          turn.reasoningHtml || marked.parse(turn.reasoning)
+                      }</div>`
+                    : '';
+                const answerHtml = turn.reasoning && contentHtml ? `<div class="answer-label">Answer</div>${contentHtml}` : contentHtml;
 
                 return `
                 <div class="chat-turn">
                     <div class="role-header ${roleClass}">${roleLabel}</div>
-                    <div class="content">${contentHtml}</div>
+                    ${reasoningHtml}
+                    <div class="content">${answerHtml}</div>
                 </div>
             `;
             })
@@ -315,6 +330,20 @@ export default class ExportManager {
                     font-size: 15px;
                     overflow-wrap: break-word;
                 }
+                .reasoning {
+                    margin: 0 0 16px;
+                    padding: 12px 16px;
+                    color: #5f6368;
+                    background: #f8f9fa;
+                    border-left: 3px solid #9aa0a6;
+                    font-size: 14px;
+                    overflow-wrap: break-word;
+                }
+                .reasoning-label, .answer-label {
+                    margin-bottom: 8px;
+                    font-weight: 600;
+                }
+                .answer-label { color: #1e1e1e; }
                 pre {
                     background: #f6f8fa;
                     padding: 16px;

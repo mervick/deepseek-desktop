@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import { CHAT_EXTRACTION_SCRIPT } from '../../../src/main/utils/chatExtraction';
 
 describe('DeepSeek chat extraction script', () => {
-    it('exports user messages and final answers while excluding reasoning-only blocks', () => {
+    it('exports user messages, reasoning, and final answers while excluding controls', () => {
         const dom = new JSDOM(`
             <main>
                 <div class="ds-virtual-list-visible-items">
@@ -29,6 +29,8 @@ describe('DeepSeek chat extraction script', () => {
         expect(result.conversation).toHaveLength(2);
         expect(result.conversation[0]).toMatchObject({ role: 'user', text: 'User question' });
         expect(result.conversation[1]).toMatchObject({ role: 'model', text: 'Final answer' });
+        expect(result.conversation[1]?.reasoning).toBe('Private reasoning');
+        expect(result.conversation[1]?.reasoningHtml).toBe('Private reasoning');
         expect(result.conversation[1]?.html).toContain('<p>Final answer</p>');
         expect(result.conversation[1]?.html).not.toContain('Copy');
         expect(result.conversation[1]?.html).not.toContain('Feedback');

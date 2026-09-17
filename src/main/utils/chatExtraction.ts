@@ -23,22 +23,22 @@ export const CHAT_EXTRACTION_SCRIPT = `
             for (const node of currentNodes) {
                 const userContent = node.querySelector('.ds-collapsible-text');
                 const assistantContent = node.querySelector('.ds-assistant-message-main-content');
-                const hasReasoning = node.querySelector('.ds-think-content');
+                const reasoningContent = node.querySelector('.ds-think-content .ds-markdown');
                 const isUser = !!userContent;
                 const isAssistant = !!assistantContent;
                 if ((!isUser && !isAssistant) || (isUser && isAssistant)) continue;
 
                 const content = isUser ? userContent : assistantContent;
-                // An assistant row may contain only the collapsible reasoning
-                // block while the final answer is still streaming.
-                if (!content || (!isAssistant && hasReasoning)) continue;
-                const cleanContent = withoutControls(content);
-                const value = text(cleanContent);
-                if (!value) continue;
+                const cleanContent = content ? withoutControls(content) : null;
+                const cleanReasoning = reasoningContent ? withoutControls(reasoningContent) : null;
+                const value = cleanContent ? text(cleanContent) : '';
+                const reasoning = cleanReasoning ? text(cleanReasoning) : '';
+                if (!value && !reasoning) continue;
                 conversation.push({
                     role: isUser ? 'user' : 'model',
-                    text: value,
-                    ...(!isUser ? { html: cleanContent.innerHTML } : {}),
+                    text: value || reasoning,
+                    ...(!isUser && value ? { html: cleanContent.innerHTML } : {}),
+                    ...(!isUser && reasoning ? { reasoning, reasoningHtml: cleanReasoning.innerHTML } : {}),
                 });
             }
         }

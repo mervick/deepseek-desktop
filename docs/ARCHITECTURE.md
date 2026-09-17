@@ -288,7 +288,7 @@ Renderer code can request a reload through `window.electronAPI.reloadTabs()`. `T
 
 Export is owned by the main process.
 
-- `ExportManager` extracts chat content from the active DeepSeek tab's main frame, converts it into Markdown or rendered HTML, and writes the chosen output file. An empty extraction does not create a file.
+- `ExportManager` extracts chat content from the active DeepSeek tab's main frame, converts it into Markdown or rendered HTML, and writes the chosen output file. Assistant reasoning is preserved separately from the final answer and labeled `Reasoning` in exports. An empty extraction does not create a file.
 - `ExportIpcHandler` exposes renderer-driven export triggers and also listens for window-level export events such as print-to-PDF.
 - The extraction path is intentionally constrained to allowed HTTPS DeepSeek domains. Export status is sent to the React shell.
 

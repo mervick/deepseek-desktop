@@ -65,7 +65,13 @@ describe('Markdown export from a top-level DeepSeek tab', () => {
                     timestamp: '2026-09-17T00:00:00.000Z',
                     conversation: [
                         { role: 'user', text: 'Question' },
-                        { role: 'model', text: 'Answer', html: '<p>Answer</p>' },
+                        {
+                            role: 'model',
+                            text: 'Answer',
+                            html: '<p>Answer</p>',
+                            reasoning: 'Reasoning details',
+                            reasoningHtml: '<p>Reasoning details</p>',
+                        },
                     ],
                 }),
             },
@@ -77,6 +83,8 @@ describe('Markdown export from a top-level DeepSeek tab', () => {
         expect(target.mainFrame.executeJavaScript).toHaveBeenCalledOnce();
         expect(fs.writeFile).toHaveBeenCalledWith('/tmp/deepseek-test.md', expect.stringContaining('## DeepSeek'));
         expect(vi.mocked(fs.writeFile).mock.calls[0]?.[1]).toContain('## You\n\nQuestion');
+        expect(vi.mocked(fs.writeFile).mock.calls[0]?.[1]).toContain('### Reasoning\n\nmocked markdown');
+        expect(vi.mocked(fs.writeFile).mock.calls[0]?.[1]).toContain('### Answer\n\nmocked markdown');
         expect(shell.send).toHaveBeenCalledWith('toast:show', {
             message: 'Chat exported to Markdown',
             type: 'success',
