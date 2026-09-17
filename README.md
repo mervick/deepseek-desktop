@@ -14,7 +14,7 @@ DeepSeek Desktop is based on the unofficial [Gemini Desktop](https://github.com/
 
 <div align="center">
 
-![DeepSeek Desktop Main Window](docs/assets/main_window.png)
+![DeepSeek Desktop Main Window](docs/assets/screen.png)
 
 </div>
 
