@@ -2,7 +2,7 @@
  * Injection Script Builder for Quick Chat.
  *
  * Provides a modular, configurable system for building JavaScript injection
- * scripts that run inside the Gemini iframe. Features include:
+ * scripts that run inside the DeepSeek view. Features include:
  * - Builder pattern for flexible configuration
  * - Structured logging with configurable levels
  * - Defensive programming with safe DOM operations

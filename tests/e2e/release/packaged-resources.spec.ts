@@ -27,9 +27,9 @@ describe('Release Build: Packaged Resources', () => {
         });
 
         if (isLinuxSync()) {
-            expect(appName).toMatch(/^(Gemini Desktop|gemini-desktop)$/);
+            expect(appName).toMatch(/^(DeepSeek Desktop|gemini-desktop)$/);
         } else {
-            expect(appName).toBe('Gemini Desktop');
+            expect(appName).toBe('DeepSeek Desktop');
         }
     });
 

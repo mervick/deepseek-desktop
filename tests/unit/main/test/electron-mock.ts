@@ -16,7 +16,7 @@ export const app = {
     requestSingleInstanceLock: vi.fn().mockReturnValue(true),
     getVersion: vi.fn().mockReturnValue('1.0.0'),
     setName: vi.fn(),
-    getName: vi.fn().mockReturnValue('Gemini Desktop'),
+    getName: vi.fn().mockReturnValue('DeepSeek Desktop'),
     commandLine: {
         appendSwitch: vi.fn(),
         hasSwitch: vi.fn().mockReturnValue(false),

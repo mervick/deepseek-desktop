@@ -32,7 +32,7 @@ export class AuthWindowPage extends BasePage {
     // ===========================================================================
 
     /**
-     * Open the auth window via the "Sign in to Google" menu item.
+     * Open the auth window via the "Sign in to DeepSeek" menu item.
      */
     async openViaMenu(): Promise<void> {
         this.log('Opening auth window via menu');

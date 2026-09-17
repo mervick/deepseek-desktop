@@ -237,7 +237,7 @@ export async function submitQuickChatText(text: string): Promise<void> {
 }
 
 /**
- * Check if the Gemini iframe is loaded and accessible.
+ * Check if the DeepSeek view is loaded and accessible.
  * Uses domain patterns from e2eConstants for maintainability.
  *
  * @returns Promise<{ loaded: boolean, url: string | null, frameCount: number }>
@@ -314,7 +314,7 @@ export async function getAllWindowStates(): Promise<{ title: string; visible: bo
  * Used to verify text was injected via production code path.
  */
 export interface GeminiEditorState {
-    /** Whether the Gemini iframe was found */
+    /** Whether the DeepSeek view was found */
     iframeFound: boolean;
     /** Whether the editor element was found */
     editorFound: boolean;
@@ -384,7 +384,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
             const webContents = mainWindow.webContents;
             const frames = webContents.mainFrame.frames;
 
-            // Find the Gemini iframe
+            // Find the DeepSeek view
             const geminiFrame = frames.find((frame) => {
                 try {
                     return domains.some((domain) => frame.url.includes(domain));
@@ -400,7 +400,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
                     editorText: null,
                     submitButtonFound: false,
                     submitButtonEnabled: false,
-                    error: 'Gemini iframe not found in child frames',
+                    error: 'DeepSeek view not found in child frames',
                 };
             }
 
@@ -666,7 +666,7 @@ async function readGeminiEditorDirect(expectedText?: string, activeTabId?: strin
                     editorText: null,
                     submitButtonFound: false,
                     submitButtonEnabled: false,
-                    error: 'Gemini iframe not found',
+                    error: 'DeepSeek view not found',
                 };
             }
 
@@ -762,7 +762,7 @@ async function readGeminiEditorDirect(expectedText?: string, activeTabId?: strin
                     editorText: null,
                     submitButtonFound: false,
                     submitButtonEnabled: false,
-                    error: 'Gemini iframe still loading',
+                    error: 'DeepSeek view still loading',
                 }
             );
         },

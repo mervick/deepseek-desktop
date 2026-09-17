@@ -270,11 +270,11 @@ describe('QuickChatIpcHandler', () => {
             await listener!({}, navigatePayload);
 
             expect(mockGeminiFrame.executeJavaScript).toHaveBeenCalled();
-            expect(mockLogger.log).toHaveBeenCalledWith('Text injected into Gemini successfully');
+            expect(mockLogger.log).toHaveBeenCalledWith('Text injected into DeepSeek successfully');
             expect(getLatestRequestByTab().has(navigatePayload.targetTabId)).toBe(false);
         });
 
-        it('logs error when Gemini iframe not found (4.2.12)', async () => {
+        it('logs error when DeepSeek view not found (4.2.12)', async () => {
             const submitListener = mockIpcMain._listeners.get(IPC_CHANNELS.QUICK_CHAT_SUBMIT);
             submitListener!({}, 'Inject this text');
 

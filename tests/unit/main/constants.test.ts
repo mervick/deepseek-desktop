@@ -85,7 +85,7 @@ describe('Constants', () => {
             // Critical security & functionality test:
             // The auth window must NOT have a session partition, so it shares
             // the default session with the main window. This allows auth cookies
-            // set during Google sign-in to be immediately available to the main
+            // set during DeepSeek sign-in to be immediately available to the main
             // window when it reloads after auth completes.
             expect(config.webPreferences.partition).toBeUndefined();
         });

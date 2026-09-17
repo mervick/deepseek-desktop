@@ -48,7 +48,7 @@ Or use GitHub's private vulnerability reporting:
 
 ## Security Architecture
 
-Gemini Desktop follows Electron security best practices:
+DeepSeek Desktop follows Electron security best practices:
 
 ### ✅ What We Do
 
@@ -110,7 +110,7 @@ As a wrapper around `chat.deepseek.com`, we inherit any vulnerabilities in:
 
 ## Recognition
 
-We appreciate security researchers who help keep Gemini Desktop safe. With your permission, we'll acknowledge your contribution in our release notes.
+We appreciate security researchers who help keep DeepSeek Desktop safe. With your permission, we'll acknowledge your contribution in our release notes.
 
 ---
 

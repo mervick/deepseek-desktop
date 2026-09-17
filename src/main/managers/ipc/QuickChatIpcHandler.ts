@@ -242,7 +242,7 @@ export class QuickChatIpcHandler extends BaseIpcHandler {
             const result = (await targetFrame.executeJavaScript(injectionScript)) as InjectionResult;
 
             if (result?.success) {
-                this.logger.log('Text injected into Gemini successfully');
+                this.logger.log('Text injected into DeepSeek successfully');
             } else {
                 this.logger.error('Injection script returned failure:', {
                     error: result?.error,

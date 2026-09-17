@@ -2,7 +2,7 @@
  * Unit tests for Microphone Activation Utility.
  *
  * Tests the activateMicrophoneInFrame function which injects and executes
- * a microphone button click into the Gemini iframe.
+ * a microphone button click into the DeepSeek view.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';

@@ -130,7 +130,7 @@ describe('Tab + Quick Chat coordination', () => {
         vi.restoreAllMocks();
     });
 
-    it('injects into target tab frame, not the first Gemini frame', async () => {
+    it('injects into target tab frame, not the first DeepSeek frame', async () => {
         const mainWindow = {
             webContents: {
                 send: vi.fn(),

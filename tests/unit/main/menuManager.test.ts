@@ -11,7 +11,7 @@ import type { PlatformAdapter } from '../../../src/main/platform/PlatformAdapter
 // Mock electron
 vi.mock('electron', () => ({
     app: {
-        name: 'Gemini Desktop',
+        name: 'DeepSeek Desktop',
         on: vi.fn(),
         getVersion: vi.fn().mockReturnValue('1.0.0'),
     },
@@ -109,7 +109,7 @@ describe('MenuManager', () => {
 
             const buildCall = (Menu.buildFromTemplate as any).mock.calls[0][0];
             expect(buildCall.length).toBe(5);
-            expect(buildCall[0].label).toBe('Gemini Desktop');
+            expect(buildCall[0].label).toBe('DeepSeek Desktop');
         });
 
         it('does not include App menu on Windows', () => {
@@ -170,8 +170,8 @@ describe('MenuManager', () => {
             setPlatform('darwin');
             menuManager.buildMenu();
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
-            const appMenu = findMenuItem(template, 'Gemini Desktop');
-            const aboutItem = findSubmenuItem(appMenu, 'About Gemini Desktop');
+            const appMenu = findMenuItem(template, 'DeepSeek Desktop');
+            const aboutItem = findSubmenuItem(appMenu, 'About DeepSeek Desktop');
 
             expect(aboutItem).toBeTruthy();
             aboutItem.click();
@@ -182,7 +182,7 @@ describe('MenuManager', () => {
             setPlatform('darwin');
             menuManager.buildMenu();
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
-            const appMenu = findMenuItem(template, 'Gemini Desktop');
+            const appMenu = findMenuItem(template, 'DeepSeek Desktop');
             const settingsItem = findSubmenuItem(appMenu, 'Settings...');
 
             expect(settingsItem).toBeTruthy();
@@ -248,7 +248,7 @@ describe('MenuManager', () => {
             // Verify dock menu structure
             expect(Array.isArray(dockMenuTemplate)).toBe(true);
             const labels = dockMenuTemplate.map((item: any) => item.label);
-            expect(labels).toContain('Show Gemini');
+            expect(labels).toContain('Show DeepSeek');
             expect(labels).toContain('Settings');
         });
 
@@ -603,7 +603,7 @@ describe('MenuManager', () => {
     });
 
     describe('Dock Menu Click Handlers', () => {
-        it('Show Gemini calls restoreFromTray', async () => {
+        it('Show DeepSeek calls restoreFromTray', async () => {
             setPlatform('darwin');
             const { Menu: MenuModule, app } = await import('electron');
             (app as any).dock = { setMenu: vi.fn() };
@@ -614,7 +614,7 @@ describe('MenuManager', () => {
             // Find dock menu template (last buildFromTemplate call on macOS)
             const allCalls = (MenuModule.buildFromTemplate as any).mock.calls;
             const dockMenuTemplate = allCalls[allCalls.length - 1][0];
-            const showItem = dockMenuTemplate.find((item: any) => item.label === 'Show Gemini');
+            const showItem = dockMenuTemplate.find((item: any) => item.label === 'Show DeepSeek');
 
             showItem.click();
             expect(mockWindowManager.restoreFromTray).toHaveBeenCalled();

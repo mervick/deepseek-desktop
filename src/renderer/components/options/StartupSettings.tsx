@@ -91,7 +91,7 @@ export const StartupSettings = memo(function StartupSettings() {
                 checked={launchAtStartup}
                 onChange={handleLaunchAtStartupChange}
                 label="Launch at Startup"
-                description="Automatically start Gemini Desktop when you log in to your computer"
+                description="Automatically start DeepSeek Desktop when you log in to your computer"
                 testId="launch-at-startup-toggle"
             />
 

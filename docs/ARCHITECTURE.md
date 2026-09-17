@@ -13,7 +13,7 @@ DeepSeek Desktop is an Electron application with three primary runtime boundarie
 - The renderer hosts a React shell for tabs and controls; main-process `WebContentsView` instances load DeepSeek as top-level pages.
 
 ```text
-+----------------------------- Gemini Desktop ------------------------------+
++----------------------------- DeepSeek Desktop ------------------------------+
 |                                                                          |
 |  Main Process                                                            |
 |  - main.ts boots the app                                                 |
@@ -336,7 +336,7 @@ This layer exists so the rest of the main process can depend on stable abstracti
 
 ## Data Persistence
 
-Gemini Desktop uses local persistence only.
+DeepSeek Desktop uses local persistence only.
 
 ### Settings and Feature State
 

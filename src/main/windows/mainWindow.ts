@@ -466,7 +466,7 @@ export default class MainWindow extends BaseWindow {
     private responseDetectionActive = false;
 
     /**
-     * Set up response detection to monitor when Gemini finishes generating a response.
+     * Set up response detection to monitor when DeepSeek finishes generating a response.
      * Uses network request monitoring to detect streaming completion.
      * Emits 'response-complete' event with debouncing to prevent rapid-fire notifications.
      *
@@ -643,7 +643,7 @@ export default class MainWindow extends BaseWindow {
                 if (!url) return;
 
                 if (isGeminiDomain(url)) {
-                    this.logger.log(`Gemini frame loaded, checking script injection status for: ${url}`);
+                    this.logger.log(`DeepSeek frame loaded, checking script injection status for: ${url}`);
                     this.injectGeminiScripts(frame);
                 }
             } catch (error) {
@@ -682,7 +682,7 @@ export default class MainWindow extends BaseWindow {
             const smartEnterEnabled = preferencesStore.get('smartEnterEnabled') !== false;
             const scrollToBottomButtonEnabled = preferencesStore.get('scrollToBottomButtonEnabled') !== false;
 
-            this.logger.log('Injecting scripts into Gemini frame. Preferences:', {
+            this.logger.log('Injecting scripts into DeepSeek frame. Preferences:', {
                 smartEnterEnabled,
                 scrollToBottomButtonEnabled,
             });
@@ -1057,7 +1057,7 @@ export default class MainWindow extends BaseWindow {
             `;
 
             frame.executeJavaScript(injectionScript).catch((error) => {
-                this.logger.error('Failed to execute injection script in Gemini frame:', error);
+                this.logger.error('Failed to execute injection script in DeepSeek frame:', error);
             });
         } catch (error) {
             this.logger.error('Error during Gemini script injection:', error);

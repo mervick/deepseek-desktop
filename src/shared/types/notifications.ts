@@ -6,7 +6,7 @@
 
 /**
  * Response notification settings.
- * Controls whether notifications are shown when Gemini finishes generating a response.
+ * Controls whether notifications are shown when DeepSeek finishes generating a response.
  */
 export interface ResponseNotificationSettings {
     /** Whether response notifications are enabled */

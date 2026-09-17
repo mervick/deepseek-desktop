@@ -310,7 +310,7 @@ describe('WindowManager', () => {
             expect(executeJavaScript).toHaveBeenCalledWith(expect.any(String), true);
         });
 
-        it('falls back to Gemini frame when active tab frame is missing', async () => {
+        it('falls back to DeepSeek frame when active tab frame is missing', async () => {
             const win = windowManager.createMainWindow();
             const webContents = createMockWebContents({
                 url: 'https://chat.deepseek.com/app',
@@ -349,7 +349,7 @@ describe('WindowManager', () => {
             expect(executeJavaScript).toHaveBeenCalledWith(expect.any(String), true);
         });
 
-        it('falls back to Gemini frame when active tab is missing', async () => {
+        it('falls back to DeepSeek frame when active tab is missing', async () => {
             const win = windowManager.createMainWindow();
             const webContents = createMockWebContents({
                 url: 'https://chat.deepseek.com/app',

@@ -16,7 +16,7 @@ describe('Fatal Error Handling - Coordinated Tests', () => {
                 ignoreSystemCrashHandler: true,
                 uploadToServer: false,
                 submitURL: '',
-                productName: 'Gemini Desktop',
+                productName: 'DeepSeek Desktop',
                 companyName: 'Ben Wendell',
             };
 

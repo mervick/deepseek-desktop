@@ -1,5 +1,5 @@
 /**
- * Shared TypeScript types for the Gemini Desktop application.
+ * Shared TypeScript types for the DeepSeek Desktop application.
  * This file contains interfaces and types used across components.
  */
 

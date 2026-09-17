@@ -51,7 +51,7 @@ async function findGeminiFrameInfo(): Promise<{ frameUrl: string; frameCount: nu
         return frameInfo;
     }
 
-    throw new Error('Gemini frame not loaded');
+    throw new Error('DeepSeek frame not loaded');
 }
 
 async function clickMicrophoneInGeminiFrame(): Promise<{ executed: boolean }> {
@@ -105,12 +105,12 @@ async function clickMicrophoneInGeminiFrame(): Promise<{ executed: boolean }> {
         return clickResult;
     }
 
-    throw new Error('Gemini frame not accessible');
+    throw new Error('DeepSeek frame not accessible');
 }
 
 describe('Microphone Permission', () => {
     beforeEach(async () => {
-        // Wait for Gemini iframe to load
+        // Wait for DeepSeek view to load
         await waitForUIState(
             async () => {
                 try {
@@ -120,7 +120,7 @@ describe('Microphone Permission', () => {
                     return false;
                 }
             },
-            { description: 'Gemini iframe to load and display' }
+            { description: 'DeepSeek view to load and display' }
         );
     });
 
@@ -138,7 +138,7 @@ describe('Microphone Permission', () => {
     });
 
     describe('Microphone Button Interaction', () => {
-        it('should have Gemini frame loaded', async () => {
+        it('should have DeepSeek frame loaded', async () => {
             const frameReady = await waitForUIState(
                 async () => {
                     try {
@@ -148,7 +148,7 @@ describe('Microphone Permission', () => {
                         return false;
                     }
                 },
-                { timeout: 15000, description: 'Gemini frame to be discoverable from main process' }
+                { timeout: 15000, description: 'DeepSeek frame to be discoverable from main process' }
             );
 
             expect(frameReady).toBe(true);
@@ -172,7 +172,7 @@ describe('Microphone Permission', () => {
                         return false;
                     }
                 },
-                { timeout: 15000, description: 'Gemini frame to be discoverable before microphone click' }
+                { timeout: 15000, description: 'DeepSeek frame to be discoverable before microphone click' }
             );
 
             const clickResult = await clickMicrophoneInGeminiFrame();

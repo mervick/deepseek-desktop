@@ -34,7 +34,7 @@ const createDefaultPlan = (overrides?: Partial<HotkeyRegistrationPlan>): HotkeyR
 
 const createDefaultDockTemplate = (callbacks: DockMenuCallbacks) => [
     {
-        label: 'Show Gemini',
+        label: 'Show DeepSeek',
         click: () => callbacks.restoreFromTray(),
     },
     { type: 'separator' as const },

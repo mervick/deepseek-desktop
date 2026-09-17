@@ -33,7 +33,7 @@ export const GEMINI_SELECTORS_LAST_VERIFIED = '2025-12-23';
  */
 export const GeminiSelectors = {
     /**
-     * Domain for matching Gemini iframe URLs.
+     * Domain for matching DeepSeek view URLs.
      */
     domain: 'chat.deepseek.com',
 

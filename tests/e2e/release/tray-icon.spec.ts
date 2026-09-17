@@ -41,7 +41,7 @@ describe('Release Build: System Tray', () => {
 
             return {
                 exists: true,
-                tooltip: tray.getToolTip?.() || 'Gemini Desktop',
+                tooltip: tray.getToolTip?.() || 'DeepSeek Desktop',
                 error: null,
             };
         });

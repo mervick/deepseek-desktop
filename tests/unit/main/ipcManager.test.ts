@@ -603,10 +603,10 @@ describe('IpcManager', () => {
             await handler({}, { requestId: navigatePayload!.requestId, targetTabId: navigatePayload!.targetTabId });
 
             expect(mockMainWindow.webContents.mainFrame.frames[0].executeJavaScript).toHaveBeenCalled();
-            expect(mockLogger.log).toHaveBeenCalledWith('Text injected into Gemini successfully');
+            expect(mockLogger.log).toHaveBeenCalledWith('Text injected into DeepSeek successfully');
         });
 
-        it('handles gemini:ready without Gemini iframe', async () => {
+        it('handles gemini:ready without DeepSeek view', async () => {
             const submitHandler = (ipcMain as any)._listeners.get('quick-chat:submit');
             const handler = (ipcMain as any)._listeners.get('gemini:ready');
 
@@ -1326,7 +1326,7 @@ describe('IpcManager', () => {
                 throw new Error('Auth failed');
             });
             await expect(handler()).rejects.toThrow('Auth failed');
-            expect(mockLogger.error).toHaveBeenCalledWith('Error opening Google sign-in:', expect.any(Error));
+            expect(mockLogger.error).toHaveBeenCalledWith('Error opening DeepSeek sign-in:', expect.any(Error));
         });
 
         it('handles ThemeIpcHandler.initialize error', () => {
@@ -1375,7 +1375,7 @@ describe('IpcManager', () => {
         });
     });
 
-    describe('Gemini frame URL detection', () => {
+    describe('DeepSeek frame URL detection', () => {
         beforeEach(() => {
             ipcManager.setupIpcHandlers();
         });

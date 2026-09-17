@@ -65,7 +65,7 @@ export default class WindowManager extends EventEmitter {
     }
 
     /**
-     * Create an authentication window for Google sign-in.
+     * Create an authentication window for DeepSeek sign-in.
      * @param url - The URL to load in the auth window
      * @returns The created auth window
      */

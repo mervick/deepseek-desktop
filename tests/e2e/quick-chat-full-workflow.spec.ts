@@ -96,7 +96,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
 
             // Step 6: Switch to main window and wait for text injection
             // With tabbed chat, submit creates a new tab → iframe loads → 500ms delay → injection.
-            // waitForTextInGeminiEditor polls all Gemini frames until the expected text appears.
+            // waitForTextInGeminiEditor polls all DeepSeek frames until the expected text appears.
             await switchToMainWindow();
             await tabBar.waitForTabCountAtLeast(2, {
                 timeout: 8000,
@@ -452,7 +452,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                 },
                 {
                     timeout: 10000,
-                    timeoutMsg: 'Expected target Gemini frame to be ready for injection',
+                    timeoutMsg: 'Expected target DeepSeek frame to be ready for injection',
                 }
             );
 

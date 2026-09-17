@@ -2,7 +2,7 @@
  * NotificationSettings Component
  *
  * Toggle switch for enabling/disabling response notifications.
- * Shows notifications when Gemini finishes generating a response
+ * Shows notifications when DeepSeek finishes generating a response
  * while the app window is not focused.
  *
  * @module NotificationSettings
@@ -84,7 +84,7 @@ export const NotificationSettings = memo(function NotificationSettings() {
                 checked={enabled}
                 onChange={handleChange}
                 label="Response Notifications"
-                description="Show a notification when Gemini finishes generating a response while the window is unfocused"
+                description="Show a notification when DeepSeek finishes generating a response while the window is unfocused"
                 testId="response-notifications-toggle"
             />
         </div>

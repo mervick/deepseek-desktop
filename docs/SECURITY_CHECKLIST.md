@@ -1,6 +1,6 @@
 # Security Release Checklist
 
-Before cutting any release of Gemini Desktop, the release engineer must verify the following items to ensure the security and integrity of the application.
+Before cutting any release of DeepSeek Desktop, the release engineer must verify the following items to ensure the security and integrity of the application.
 
 ## 📦 Dependency Audit
 

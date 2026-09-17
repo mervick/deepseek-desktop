@@ -59,7 +59,7 @@ export interface MenuItemRef {
  * // Click the "Options" menu item
  * await clickMenuItemById('menu-file-options');
  *
- * // Click "About Gemini Desktop"
+ * // Click "About DeepSeek Desktop"
  * await clickMenuItemById('menu-help-about');
  */
 export async function clickMenuItemById(id: string): Promise<void> {

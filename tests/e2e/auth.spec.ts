@@ -3,7 +3,7 @@
 /**
  * E2E Test: Authentication Flow
  *
- * Verifies that the "Sign in to Google" menu item opens the authentication window,
+ * Verifies that the "Sign in to DeepSeek" menu item opens the authentication window,
  * and that the window auto-closes on successful login (navigation to Gemini) or can be closed manually.
  */
 
@@ -84,7 +84,7 @@ describe('Authentication Flow', () => {
         // 2. Open and switch to auth window
         await authWindow.openAndSwitchTo();
 
-        // 3. Verify we're on the auth window (Google accounts URL)
+        // 3. Verify we're on the auth window (DeepSeek login URL)
         expect(await authWindow.isOnGoogleAccounts()).toBe(true);
 
         // 4. Close auth window manually via Page Object
@@ -107,7 +107,7 @@ describe('Authentication Flow', () => {
         const mainLayout = await $(Selectors.mainLayout);
         await expect(mainLayout).toBeExisting();
 
-        // 4. Verify main window URL hasn't changed to Google accounts
+        // 4. Verify main window URL hasn't changed to DeepSeek login
         const mainUrl = await browser.getUrl();
         expect(mainUrl).not.toContain('chat.deepseek.com');
 

@@ -89,7 +89,7 @@ describe('First-Run Experience', () => {
             await expect(titleText).toBeExisting();
 
             const text = await titleText.getText();
-            expect(text).toBe('Gemini Desktop');
+            expect(text).toBe('DeepSeek Desktop');
 
             // Verify window is interactive (not crashed/frozen)
             // Check if we can find the menu bar (Windows/Linux) or just general body existence

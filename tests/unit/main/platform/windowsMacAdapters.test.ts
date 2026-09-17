@@ -94,13 +94,13 @@ describe('WindowsAdapter', () => {
     });
 
     describe('applyAppConfiguration()', () => {
-        it('should set app name to "Gemini Desktop"', () => {
+        it('should set app name to "DeepSeek Desktop"', () => {
             const app = createMockApp();
             const logger = createMockLogger();
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect(app.setName).toHaveBeenCalledWith('Gemini Desktop');
+            expect(app.setName).toHaveBeenCalledWith('DeepSeek Desktop');
         });
 
         it('should NOT set WM_CLASS or desktop name (Windows-only)', () => {
@@ -406,13 +406,13 @@ describe('MacAdapter', () => {
     });
 
     describe('applyAppConfiguration()', () => {
-        it('should set app name to "Gemini Desktop"', () => {
+        it('should set app name to "DeepSeek Desktop"', () => {
             const app = createMockApp();
             const logger = createMockLogger();
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect(app.setName).toHaveBeenCalledWith('Gemini Desktop');
+            expect(app.setName).toHaveBeenCalledWith('DeepSeek Desktop');
         });
 
         it('should NOT set WM_CLASS or desktop name (Mac-only)', () => {
@@ -634,7 +634,7 @@ describe('MacAdapter', () => {
             expect(Array.isArray(template)).toBe(true);
         });
 
-        it('should include Show Gemini and Settings entries', () => {
+        it('should include Show DeepSeek and Settings entries', () => {
             const callbacks = {
                 restoreFromTray: vi.fn(),
                 createOptionsWindow: vi.fn(),
@@ -642,18 +642,18 @@ describe('MacAdapter', () => {
             const template = adapter.getDockMenuTemplate(callbacks)!;
 
             const labels = template.filter((item) => item.label).map((item) => item.label);
-            expect(labels).toContain('Show Gemini');
+            expect(labels).toContain('Show DeepSeek');
             expect(labels).toContain('Settings');
         });
 
-        it('should call restoreFromTray when Show Gemini is clicked', () => {
+        it('should call restoreFromTray when Show DeepSeek is clicked', () => {
             const callbacks = {
                 restoreFromTray: vi.fn(),
                 createOptionsWindow: vi.fn(),
             };
             const template = adapter.getDockMenuTemplate(callbacks)!;
 
-            const showGemini = template.find((item) => item.label === 'Show Gemini');
+            const showGemini = template.find((item) => item.label === 'Show DeepSeek');
             showGemini?.click?.(null as any, null as any, null as any);
 
             expect(callbacks.restoreFromTray).toHaveBeenCalled();

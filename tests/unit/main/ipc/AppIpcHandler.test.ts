@@ -189,7 +189,7 @@ describe('AppIpcHandler', () => {
             });
 
             await expect(ipcHandler!({})).rejects.toThrow('Failed to create auth window');
-            expect(mockLogger.error).toHaveBeenCalledWith('Error opening Google sign-in:', error);
+            expect(mockLogger.error).toHaveBeenCalledWith('Error opening DeepSeek sign-in:', error);
         });
     });
 

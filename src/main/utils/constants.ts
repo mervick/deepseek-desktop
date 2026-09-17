@@ -59,12 +59,12 @@ export function getBaseWebPreferences(): BrowserWindowConstructorOptions['webPre
 }
 
 /**
- * Default URL for Google sign-in.
+ * Default URL for DeepSeek sign-in.
  */
 export const GOOGLE_ACCOUNTS_URL = 'https://chat.deepseek.com/login' as const;
 
 /**
- * Full URL for Google sign-in page.
+ * Full URL for DeepSeek sign-in page.
  */
 export const GOOGLE_SIGNIN_URL = GOOGLE_ACCOUNTS_URL;
 
@@ -119,7 +119,7 @@ export const AI_STUDIO_URL = `https://${AI_STUDIO_DOMAIN}` as const;
 
 /**
  * URL pattern for detecting Gemini response completion.
- * Used in webRequest.onCompleted to detect when Gemini finishes generating a response.
+ * Used in webRequest.onCompleted to detect when DeepSeek finishes generating a response.
  *
  * The StreamGenerate endpoint handles actual chat streaming responses.
  * This is more specific than matching all BardChatUi calls, which would also

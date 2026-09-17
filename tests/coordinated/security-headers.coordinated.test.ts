@@ -30,7 +30,7 @@ describe('Security Integration', () => {
             };
         });
 
-        it('should register headers listener for Gemini domains', () => {
+        it('should register headers listener for DeepSeek domains', () => {
             setupHeaderStripping(mockSession);
 
             expect(mockSession.webRequest.onHeadersReceived).toHaveBeenCalledWith(

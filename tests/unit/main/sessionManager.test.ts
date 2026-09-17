@@ -174,7 +174,7 @@ describe('Session cookie flow integration', () => {
         const mainWindow = windowManager.getMainWindow();
         expect(mainWindow).toBeTruthy();
 
-        // 2. Simulate user clicking "Sign in to Google" menu item
+        // 2. Simulate user clicking "Sign in to DeepSeek" menu item
         // This creates auth window that shares session with main window
         const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com');
         expect(authWindow).toBeTruthy();

@@ -98,7 +98,7 @@ export interface HotkeyManagerInitialSettings {
 // ============================================================================
 
 /**
- * Manages keyboard shortcuts for the Gemini Desktop application.
+ * Manages keyboard shortcuts for the DeepSeek Desktop application.
  *
  * ## Features
  * - Two-tier architecture: global hotkeys (globalShortcut) and application hotkeys (Menu)
@@ -564,7 +564,7 @@ export default class HotkeyManager {
         const shortcuts = enabledGlobalHotkeys.map((id) => ({
             id,
             accelerator: this._accelerators[id],
-            description: `Gemini Desktop: ${id}`,
+            description: `DeepSeek Desktop: ${id}`,
         }));
 
         const actionCallbacks = this._buildActionCallbacksMap(enabledGlobalHotkeys);

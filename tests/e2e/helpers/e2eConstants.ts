@@ -1,5 +1,5 @@
 /**
- * E2E Test Constants for Gemini Desktop.
+ * E2E Test Constants for DeepSeek Desktop.
  *
  * Centralizes all selectors, domains, and configuration values used in E2E tests.
  * This makes the tests maintainable if Gemini's DOM structure changes.
@@ -66,7 +66,7 @@ export const E2E_ERROR_MESSAGES = {
     WINDOW_MANAGER_NOT_FOUND: 'WindowManager not found on app instance',
     MAIN_WINDOW_NOT_FOUND: 'Main window not found',
     QUICK_CHAT_WINDOW_NOT_FOUND: 'Quick Chat window not found',
-    GEMINI_IFRAME_NOT_FOUND: 'Gemini iframe not found in frames',
+    GEMINI_IFRAME_NOT_FOUND: 'DeepSeek view not found in frames',
     EDITOR_NOT_FOUND: 'Gemini editor element not found',
     SUBMIT_BUTTON_NOT_FOUND: 'Submit button not found or disabled',
 } as const;

@@ -2,15 +2,15 @@
 
 > **"Sunlight is the best disinfectant."**
 
-This document exists to provide complete transparency into what Gemini Desktop does, how it works, and who built it. In light of malware masquerading as open-source tools, trust must be earned through verification, not just promises.
+This document exists to provide complete transparency into what DeepSeek Desktop does, how it works, and who built it. In light of malware masquerading as open-source tools, trust must be earned through verification, not just promises.
 
 ## ⚠️ The "GeminiDesk" Malware Warning
 
 You may have seen warnings on Reddit about a similar-sounding app called "GeminiDesk" that contained surveillance software. **That is NOT this application.**
 
-Here is a direct comparison of the malicious behaviors found in that clone versus how Gemini Desktop operates:
+Here is a direct comparison of the malicious behaviors found in that clone versus how DeepSeek Desktop operates:
 
-| Malicious Behavior (GeminiDesk)                                      | Gemini Desktop (This App)                                                                                                                             | Verification                                                          |
+| Malicious Behavior (GeminiDesk)                                      | DeepSeek Desktop (This App)                                                                                                                             | Verification                                                          |
 | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | **Credential Theft**<br>Captures email/password fields               | **❌ No Access**<br>Authentication is handled entirely by DeepSeek's login page. The app never sees your credentials.                                 | [View Auth Code](../src/main/windows/authWindow.ts#L95-124)           |
 | **Cookie Exfiltration**<br>Zips cookies and sends to external server | **❌ Local Only**<br>Cookies are stored encrypted on your local machine, just like Chrome. They are never transmitted anywhere except `deepseek.com`. | [View Session Code](../src/main/utils/security.ts#L20-57)             |
@@ -22,20 +22,20 @@ Here is a direct comparison of the malicious behaviors found in that clone versu
 
 ## 🌐 Network Activity
 
-We believe you should know exactly who your computer is talking to. Gemini Desktop **ONLY** communicates with these domains:
+We believe you should know exactly who your computer is talking to. DeepSeek Desktop **ONLY** communicates with these domains:
 
 | Domain           | Purpose                                                      |
 | ---------------- | ------------------------------------------------------------ |
 | `*.deepseek.com` | Loading the DeepSeek web interface and authentication.       |
 | `api.github.com` | Checking for app updates (metadata only, no user data sent). |
 
-**We do not have a backend server.** There is no "Gemini Desktop Cloud." All data flows directly between your machine and Google.
+**We do not have a backend server.** There is no "DeepSeek Desktop Cloud." All data flows directly between your machine and DeepSeek.
 
 ---
 
 ## � Navigation Security
 
-Malicious apps often redirect users to phishing sites or load remote payloads from attacker-controlled servers. Gemini Desktop blocks these attack vectors at the code level:
+Malicious apps often redirect users to phishing sites or load remote payloads from attacker-controlled servers. DeepSeek Desktop blocks these attack vectors at the code level:
 
 | Protection                   | Description                                                                                              | Verification                                                           |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -107,7 +107,7 @@ This means:
 
 ## 🐧 Linux Security Hardening
 
-Linux users can choose to run Gemini Desktop in an enhanced security environment. Contributor [@hightowe](https://github.com/hightowe) developed a custom launcher using **Firejail** and **Netfilter** for additional isolation from your system.
+Linux users can choose to run DeepSeek Desktop in an enhanced security environment. Contributor [@hightowe](https://github.com/hightowe) developed a custom launcher using **Firejail** and **Netfilter** for additional isolation from your system.
 
 - **Repository**: [linux-jails/Gemini-Desktop](https://github.com/hightowe/linux-jails/tree/main/Gemini-Desktop)
 
@@ -117,13 +117,13 @@ This allows you to put the Linux app inside a strict jail for enhanced security 
 
 ## 🛡️ Verify Your Download
 
-To ensure you have the genuine, unaltered version of Gemini Desktop:
+To ensure you have the genuine, unaltered version of DeepSeek Desktop:
 
 1. **Only download** from the [Official Releases Page](https://github.com/mervick/deepseek-desktop/releases).
 2. **Check the Checksum**: We publish a checksum file for each platform with every release.
-    - **Windows x64 (PowerShell)**: `Get-FileHash .\Gemini-Desktop-x.y.z-x64-installer.exe` — compare with `checksums-windows.txt`
-    - **Windows ARM64 (PowerShell)**: `Get-FileHash .\Gemini-Desktop-x.y.z-arm64-installer.exe` — compare with `checksums-windows-arm64.txt`
-    - **Mac**: `shasum -a 256 Gemini-Desktop.dmg` — compare with `checksums-mac.txt`
-    - **Linux**: `sha256sum Gemini-Desktop.AppImage` — compare with `checksums-linux.txt`
+    - **Windows x64 (PowerShell)**: `Get-FileHash .\DeepSeek-Desktop-x.y.z-x64-installer.exe` — compare with `checksums-windows.txt`
+    - **Windows ARM64 (PowerShell)**: `Get-FileHash .\DeepSeek-Desktop-x.y.z-arm64-installer.exe` — compare with `checksums-windows-arm64.txt`
+    - **Mac**: `shasum -a 256 DeepSeek-Desktop.dmg` — compare with `checksums-mac.txt`
+    - **Linux**: `sha256sum DeepSeek-Desktop.AppImage` — compare with `checksums-linux.txt`
 
 If you find _anything_ suspicious, please open an issue or contact me directly.

@@ -1,6 +1,6 @@
 # Test Helpers
 
-Shared utilities for testing the Gemini Desktop application. These helpers reduce code duplication and ensure consistent test patterns across the codebase.
+Shared utilities for testing the DeepSeek Desktop application. These helpers reduce code duplication and ensure consistent test patterns across the codebase.
 
 ## Directory Structure
 

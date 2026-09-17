@@ -32,7 +32,7 @@ describe('Application Startup', () => {
         // Verify titlebar contains title text
         const titleText = await $(Selectors.titlebarTitle);
         await expect(titleText).toBeExisting();
-        await expect(titleText).toHaveText('Gemini Desktop');
+        await expect(titleText).toHaveText('DeepSeek Desktop');
     });
 
     it('should have window control buttons (Windows/Linux only)', async () => {

@@ -56,7 +56,7 @@ export interface ElectronAPI {
     /** Open the options/settings window */
     openOptions: (tab?: 'settings' | 'about') => void;
 
-    /** Open Google sign-in window */
+    /** Open DeepSeek sign-in window */
     openGoogleSignIn: () => Promise<void>;
     importDeepSeekCookies: (cookieHeader: string) => Promise<{ success: boolean; error?: string }>;
 

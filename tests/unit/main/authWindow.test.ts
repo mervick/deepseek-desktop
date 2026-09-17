@@ -55,7 +55,7 @@ describe('AuthWindow', () => {
             expect(win.close).toHaveBeenCalled();
         });
 
-        it('does not close auth window when navigating between Google auth pages', () => {
+        it('does not close auth window when navigating between DeepSeek auth pages', () => {
             const win = authWindow.create('https://chat.deepseek.com');
             const navigateCall = win.webContents.on.mock.calls.find((c: any) => c[0] === 'did-navigate');
             const navigateHandler = navigateCall[1];

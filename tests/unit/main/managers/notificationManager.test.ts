@@ -458,7 +458,7 @@ describe('NotificationManager', () => {
 
             expect(mockNotification).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    title: 'Gemini Desktop',
+                    title: 'DeepSeek Desktop',
                     body: 'Response ready',
                     silent: false,
                     icon: expect.any(String),

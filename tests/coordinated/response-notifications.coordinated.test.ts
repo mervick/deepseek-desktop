@@ -226,7 +226,7 @@ describe('Response Notifications Coordinated Tests', () => {
             notificationManager.onResponseComplete();
 
             expect((mockNotification as any)._instances.length).toBe(1);
-            expect((mockNotification as any)._instances[0].title).toBe('Gemini Desktop');
+            expect((mockNotification as any)._instances[0].title).toBe('DeepSeek Desktop');
             expect((mockNotification as any)._instances[0].body).toBe('Response ready');
             expect((mockNotification as any)._instances[0].show).toHaveBeenCalled();
         });
@@ -343,7 +343,7 @@ describe('Response Notifications Coordinated Tests', () => {
             mockMainWindowEmitter.emit('response-complete');
 
             expect((mockNotification as any)._instances.length).toBe(1);
-            expect((mockNotification as any)._instances[0].title).toBe('Gemini Desktop');
+            expect((mockNotification as any)._instances[0].title).toBe('DeepSeek Desktop');
             expect(mockBadgeManager.showNotificationBadge).toHaveBeenCalledTimes(1);
         });
 

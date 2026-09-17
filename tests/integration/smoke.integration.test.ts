@@ -17,7 +17,7 @@ describe('Application Smoke Test (Real Binary)', () => {
 
     it('should launch the application with the correct title', async () => {
         const title = await browser.getTitle();
-        expect(title).toBe('Gemini Desktop');
+        expect(title).toBe('DeepSeek Desktop');
     });
 
     it('should have a visible main window', async () => {

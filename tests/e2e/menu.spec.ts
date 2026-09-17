@@ -209,7 +209,7 @@ describe('Menu', () => {
             await ensureSingleWindow();
         });
 
-        it('should open About tab in Options window when clicking "About Gemini Desktop"', async () => {
+        it('should open About tab in Options window when clicking "About DeepSeek Desktop"', async () => {
             await mainWindow.openAboutViaMenu();
 
             await waitForWindowCount(2);
@@ -313,7 +313,7 @@ describe('Menu', () => {
             await mainWindow.waitForDropdownOpen();
             expect(await mainWindow.isDropdownVisible()).toBe(true);
 
-            expect(await mainWindow.isMenuItemExisting('About Gemini Desktop')).toBe(true);
+            expect(await mainWindow.isMenuItemExisting('About DeepSeek Desktop')).toBe(true);
 
             await mainWindow.closeDropdownByClickingTitlebar();
 

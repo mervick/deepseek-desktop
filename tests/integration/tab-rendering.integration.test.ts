@@ -35,7 +35,7 @@ describe('Tab Rendering (Integration)', () => {
         expect(await newTabButton.isClickable()).toBe(true);
     });
 
-    it('renders at least one Gemini iframe within the tab panel', async () => {
+    it('renders at least one DeepSeek view within the tab panel', async () => {
         const tabPanel = await browser.$('[data-testid="tab-panel"]');
         await tabPanel.waitForDisplayed({ timeout: 10000 });
 

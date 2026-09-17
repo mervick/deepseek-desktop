@@ -75,7 +75,7 @@ describe('AutoUpdateIpcHandler', () => {
             devMockPlatform: vi.fn(),
             devMockEnv: vi.fn(),
             getLastCheckTime: vi.fn().mockReturnValue(1234567890),
-            getTrayTooltip: vi.fn().mockReturnValue('Gemini Desktop'),
+            getTrayTooltip: vi.fn().mockReturnValue('DeepSeek Desktop'),
         };
 
         mockDeps = {
@@ -425,7 +425,7 @@ describe('AutoUpdateIpcHandler', () => {
             const handlerFn = mockIpcMain._handlers.get(IPC_CHANNELS.TRAY_GET_TOOLTIP);
             const result = await handlerFn!();
 
-            expect(result).toBe('Gemini Desktop');
+            expect(result).toBe('DeepSeek Desktop');
         });
 
         it('returns empty string when updateManager is null', async () => {

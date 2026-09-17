@@ -45,7 +45,7 @@ describe('Fatal Error Recovery E2E', () => {
                 async () => {
                     try {
                         const title = await browser.getTitle();
-                        return title === 'Gemini Desktop';
+                        return title === 'DeepSeek Desktop';
                     } catch (_error) {
                         // Ignore tab crashed errors during reload
                         return false;

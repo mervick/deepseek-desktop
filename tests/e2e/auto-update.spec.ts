@@ -265,7 +265,7 @@ describe('Auto-Update', () => {
                 await updateToast.waitForAnimationComplete();
 
                 const tooltip = await updateToast.getTrayTooltip();
-                expect(tooltip).toBe('Gemini Desktop'); // Default tooltip
+                expect(tooltip).toBe('DeepSeek Desktop'); // Default tooltip
             });
         });
 
@@ -517,7 +517,7 @@ describe('Auto-Update', () => {
 
                 // Tray tooltip should be default (not showing update info)
                 const tooltip = await updateToast.getTrayTooltip();
-                expect(tooltip).toBe('Gemini Desktop'); // Default tooltip
+                expect(tooltip).toBe('DeepSeek Desktop'); // Default tooltip
             });
         });
 
@@ -1032,7 +1032,7 @@ describe('Auto-Update', () => {
             });
 
             // WHEN the user hovers over the system tray icon (Simulated by checking tooltip text)
-            // THEN tooltip should show "Gemini Desktop - Update vX.X.X available"
+            // THEN tooltip should show "DeepSeek Desktop - Update vX.X.X available"
             const tooltip = await wdioBrowser.execute(() => {
                 const api = (window as unknown as WindowWithElectronAPI).electronAPI;
                 return api?.getTrayTooltip() ?? '';
@@ -1048,13 +1048,13 @@ describe('Auto-Update', () => {
                 });
             });
 
-            // THEN tooltip should revert to "Gemini Desktop"
+            // THEN tooltip should revert to "DeepSeek Desktop"
             const finalTooltip = await wdioBrowser.execute(() => {
                 const api = (window as unknown as WindowWithElectronAPI).electronAPI;
                 return api?.getTrayTooltip() ?? '';
             });
 
-            expect(finalTooltip).toBe('Gemini Desktop');
+            expect(finalTooltip).toBe('DeepSeek Desktop');
         });
     });
 });

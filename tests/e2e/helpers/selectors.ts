@@ -34,7 +34,7 @@ export const Selectors = {
     titlebarTitle: '.titlebar-title',
     /** The app icon in the titlebar */
     titlebarIcon: testId(TITLEBAR_TEST_IDS.APP_ICON),
-    /** The container holding the official Gemini webview */
+    /** The container holding the official DeepSeek view */
     webviewContainer: '.webview-container',
 
     // Custom Menu (Windows/Linux only)

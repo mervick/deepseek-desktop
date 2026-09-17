@@ -1,6 +1,6 @@
-# Contributing to Gemini Desktop
+# Contributing to DeepSeek Desktop
 
-First off, thank you for considering contributing to Gemini Desktop! 🎉 This guide walks you through setup, testing, code style, and the contribution workflow.
+First off, thank you for considering contributing to DeepSeek Desktop! 🎉 This guide walks you through setup, testing, code style, and the contribution workflow.
 
 > **Quick summary:** Use **Node.js 20+**, install dependencies with `npm install`, run the app with `npm run electron:dev`, and run the relevant tests before opening a PR.
 

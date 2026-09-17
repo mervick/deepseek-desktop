@@ -1,4 +1,4 @@
-# Gemini Desktop — Native, Private AI Experience
+# DeepSeek Desktop — Native, Private AI Experience
 
 > [!IMPORTANT]
 > **Project status: on hiatus — not actively maintained** (July 2026). The app continues to work and all [releases](https://github.com/mervick/deepseek-desktop/releases) remain available, but issues and PRs may go unanswered and no new development is planned for now.
@@ -14,7 +14,10 @@
 
 </div>
 
-> **Gemini, but better.** A privacy-first desktop client for Google Gemini with native controls, global hotkeys, and zero telemetry.
+> **DeepSeek, but better.** A privacy-first desktop client for DeepSeek with native controls, global hotkeys, and zero telemetry.
+
+DeepSeek Desktop is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop)
+project originally created by [Ben Wendell](https://github.com/bwendell).
 
 <p align="center">
   <a href="#-feature-highlights">Feature Highlights</a> •
@@ -28,15 +31,15 @@
 
 <div align="center">
 
-![Gemini Desktop Main Window Interface](docs/assets/main_window.png)
+![DeepSeek Desktop Main Window Interface](docs/assets/main_window.png)
 
 </div>
 
-## ✨ Why Gemini Desktop
+## ✨ Why DeepSeek Desktop
 
-- **Desktop-native workflow**: Use Gemini in a dedicated app window instead of a browser tab.
+- **Desktop-native workflow**: Use DeepSeek in a dedicated app window instead of a browser tab.
 - **Fast keyboard control**: Trigger Quick Chat, hide/restore the app, and stay in flow.
-- **Trust-first defaults**: No telemetry, Google auth, and clear transparency/security docs.
+- **Trust-first defaults**: No telemetry, DeepSeek auth, and clear transparency/security docs.
 
 ## 🌟 Feature Highlights
 
@@ -44,8 +47,8 @@
 - **Launch at startup** — optionally start with your system and open minimized.
 - **Quick Chat** — summon a Spotlight-style prompt from anywhere with a global hotkey.
 - **Peek and Hide** — hide to tray and restore instantly when you need it.
-- **Response notifications** — get notified when Gemini finishes while the app is unfocused.
-- **Always On Top** — keep Gemini visible above other windows when multitasking.
+- **Response notifications** — get notified when DeepSeek finishes while the app is unfocused.
+- **Always On Top** — keep DeepSeek visible above other windows when multitasking.
 
 ## 📥 Installation
 
@@ -53,38 +56,38 @@ Download the latest release for your platform from [GitHub Releases](https://git
 
 ### Windows
 
-- **Windows (x64):** `Gemini-Desktop-x.x.x-x64-installer.exe`
-- **Windows (ARM64):** `Gemini-Desktop-x.x.x-arm64-installer.exe`
+- **Windows (x64):** `DeepSeek-Desktop-x.x.x-x64-installer.exe`
+- **Windows (ARM64):** `DeepSeek-Desktop-x.x.x-arm64-installer.exe`
 
 ### macOS
 
-- **Apple Silicon (M1/M2/M3)**: `Gemini-Desktop-x.x.x-arm64.dmg`
-- **Intel**: `Gemini-Desktop-x.x.x-x64.dmg`
+- **Apple Silicon (M1/M2/M3)**: `DeepSeek-Desktop-x.x.x-arm64.dmg`
+- **Intel**: `DeepSeek-Desktop-x.x.x-x64.dmg`
 
 > ⚠️ The app is not code-signed yet. On first launch, remove quarantine:
 >
 > ```bash
-> xattr -rd com.apple.quarantine "/Applications/Gemini Desktop.app"
+> xattr -rd com.apple.quarantine "/Applications/DeepSeek Desktop.app"
 > ```
 
 ### Linux
 
-- **AppImage**: `Gemini-Desktop-x.x.x-x64.AppImage`
-- **Debian/Ubuntu**: `Gemini-Desktop-x.x.x-x64.deb`
+- **AppImage**: `DeepSeek-Desktop-x.x.x-x64.AppImage`
+- **Debian/Ubuntu**: `DeepSeek-Desktop-x.x.x-x64.deb`
 
 ```bash
 # AppImage
-chmod +x "Gemini-Desktop-x.x.x-x64.AppImage"
-./"Gemini-Desktop-x.x.x-x64.AppImage"
+chmod +x "DeepSeek-Desktop-x.x.x-x64.AppImage"
+./"DeepSeek-Desktop-x.x.x-x64.AppImage"
 
 # Debian/Ubuntu
-sudo dpkg -i "Gemini-Desktop-x.x.x-x64.deb"
+sudo dpkg -i "DeepSeek-Desktop-x.x.x-x64.deb"
 ```
 
 ## 🔒 Privacy & Security
 
-Gemini Desktop has **no telemetry** and only connects to Google domains for Gemini access.
-Authentication is handled by Google, and sessions are stored using Chromium's standard local mechanisms.
+DeepSeek Desktop has **no telemetry** and only connects to DeepSeek domains for DeepSeek access.
+Authentication is handled by DeepSeek, and sessions are stored using Chromium's standard local mechanisms.
 For full details, read the [Transparency Report](docs/TRANSPARENCY.md), [Privacy Policy](docs/PRIVACY.md), and [Security Policy](docs/SECURITY.md).
 
 ## ⌨️ Keyboard Shortcuts
@@ -109,8 +112,10 @@ Contributions are welcome. For setup, standards, and workflow expectations, see 
 
 ## ⚖️ Legal
 
-This is an unofficial, open-source project and is **not** affiliated with Google LLC.
-**Gemini** and **Google** are registered trademarks of Google LLC.
+This is an unofficial, open-source project and is **not** affiliated with DeepSeek.
+**DeepSeek** is a trademark of its respective owner.
+This project is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop)
+project by [Ben Wendell](https://github.com/bwendell).
 Use this software at your own risk; it is provided "as is" without any warranty. See [docs/DISCLAIMER.md](docs/DISCLAIMER.md) for full terms, including user responsibility and warranty disclaimers.
 
 ## 📄 License

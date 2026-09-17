@@ -130,7 +130,7 @@ export default class ExportManager {
      */
     private async extractChatData(webContents: WebContents): Promise<ChatData | null> {
         try {
-            // Find the Gemini frame
+            // Find the DeepSeek frame
             const mainFrameUrl = webContents.getURL();
             let targetFrame: Electron.WebFrameMain | null = null;
 
@@ -147,7 +147,7 @@ export default class ExportManager {
             }
 
             if (!targetFrame) {
-                logger.error('Gemini frame not found for extraction');
+                logger.error('DeepSeek frame not found for extraction');
                 return null;
             }
 

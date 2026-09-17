@@ -80,7 +80,7 @@ describe('WindowManager ↔ TrayManager ↔ MenuManager State Coordination', () 
                 expect(mainWindow.isVisible()).toBe(false);
                 expect(mainWindow.isDestroyed()).toBe(false);
 
-                expect(trayManager.getToolTip()).toBe('Gemini Desktop');
+                expect(trayManager.getToolTip()).toBe('DeepSeek Desktop');
 
                 (tray as any).simulateClick();
 
@@ -228,7 +228,7 @@ describe('WindowManager ↔ TrayManager ↔ MenuManager State Coordination', () 
                 const dockMenu = dockMenuCalls[0]?.[0];
                 expect(dockMenu).toBeDefined();
 
-                const showItem = dockMenu.items.find((item: any) => item.label === 'Show Gemini');
+                const showItem = dockMenu.items.find((item: any) => item.label === 'Show DeepSeek');
                 expect(showItem).toBeDefined();
 
                 if (showItem && showItem.click) {
@@ -276,14 +276,14 @@ describe('WindowManager ↔ TrayManager ↔ MenuManager State Coordination', () 
             it('should maintain consistent tooltip state', () => {
                 const tray = trayManager.createTray();
 
-                expect(trayManager.getToolTip()).toBe('Gemini Desktop');
-                expect((tray as any).getTooltip()).toBe('Gemini Desktop');
+                expect(trayManager.getToolTip()).toBe('DeepSeek Desktop');
+                expect((tray as any).getTooltip()).toBe('DeepSeek Desktop');
 
                 trayManager.setUpdateTooltip('2.0.0');
-                expect(trayManager.getToolTip()).toBe('Gemini Desktop - Update v2.0.0 available');
+                expect(trayManager.getToolTip()).toBe('DeepSeek Desktop - Update v2.0.0 available');
 
                 trayManager.clearUpdateTooltip();
-                expect(trayManager.getToolTip()).toBe('Gemini Desktop');
+                expect(trayManager.getToolTip()).toBe('DeepSeek Desktop');
             });
 
             it('should handle tooltip updates without tray crash', () => {

@@ -2,7 +2,7 @@
 
 **Last Updated:** January 2026
 
-Your privacy is critically important to us. This Privacy Policy explains how Gemini Desktop ("the Application") collects, uses, and protects your information.
+Your privacy is critically important to us. This Privacy Policy explains how DeepSeek Desktop ("the Application") collects, uses, and protects your information.
 
 ## 1. Data Collection
 

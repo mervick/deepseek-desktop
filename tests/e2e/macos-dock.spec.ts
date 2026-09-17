@@ -89,8 +89,8 @@ describe('macOS Dock and Menubar Behavior', () => {
             const dockMenuExists = await dockPage.hasDockMenu();
             expect(dockMenuExists).toBe(true);
 
-            // Verify our implemented items: "Show Gemini", separator, "Settings"
-            const hasShowGemini = await dockPage.hasDockMenuItem('Show Gemini');
+            // Verify our implemented items: "Show DeepSeek", separator, "Settings"
+            const hasShowGemini = await dockPage.hasDockMenuItem('Show DeepSeek');
             const hasSettings = await dockPage.hasDockMenuItem('Settings');
 
             expect(hasShowGemini).toBe(true);

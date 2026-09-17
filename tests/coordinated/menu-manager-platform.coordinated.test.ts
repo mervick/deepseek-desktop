@@ -41,7 +41,7 @@ describe('MenuManager Platform Integration', () => {
             menuManager = new MenuManager(windowManager);
         });
 
-        it('should create menu with Gemini Desktop app menu first on macOS', () => {
+        it('should create menu with DeepSeek Desktop app menu first on macOS', () => {
             menuManager.buildMenu();
 
             expect(Menu.buildFromTemplate).toHaveBeenCalled();
@@ -54,7 +54,7 @@ describe('MenuManager Platform Integration', () => {
 
             const firstMenu = template[0];
             expect(firstMenu).toBeDefined();
-            expect(firstMenu.label).toBe('Gemini Desktop');
+            expect(firstMenu.label).toBe('DeepSeek Desktop');
         });
 
         it('should include Edit menu with clipboard roles on macOS', () => {

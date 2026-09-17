@@ -71,7 +71,7 @@ describe('Navigation Security Integration', () => {
             );
         });
 
-        it('should allow navigation to internal Gemini domains', () => {
+        it('should allow navigation to internal DeepSeek domains', () => {
             const mainWindow = new MainWindow(false);
             (mainWindow as any).window = mockMainWindow;
             (mainWindow as any).setupNavigationHandler();

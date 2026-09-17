@@ -126,7 +126,7 @@ function getInitialTab(): OptionsTab {
  * - Content area based on selected tab
  *
  * The window is designed to be opened from the File menu in the main window.
- * The About tab is opened from Help > About Gemini Desktop.
+ * The About tab is opened from Help > About DeepSeek Desktop.
  *
  * @example
  * // Open options window to About tab:

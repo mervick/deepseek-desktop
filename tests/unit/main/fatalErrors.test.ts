@@ -196,7 +196,7 @@ describe('Fatal Error Handling - Configuration', () => {
     it('should define correct crashReporter configuration values', () => {
         // Verify the expected configuration for crashReporter
         const expectedConfig = {
-            productName: 'Gemini Desktop',
+            productName: 'DeepSeek Desktop',
             companyName: 'Ben Wendell',
             submitURL: '',
             uploadToServer: false,
@@ -207,7 +207,7 @@ describe('Fatal Error Handling - Configuration', () => {
         expect(expectedConfig.ignoreSystemCrashHandler).toBe(true);
         expect(expectedConfig.uploadToServer).toBe(false);
         expect(expectedConfig.submitURL).toBe('');
-        expect(expectedConfig.productName).toBe('Gemini Desktop');
+        expect(expectedConfig.productName).toBe('DeepSeek Desktop');
     });
 
     it('should define crash recovery behavior for different reasons', () => {

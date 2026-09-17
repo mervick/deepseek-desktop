@@ -1,6 +1,6 @@
 import { browser, expect } from '@wdio/globals';
 
-describe('Gemini Loading & Webview Security', () => {
+describe('DeepSeek Loading & Webview Security', () => {
     before(async () => {
         await browser.waitUntil(async () => (await browser.getWindowHandles()).length > 0);
     });
@@ -42,7 +42,7 @@ describe('Gemini Loading & Webview Security', () => {
         // Real verification of 'prevention' is hard without observing the 'will-attach-webview' event.
     });
 
-    it('should strip X-Frame-Options for Gemini domains', async () => {
+    it('should strip X-Frame-Options for DeepSeek domains', async () => {
         // We can verify this via Main Process session inspection
         await browser.electron.execute(async () => {
             // We can manually trigger a fetch using net module to a URL that usually has headers

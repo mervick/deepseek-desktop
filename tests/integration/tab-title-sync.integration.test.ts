@@ -122,7 +122,7 @@ describe('Tab Title Sync (Integration)', () => {
         //
         // In production, this happens when:
         //   1. The 3-second title poll in TabStateIpcHandler._pollForTitleUpdate()
-        //      extracts a conversation title from the Gemini iframe, OR
+        //      extracts a conversation title from the DeepSeek view, OR
         //   2. The renderer calls electronAPI.updateTabTitle(tabId, title)
         //
         // Both paths send 'tabs:update-title' to ipcMain via ipcRenderer.send,

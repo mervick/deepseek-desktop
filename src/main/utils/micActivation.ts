@@ -2,7 +2,7 @@
  * Microphone Activation Utility for Gemini Voice Chat
  *
  * Provides a utility function to inject and execute a microphone button click
- * into the Gemini iframe, enabling voice input via hotkey activation.
+ * into the DeepSeek view, enabling voice input via hotkey activation.
  *
  * @module micActivation
  */
@@ -20,14 +20,14 @@ export type MicActivationResult = {
 };
 
 /**
- * Activates the microphone input in the Gemini iframe by injecting and executing
+ * Activates the microphone input in the DeepSeek view by injecting and executing
  * a script that finds and clicks the microphone button.
  *
  * The script uses the standard selector chain from GEMINI_MICROPHONE_BUTTON_SELECTORS
  * and executes with userGesture=true to satisfy browser security policies for
  * microphone access.
  *
- * @param frame - The WebFrameMain instance representing the Gemini iframe
+ * @param frame - The WebFrameMain instance representing the DeepSeek view
  * @returns Promise resolving to MicActivationResult indicating success or error
  *
  * @example

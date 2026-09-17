@@ -222,9 +222,9 @@ describe('Release Build: Code Signing', () => {
         });
 
         if (isLinuxSync()) {
-            expect(metadata.name).toMatch(/^(Gemini Desktop|gemini-desktop)$/);
+            expect(metadata.name).toMatch(/^(DeepSeek Desktop|gemini-desktop)$/);
         } else {
-            expect(metadata.name).toBe('Gemini Desktop');
+            expect(metadata.name).toBe('DeepSeek Desktop');
         }
         expect(metadata.version).toMatch(/^\d+\.\d+\.\d+/);
     });

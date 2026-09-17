@@ -37,7 +37,7 @@ When the Vite dev server is running (`npm run electron:dev`), you can view indiv
 - ❌ Window open/close/minimize
 - ❌ IPC events and subscriptions
 - ❌ Theme sync across windows
-- ❌ Gemini iframe (main window)
+- ❌ DeepSeek view (main window)
 
 ## Why This Limitation Exists
 

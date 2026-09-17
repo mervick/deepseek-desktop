@@ -169,8 +169,8 @@ describe('Auto-Update Integration', () => {
 
             // Verify it cleared
             tooltip = await browser.execute(() => window.electronAPI.getTrayTooltip());
-            // Default tooltip is 'Gemini Desktop'
-            expect(tooltip).toBe('Gemini Desktop');
+            // Default tooltip is 'DeepSeek Desktop'
+            expect(tooltip).toBe('DeepSeek Desktop');
         });
 
         it('should clear badges and tooltips when installing update', async () => {
@@ -192,12 +192,12 @@ describe('Auto-Update Integration', () => {
             await browser.waitUntil(
                 async () => {
                     const currentTooltip = await browser.execute(() => window.electronAPI.getTrayTooltip());
-                    return currentTooltip === 'Gemini Desktop';
+                    return currentTooltip === 'DeepSeek Desktop';
                 },
                 { timeout: 3000, interval: 100, timeoutMsg: 'Tray tooltip did not reset after installUpdate' }
             );
             tooltip = await browser.execute(() => window.electronAPI.getTrayTooltip());
-            expect(tooltip).toBe('Gemini Desktop'); // Default tooltip, no version
+            expect(tooltip).toBe('DeepSeek Desktop'); // Default tooltip, no version
         });
     });
 

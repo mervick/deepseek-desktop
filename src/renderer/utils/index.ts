@@ -1,5 +1,5 @@
 /**
- * Utility modules for the Gemini Desktop application.
+ * Utility modules for the DeepSeek Desktop application.
  */
 
 export { getPlatform, isMacOS, isWindows, isLinux, usesCustomWindowControls } from './platform';

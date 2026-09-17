@@ -31,7 +31,7 @@ const mockTrayInstance = {
     destroy: vi.fn(),
     isDestroyed: vi.fn().mockReturnValue(false),
     simulateClick: vi.fn(),
-    getTooltip: vi.fn().mockReturnValue('Gemini Desktop'),
+    getTooltip: vi.fn().mockReturnValue('DeepSeek Desktop'),
 };
 
 type MockNativeImage = {
@@ -211,7 +211,7 @@ describe('TrayManager', () => {
         it('sets tooltip correctly', () => {
             const tray = trayManager.createTray();
 
-            expect(tray.setToolTip).toHaveBeenCalledWith('Gemini Desktop');
+            expect(tray.setToolTip).toHaveBeenCalledWith('DeepSeek Desktop');
         });
 
         it('builds context menu from TRAY_MENU_ITEMS', () => {
@@ -222,7 +222,7 @@ describe('TrayManager', () => {
 
             // Should have Show, Separator, Quit
             expect(template.length).toBe(3);
-            expect(template[0].label).toBe('Show Gemini Desktop');
+            expect(template[0].label).toBe('Show DeepSeek Desktop');
             expect(template[1].type).toBe('separator');
             expect(template[2].label).toBe('Quit');
         });
@@ -292,7 +292,7 @@ describe('TrayManager', () => {
             trayManager.createTray();
 
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
-            const showItem = template.find((item: any) => item.label === 'Show Gemini Desktop');
+            const showItem = template.find((item: any) => item.label === 'Show DeepSeek Desktop');
 
             expect(showItem).toBeDefined();
             showItem.click();
@@ -354,7 +354,7 @@ describe('TrayManager', () => {
 
             trayManager.setUpdateTooltip('2.0.0');
 
-            expect(tray.setToolTip).toHaveBeenLastCalledWith('Gemini Desktop - Update v2.0.0 available');
+            expect(tray.setToolTip).toHaveBeenLastCalledWith('DeepSeek Desktop - Update v2.0.0 available');
         });
 
         it('does nothing if tray does not exist', () => {
@@ -378,7 +378,7 @@ describe('TrayManager', () => {
 
             trayManager.clearUpdateTooltip();
 
-            expect(tray.setToolTip).toHaveBeenLastCalledWith('Gemini Desktop');
+            expect(tray.setToolTip).toHaveBeenLastCalledWith('DeepSeek Desktop');
         });
 
         it('does nothing if tray does not exist', () => {

@@ -46,7 +46,7 @@ async function getWebviewInfo(): Promise<{
         const webContents = mainWindow.webContents;
         const frames = webContents.mainFrame.frames;
 
-        // Find Gemini frame (uses proper URL parsing to prevent substring bypass)
+        // Find DeepSeek frame (uses proper URL parsing to prevent substring bypass)
         const geminiFrame = frames.find((frame) => {
             try {
                 const hostname = new URL(frame.url).hostname;
@@ -122,7 +122,7 @@ describe('Webview Content Verification', () => {
     });
 
     describe('Gemini Content Loading', () => {
-        it('should load Gemini iframe (may be flaky due to network)', async () => {
+        it('should load DeepSeek view (may be flaky due to network)', async () => {
             // Wait for content to load (give network time)
             await waitForUIState(
                 async () => {
@@ -142,7 +142,7 @@ describe('Webview Content Verification', () => {
             // NOTE: This may fail in CI without network access
             // We use a soft assertion pattern here
             if (!info.geminiFrameFound) {
-                console.warn('[E2E] Gemini frame not found - may be network issue');
+                console.warn('[E2E] DeepSeek frame not found - may be network issue');
             }
 
             // At minimum, verify the structure is correct
@@ -155,7 +155,7 @@ describe('Webview Content Verification', () => {
                     const info = await getWebviewInfo();
                     return info.geminiFrameFound;
                 },
-                { timeout: 3000, description: 'Gemini frame to load' }
+                { timeout: 3000, description: 'DeepSeek frame to load' }
             );
 
             const info = await getWebviewInfo();

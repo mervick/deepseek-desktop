@@ -337,7 +337,7 @@ When the production code's event dispatching wasn't triggering Quill's change de
 
 1. **Fixed the production code** to dispatch proper events
 2. **Updated tests** to trigger the production code path, not a parallel implementation
-3. **Added verification** that text actually appeared in the Gemini iframe
+3. **Added verification** that text actually appeared in the DeepSeek view
 
 ### Lesson Learned
 

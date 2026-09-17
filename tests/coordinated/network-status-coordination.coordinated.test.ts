@@ -207,7 +207,7 @@ describe('Network Status Coordination', () => {
                 await result.current.handleLoad();
             });
 
-            expect(result.current.error).toBe('Unable to reach Gemini');
+            expect(result.current.error).toBe('Unable to reach DeepSeek');
             expect(result.current.isLoading).toBe(false);
         });
 
@@ -218,7 +218,7 @@ describe('Network Status Coordination', () => {
                 result.current.handleError();
             });
 
-            expect(result.current.error).toBe('Failed to load Gemini');
+            expect(result.current.error).toBe('Failed to load DeepSeek');
             expect(result.current.isLoading).toBe(false);
         });
     });

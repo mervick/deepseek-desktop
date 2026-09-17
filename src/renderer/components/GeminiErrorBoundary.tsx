@@ -17,7 +17,7 @@ interface GeminiErrorBoundaryState {
 }
 
 /**
- * Specialized Error Boundary for the Gemini iframe area.
+ * Specialized Error Boundary for the DeepSeek view area.
  *
  * Catches rendering errors in the iframe container and provides
  * a more specific error message than the global ErrorBoundary.

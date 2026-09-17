@@ -68,7 +68,7 @@ describe('MenuManager Coordinated Tests', () => {
 
                 if (platform === 'darwin') {
                     expect(buildCall).toEqual(
-                        expect.arrayContaining([expect.objectContaining({ label: 'Gemini Desktop' })])
+                        expect.arrayContaining([expect.objectContaining({ label: 'DeepSeek Desktop' })])
                     );
                 } else {
                     expect(buildCall).toEqual(expect.arrayContaining([expect.objectContaining({ label: 'File' })]));
@@ -147,7 +147,7 @@ describe('MenuManager Coordinated Tests', () => {
                 const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
 
                 const fileOrAppMenu = template.find(
-                    (menu: any) => menu.label === 'File' || menu.label === 'Gemini Desktop'
+                    (menu: any) => menu.label === 'File' || menu.label === 'DeepSeek Desktop'
                 );
                 expect(fileOrAppMenu).toBeDefined();
 
@@ -183,7 +183,7 @@ describe('MenuManager Coordinated Tests', () => {
                 menuManager.buildMenu();
 
                 const dockMenu = (app.dock?.setMenu as any).mock.calls[0]?.[0];
-                const showWindowItem = dockMenu?.items?.find((item: any) => item.label === 'Show Gemini');
+                const showWindowItem = dockMenu?.items?.find((item: any) => item.label === 'Show DeepSeek');
                 expect(showWindowItem).toBeDefined();
 
                 const spy = vi.spyOn(windowManager, 'restoreFromTray');

@@ -276,7 +276,7 @@ describe('setupMediaPermissions', () => {
         expect(granted).toBe(true);
     });
 
-    it('denies clipboard-sanitized-write permission to non-Google domains', async () => {
+    it('denies clipboard-sanitized-write permission to non-DeepSeek domains', async () => {
         const { setupMediaPermissions } = await import('../../../src/main/utils/security');
         vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
         setupMediaPermissions(mockSession.defaultSession);

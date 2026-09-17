@@ -191,7 +191,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
         });
 
         expect(targetFrame.executeJavaScript).toHaveBeenCalled();
-        expect(mockLogger.log).toHaveBeenCalledWith('Text injected into Gemini successfully');
+        expect(mockLogger.log).toHaveBeenCalledWith('Text injected into DeepSeek successfully');
     });
 
     it('ignores stale ready payload with unknown request id', async () => {

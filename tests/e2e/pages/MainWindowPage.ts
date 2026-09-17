@@ -154,7 +154,7 @@ export class MainWindowPage extends BasePage {
 
     /**
      * Check if a menu item exists in the dropdown.
-     * @param itemLabel - The menu item label (e.g., 'Options', 'About Gemini Desktop')
+     * @param itemLabel - The menu item label (e.g., 'Options', 'About DeepSeek Desktop')
      */
     async isMenuItemExisting(itemLabel: string): Promise<boolean> {
         return this.isElementExisting(Selectors.menuItem(itemLabel));

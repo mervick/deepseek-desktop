@@ -49,7 +49,7 @@ describe('Media Permissions Integration', () => {
                 expect(mockSession.defaultSession.setPermissionRequestHandler).toHaveBeenCalled();
             });
 
-            it('grants media permission to Gemini domains', async () => {
+            it('grants media permission to DeepSeek domains', async () => {
                 vi.resetModules();
                 const { setupMediaPermissions } = await import('../../src/main/utils/security');
 
@@ -68,7 +68,7 @@ describe('Media Permissions Integration', () => {
                 expect(granted).toBe(true);
             });
 
-            it('denies media permission to non-Google domains', async () => {
+            it('denies media permission to non-DeepSeek domains', async () => {
                 vi.resetModules();
                 const { setupMediaPermissions } = await import('../../src/main/utils/security');
 
