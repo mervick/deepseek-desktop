@@ -262,9 +262,10 @@ export default class MainWindow extends BaseWindow {
         if (!this.window) return;
 
         this.window.webContents.setWindowOpenHandler(({ url }) => {
+            let urlObj: URL;
             let hostname: string;
             try {
-                const urlObj = new URL(url);
+                urlObj = new URL(url);
                 hostname = urlObj.hostname;
             } catch (error) {
                 this.logger.error('Invalid URL in window open handler:', { url, error });
@@ -273,7 +274,7 @@ export default class MainWindow extends BaseWindow {
 
             try {
                 // OAuth domains: open in dedicated auth window
-                if (isOAuthDomain(hostname)) {
+                if (urlObj.protocol === 'https:' && isOAuthDomain(hostname)) {
                     this.logger.log('Intercepting OAuth popup:', url);
                     if (this.createAuthWindowCallback) {
                         this.createAuthWindowCallback(url);
