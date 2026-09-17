@@ -19,7 +19,6 @@
     ],
     "scripts": {
         "dev": "vite",
-        "prepare": "husky",
         "clean": "node scripts/clean.cjs",
         "build": "tsc && vite build",
         "build:electron": "tsc -p tsconfig.electron.json && node scripts/rename-electron-output.cjs",
@@ -108,9 +107,7 @@
         "expect-webdriverio": "^5.6.3",
         "fast-check": "^4.8.0",
         "globals": "^17.7.0",
-        "husky": "^9.1.7",
         "jsdom": "^29.1.1",
-        "lint-staged": "^16.4.0",
         "prettier": "^3.9.4",
         "typedoc": "^0.28.16",
         "typescript": "~5.9.3",
@@ -120,13 +117,6 @@
         "wait-on": "^9.0.10",
         "wdio-electron-service": "^9.2.1",
         "yaml": "^2.9.0"
-    },
-    "lint-staged": {
-        "**/*": "prettier --write --ignore-unknown",
-        "src/**/*.{ts,tsx}": "eslint",
-        "tests/**/*.{ts,tsx}": "eslint",
-        "config/**/*.{ts,tsx}": "eslint",
-        "scripts/**/*.{ts,tsx}": "eslint"
     },
     "overrides": {
         "serialize-javascript": "^7.0.3",
