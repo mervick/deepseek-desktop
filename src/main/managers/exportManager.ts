@@ -88,7 +88,7 @@ export default class ExportManager {
     }
 
     /**
-     * Allowed domains for Gemini content extraction.
+     * Allowed domains for DeepSeek content extraction.
      * The hostname must match exactly or be a subdomain of these.
      */
     private static readonly ALLOWED_DOMAINS = ['chat.deepseek.com', 'deepseek.com'] as const;
@@ -113,10 +113,10 @@ export default class ExportManager {
     }
 
     /**
-     * Checks if a URL is from an allowed Gemini domain.
+     * Checks if a URL is from an allowed DeepSeek domain.
      * Uses proper URL parsing to prevent bypass attacks.
      */
-    private isAllowedGeminiUrl(url: string): boolean {
+    private isAllowedDeepSeekUrl(url: string): boolean {
         try {
             const parsedUrl = new URL(url);
             return parsedUrl.protocol === 'https:' && this.isHostnameAllowed(parsedUrl.hostname);
@@ -134,7 +134,7 @@ export default class ExportManager {
             const mainFrameUrl = webContents.getURL();
             let targetFrame: Electron.WebFrameMain | null = null;
 
-            if (this.isAllowedGeminiUrl(mainFrameUrl)) {
+            if (this.isAllowedDeepSeekUrl(mainFrameUrl)) {
                 targetFrame = webContents.mainFrame;
             } else {
                 const frames = webContents.mainFrame.frames;
@@ -142,8 +142,8 @@ export default class ExportManager {
                     'Available frames:',
                     frames.map((f) => f.url)
                 );
-                const geminiFrame = frames.find((frame) => this.isAllowedGeminiUrl(frame.url));
-                if (geminiFrame) targetFrame = geminiFrame;
+                const deepseekFrame = frames.find((frame) => this.isAllowedDeepSeekUrl(frame.url));
+                if (deepseekFrame) targetFrame = deepseekFrame;
             }
 
             if (!targetFrame) {

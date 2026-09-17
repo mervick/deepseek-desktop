@@ -29,26 +29,26 @@ describe('resolve-windows-baseline-installer', () => {
         const { selectBaselineAsset } = loadResolver();
         const result = selectBaselineAsset(
             [
-                release('v0.11.0', ['Gemini-Desktop-0.11.0-installer.exe']),
-                release('v0.10.9', ['Gemini-Desktop-0.10.9-x64-installer.exe']),
+                release('v0.11.0', ['DeepSeek-Desktop-0.11.0-installer.exe']),
+                release('v0.10.9', ['DeepSeek-Desktop-0.10.9-x64-installer.exe']),
             ],
             'x64',
             'v0.12.0'
         );
 
-        expect(result.name).toBe('Gemini-Desktop-0.10.9-x64-installer.exe');
+        expect(result.name).toBe('DeepSeek-Desktop-0.10.9-x64-installer.exe');
         expect(result.kind).toBe('x64-specific');
     });
 
     it('falls back to the unified installer for the x64 lane', () => {
         const { selectBaselineAsset } = loadResolver();
         const result = selectBaselineAsset(
-            [release('v0.11.0', ['Gemini-Desktop-0.11.0-installer.exe'])],
+            [release('v0.11.0', ['DeepSeek-Desktop-0.11.0-installer.exe'])],
             'x64',
             'v0.12.0'
         );
 
-        expect(result.name).toBe('Gemini-Desktop-0.11.0-installer.exe');
+        expect(result.name).toBe('DeepSeek-Desktop-0.11.0-installer.exe');
         expect(result.kind).toBe('unified');
     });
 
@@ -56,7 +56,7 @@ describe('resolve-windows-baseline-installer', () => {
         const { selectBaselineAsset } = loadResolver();
 
         expect(() =>
-            selectBaselineAsset([release('v0.11.0', ['Gemini-Desktop-0.11.0-arm64-installer.exe'])], 'x64', 'v0.12.0')
+            selectBaselineAsset([release('v0.11.0', ['DeepSeek-Desktop-0.11.0-arm64-installer.exe'])], 'x64', 'v0.12.0')
         ).toThrow(/No acceptable baseline installer/i);
     });
 
@@ -64,27 +64,27 @@ describe('resolve-windows-baseline-installer', () => {
         const { selectBaselineAsset } = loadResolver();
         const result = selectBaselineAsset(
             [
-                release('v0.11.0', ['Gemini-Desktop-0.11.0-installer.exe']),
-                release('v0.10.9', ['Gemini-Desktop-0.10.9-arm64-installer.exe']),
+                release('v0.11.0', ['DeepSeek-Desktop-0.11.0-installer.exe']),
+                release('v0.10.9', ['DeepSeek-Desktop-0.10.9-arm64-installer.exe']),
             ],
             'arm64',
             'v0.12.0'
         );
 
-        expect(result.name).toBe('Gemini-Desktop-0.10.9-arm64-installer.exe');
+        expect(result.name).toBe('DeepSeek-Desktop-0.10.9-arm64-installer.exe');
         expect(result.kind).toBe('arm64-specific');
     });
 
     it('falls back to the unified installer for the arm64 lane', () => {
         const { selectBaselineAsset } = loadResolver();
         const result = selectBaselineAsset(
-            [release('v0.11.0', ['Gemini-Desktop-0.11.0-installer.exe'])],
+            [release('v0.11.0', ['DeepSeek-Desktop-0.11.0-installer.exe'])],
             'arm64',
             'v0.12.0',
             '0.12.0'
         );
 
-        expect(result.name).toBe('Gemini-Desktop-0.11.0-installer.exe');
+        expect(result.name).toBe('DeepSeek-Desktop-0.11.0-installer.exe');
         expect(result.kind).toBe('unified');
     });
 
@@ -93,7 +93,7 @@ describe('resolve-windows-baseline-installer', () => {
 
         expect(() =>
             selectBaselineAsset(
-                [release('v0.12.0', ['Gemini-Desktop-0.12.0-installer.exe'])],
+                [release('v0.12.0', ['DeepSeek-Desktop-0.12.0-installer.exe'])],
                 'x64',
                 'feature/windows-unified-installer-remediation',
                 '0.12.0'
@@ -105,7 +105,7 @@ describe('resolve-windows-baseline-installer', () => {
         const { selectBaselineAsset } = loadResolver();
 
         expect(() =>
-            selectBaselineAsset([release('v0.11.0', ['Gemini-Desktop-0.11.0-x64-installer.exe'])], 'arm64', 'v0.12.0')
+            selectBaselineAsset([release('v0.11.0', ['DeepSeek-Desktop-0.11.0-x64-installer.exe'])], 'arm64', 'v0.12.0')
         ).toThrow(/No acceptable baseline installer/i);
     });
 });

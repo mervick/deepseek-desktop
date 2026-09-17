@@ -16,7 +16,7 @@ import type {
 import type { UpdateInfo, DownloadProgress } from './updates';
 import type { ToastPayload } from './toast';
 import type { TextPredictionSettings } from './text-prediction';
-import type { GeminiNavigatePayload, GeminiReadyPayload, TabsState, TabShortcutPayload } from './tabs';
+import type { DeepSeekNavigatePayload, DeepSeekReadyPayload, TabsState, TabShortcutPayload } from './tabs';
 
 /**
  * Electron API exposed to renderer process via contextBridge.
@@ -105,15 +105,15 @@ export interface ElectronAPI {
     onQuickChatExecute: (callback: (text: string) => void) => () => void;
 
     // =========================================================================
-    // Gemini Iframe Navigation API
+    // DeepSeek Iframe Navigation API
     // Used by Quick Chat to navigate iframe without replacing React shell
     // =========================================================================
 
-    /** Listen for Gemini navigation requests. Returns unsubscribe function. */
-    onGeminiNavigate: (callback: (data: GeminiNavigatePayload) => void) => () => void;
+    /** Listen for DeepSeek navigation requests. Returns unsubscribe function. */
+    onDeepSeekNavigate: (callback: (data: DeepSeekNavigatePayload) => void) => () => void;
 
     /** Signal to main process that DeepSeek iframe is ready for injection */
-    signalGeminiReady: (payload: GeminiReadyPayload) => void;
+    signalDeepSeekReady: (payload: DeepSeekReadyPayload) => void;
 
     getTabState: () => Promise<TabsState | null>;
 

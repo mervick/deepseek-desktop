@@ -1,6 +1,6 @@
 /**
  * Global application styles.
- * 
+ *
  * This file contains base styles and resets that apply
  * across the entire application.
  */
@@ -60,7 +60,7 @@ body {
 }
 
 /* DeepSeek view styles */
-.gemini-iframe {
+.deepseek-iframe {
     position: absolute;
     top: 0;
     left: 0;

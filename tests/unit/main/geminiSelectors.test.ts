@@ -1,64 +1,64 @@
 /**
- * Unit tests for Gemini DOM Selectors module.
+ * Unit tests for DeepSeek DOM Selectors module.
  */
 import { describe, it, expect } from 'vitest';
 import {
-    GEMINI_SELECTORS_VERSION,
-    GEMINI_SELECTORS_LAST_VERIFIED,
-    GeminiSelectors,
-    findGeminiElement,
-    isGeminiDomain,
-    GEMINI_DOMAIN,
-    GEMINI_EDITOR_SELECTORS,
-    GEMINI_SUBMIT_BUTTON_SELECTORS,
-    GEMINI_EDITOR_BLANK_CLASS,
-    GEMINI_SUBMIT_DELAY_MS,
-} from '../../../src/main/utils/geminiSelectors';
+    DEEPSEEK_SELECTORS_VERSION,
+    DEEPSEEK_SELECTORS_LAST_VERIFIED,
+    DeepSeekSelectors,
+    findDeepSeekElement,
+    isDeepSeekDomain,
+    DEEPSEEK_DOMAIN,
+    DEEPSEEK_EDITOR_SELECTORS,
+    DEEPSEEK_SUBMIT_BUTTON_SELECTORS,
+    DEEPSEEK_EDITOR_BLANK_CLASS,
+    DEEPSEEK_SUBMIT_DELAY_MS,
+} from '../../../src/main/utils/deepseekSelectors';
 
-describe('Gemini Selectors Module', () => {
+describe('DeepSeek Selectors Module', () => {
     describe('Version and Metadata', () => {
         it('has a valid version string', () => {
-            expect(GEMINI_SELECTORS_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
+            expect(DEEPSEEK_SELECTORS_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
         });
 
         it('has a valid date string for last verified', () => {
-            expect(GEMINI_SELECTORS_LAST_VERIFIED).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+            expect(DEEPSEEK_SELECTORS_LAST_VERIFIED).toMatch(/^\d{4}-\d{2}-\d{2}$/);
         });
     });
 
-    describe('GeminiSelectors structure', () => {
+    describe('DeepSeekSelectors structure', () => {
         it('has domain configuration', () => {
-            expect(GeminiSelectors.domain).toBe('chat.deepseek.com');
-            expect(GeminiSelectors.legacyDomain).toBe('deepseek.com');
+            expect(DeepSeekSelectors.domain).toBe('chat.deepseek.com');
+            expect(DeepSeekSelectors.legacyDomain).toBe('deepseek.com');
         });
 
         it('has editor selectors', () => {
-            expect(GeminiSelectors.editor.selectors).toBeInstanceOf(Array);
-            expect(GeminiSelectors.editor.selectors.length).toBeGreaterThan(0);
-            expect(GeminiSelectors.editor.blankClass).toBe('ql-blank');
-            expect(GeminiSelectors.editor.description).toBeTruthy();
+            expect(DeepSeekSelectors.editor.selectors).toBeInstanceOf(Array);
+            expect(DeepSeekSelectors.editor.selectors.length).toBeGreaterThan(0);
+            expect(DeepSeekSelectors.editor.blankClass).toBe('ql-blank');
+            expect(DeepSeekSelectors.editor.description).toBeTruthy();
         });
 
         it('has submit button selectors', () => {
-            expect(GeminiSelectors.submitButton.selectors).toBeInstanceOf(Array);
-            expect(GeminiSelectors.submitButton.selectors.length).toBeGreaterThan(0);
-            expect(GeminiSelectors.submitButton.description).toBeTruthy();
+            expect(DeepSeekSelectors.submitButton.selectors).toBeInstanceOf(Array);
+            expect(DeepSeekSelectors.submitButton.selectors.length).toBeGreaterThan(0);
+            expect(DeepSeekSelectors.submitButton.description).toBeTruthy();
         });
 
         it('has timing configuration', () => {
-            expect(GeminiSelectors.timing.submitDelayMs).toBeGreaterThan(0);
-            expect(GeminiSelectors.timing.description).toBeTruthy();
+            expect(DeepSeekSelectors.timing.submitDelayMs).toBeGreaterThan(0);
+            expect(DeepSeekSelectors.timing.description).toBeTruthy();
         });
 
         it('includes conversation title data-test-id selector', () => {
-            expect(GeminiSelectors.conversationTitle.selectors).toContain('[data-test-id="conversation-title"]');
+            expect(DeepSeekSelectors.conversationTitle.selectors).toContain('[data-test-id="conversation-title"]');
         });
 
         it('all selectors are valid CSS selector syntax', () => {
             const allSelectors = [
-                ...GeminiSelectors.editor.selectors,
-                ...GeminiSelectors.submitButton.selectors,
-                ...GeminiSelectors.conversationTitle.selectors,
+                ...DeepSeekSelectors.editor.selectors,
+                ...DeepSeekSelectors.submitButton.selectors,
+                ...DeepSeekSelectors.conversationTitle.selectors,
             ];
 
             // Create a mock document to validate selectors
@@ -77,8 +77,8 @@ describe('Gemini Selectors Module', () => {
             const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
             const doc = dom.window.document;
 
-            // Should verify that findGeminiElement doesn't crash with bad selectors
-            // We'll test this via findGeminiElement tests
+            // Should verify that findDeepSeekElement doesn't crash with bad selectors
+            // We'll test this via findDeepSeekElement tests
             const badSelectors = ['div[bad', ''];
 
             expect(() => {
@@ -94,43 +94,43 @@ describe('Gemini Selectors Module', () => {
     });
 
     describe('Backwards Compatibility Exports', () => {
-        it('exports GEMINI_DOMAIN', () => {
-            expect(GEMINI_DOMAIN).toBe('chat.deepseek.com');
+        it('exports DEEPSEEK_DOMAIN', () => {
+            expect(DEEPSEEK_DOMAIN).toBe('chat.deepseek.com');
         });
 
-        it('exports GEMINI_EDITOR_SELECTORS', () => {
-            expect(GEMINI_EDITOR_SELECTORS).toEqual(GeminiSelectors.editor.selectors);
+        it('exports DEEPSEEK_EDITOR_SELECTORS', () => {
+            expect(DEEPSEEK_EDITOR_SELECTORS).toEqual(DeepSeekSelectors.editor.selectors);
         });
 
-        it('exports GEMINI_SUBMIT_BUTTON_SELECTORS', () => {
-            expect(GEMINI_SUBMIT_BUTTON_SELECTORS).toEqual(GeminiSelectors.submitButton.selectors);
+        it('exports DEEPSEEK_SUBMIT_BUTTON_SELECTORS', () => {
+            expect(DEEPSEEK_SUBMIT_BUTTON_SELECTORS).toEqual(DeepSeekSelectors.submitButton.selectors);
         });
 
-        it('exports GEMINI_EDITOR_BLANK_CLASS', () => {
-            expect(GEMINI_EDITOR_BLANK_CLASS).toBe('ql-blank');
+        it('exports DEEPSEEK_EDITOR_BLANK_CLASS', () => {
+            expect(DEEPSEEK_EDITOR_BLANK_CLASS).toBe('ql-blank');
         });
 
-        it('exports GEMINI_SUBMIT_DELAY_MS', () => {
-            expect(GEMINI_SUBMIT_DELAY_MS).toBe(500);
+        it('exports DEEPSEEK_SUBMIT_DELAY_MS', () => {
+            expect(DEEPSEEK_SUBMIT_DELAY_MS).toBe(500);
         });
     });
 
-    describe('isGeminiDomain', () => {
+    describe('isDeepSeekDomain', () => {
         it('returns true for chat.deepseek.com URLs', () => {
-            expect(isGeminiDomain('https://chat.deepseek.com/app')).toBe(true);
-            expect(isGeminiDomain('https://chat.deepseek.com/')).toBe(true);
+            expect(isDeepSeekDomain('https://chat.deepseek.com/app')).toBe(true);
+            expect(isDeepSeekDomain('https://chat.deepseek.com/')).toBe(true);
         });
 
         it('returns true for the DeepSeek root domain', () => {
-            expect(isGeminiDomain('https://deepseek.com/app')).toBe(true);
+            expect(isDeepSeekDomain('https://deepseek.com/app')).toBe(true);
         });
 
         it('returns false for other URLs', () => {
-            expect(isGeminiDomain('https://example.com')).toBe(false);
+            expect(isDeepSeekDomain('https://example.com')).toBe(false);
         });
     });
 
-    describe('findGeminiElement', () => {
+    describe('findDeepSeekElement', () => {
         it('finds element with primary selector', () => {
             const { JSDOM } = require('jsdom');
             const dom = new JSDOM(`
@@ -142,7 +142,7 @@ describe('Gemini Selectors Module', () => {
             const logs: string[] = [];
             const logger = (msg: string) => logs.push(msg);
 
-            const element = findGeminiElement(dom.window.document, GeminiSelectors.editor.selectors, 'editor', logger);
+            const element = findDeepSeekElement(dom.window.document, DeepSeekSelectors.editor.selectors, 'editor', logger);
 
             expect(element).not.toBeNull();
             expect(logs[0]).toContain('primary selector');
@@ -159,7 +159,7 @@ describe('Gemini Selectors Module', () => {
             const logs: string[] = [];
             const logger = (msg: string) => logs.push(msg);
 
-            const element = findGeminiElement(dom.window.document, GeminiSelectors.editor.selectors, 'editor', logger);
+            const element = findDeepSeekElement(dom.window.document, DeepSeekSelectors.editor.selectors, 'editor', logger);
 
             expect(element).not.toBeNull();
             expect(logs[0]).toContain('fallback selector');
@@ -172,7 +172,7 @@ describe('Gemini Selectors Module', () => {
             const logs: string[] = [];
             const logger = (msg: string) => logs.push(msg);
 
-            const element = findGeminiElement(dom.window.document, GeminiSelectors.editor.selectors, 'editor', logger);
+            const element = findDeepSeekElement(dom.window.document, DeepSeekSelectors.editor.selectors, 'editor', logger);
 
             expect(element).toBeNull();
             expect(logs[0]).toContain('No matching element found');
@@ -185,7 +185,7 @@ describe('Gemini Selectors Module', () => {
             const dom = new JSDOM('<html><body><div class="test"></div></body></html>');
             const logger = (_msg: string) => {};
 
-            const element = findGeminiElement(dom.window.document, [], 'test', logger);
+            const element = findDeepSeekElement(dom.window.document, [], 'test', logger);
 
             expect(element).toBeNull();
         });
@@ -195,7 +195,7 @@ describe('Gemini Selectors Module', () => {
             const dom = new JSDOM('<html><body><div class="test"></div></body></html>');
             const logger = (_msg: string) => {};
 
-            const element = findGeminiElement(
+            const element = findDeepSeekElement(
                 dom.window.document,
                 ['div[invalid', '.test'], // First is invalid, second is valid
                 'test',

@@ -141,11 +141,11 @@ export class AuthWindowPage extends BasePage {
     }
 
     /**
-     * Simulate successful login by navigating to Gemini URL.
+     * Simulate successful login by navigating to DeepSeek URL.
      * This triggers the auth window auto-close behavior.
      */
     async simulateSuccessfulLogin(): Promise<void> {
-        this.log('Simulating successful login (navigating to Gemini)');
+        this.log('Simulating successful login (navigating to DeepSeek)');
         await this.navigateTo('https://chat.deepseek.com/app');
     }
 

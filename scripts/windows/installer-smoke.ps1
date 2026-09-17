@@ -31,13 +31,13 @@ $resolvedInstallerPath = if ([string]::IsNullOrWhiteSpace($InstallerPath)) {
 }
 
 $searchedPaths = @(
-    (Join-Path $InstallRoot 'Gemini Desktop.exe'),
-    (Join-Path $InstallRoot 'Gemini Desktop\Gemini Desktop.exe'),
-    (Join-Path $InstallRoot 'resources\Gemini Desktop.exe')
+    (Join-Path $InstallRoot 'DeepSeek Desktop.exe'),
+    (Join-Path $InstallRoot 'DeepSeek Desktop\DeepSeek Desktop.exe'),
+    (Join-Path $InstallRoot 'resources\DeepSeek Desktop.exe')
 )
 
 $uninstallSearchPaths = @(
-    (Join-Path $InstallRoot 'Uninstall Gemini Desktop.exe'),
+    (Join-Path $InstallRoot 'Uninstall DeepSeek Desktop.exe'),
     (Join-Path $InstallRoot 'Uninstall.exe'),
     (Join-Path $InstallRoot 'unins000.exe')
 )
@@ -84,7 +84,7 @@ try {
 
     $installedExePath = $searchedPaths | Where-Object { Test-Path $_ } | Select-Object -First 1
     if (-not $installedExePath) {
-        throw 'Unable to locate installed Gemini Desktop executable after silent install.'
+        throw 'Unable to locate installed DeepSeek Desktop executable after silent install.'
     }
 
     $uninstallPath = $uninstallSearchPaths | Where-Object { Test-Path $_ } | Select-Object -First 1

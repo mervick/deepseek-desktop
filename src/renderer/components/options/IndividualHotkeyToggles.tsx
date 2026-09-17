@@ -55,7 +55,7 @@ const HOTKEY_CONFIGS: HotkeyConfig[] = [
     {
         id: 'voiceChat',
         label: 'Voice Chat',
-        description: 'Toggle Gemini microphone input from anywhere',
+        description: 'Toggle DeepSeek microphone input from anywhere',
     },
     {
         id: 'printToPdf',

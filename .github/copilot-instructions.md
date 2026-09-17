@@ -1,6 +1,6 @@
 # GitHub Copilot Instructions
 
-Welcome! You are an AI assistant helping with the `gemini-desktop` project.
+Welcome! You are an AI assistant helping with the `deepseek-desktop` project.
 
 ## Core Directives
 

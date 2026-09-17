@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
-import { GEMINI_APP_URL } from '../utils/constants';
+import { DEEPSEEK_APP_URL } from '../utils/constants';
 import type { TabState, TabsState } from '../../shared/types/tabs';
 
 const MAX_TABS = 20;
@@ -25,7 +25,7 @@ function createTab(tabId?: string): TabState {
     return {
         id: tabId ?? crypto.randomUUID(),
         title: 'New Chat',
-        url: GEMINI_APP_URL,
+        url: DEEPSEEK_APP_URL,
         createdAt: Date.now(),
     };
 }
@@ -54,7 +54,7 @@ function normalizeState(rawState: TabsState | null): TabsState {
         tabs.push({
             id: tab.id,
             title: typeof tab.title === 'string' && tab.title.trim().length > 0 ? tab.title : 'New Chat',
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             createdAt: typeof tab.createdAt === 'number' && Number.isFinite(tab.createdAt) ? tab.createdAt : Date.now(),
         });
     }

@@ -222,7 +222,7 @@ describe('Release Build: Code Signing', () => {
         });
 
         if (isLinuxSync()) {
-            expect(metadata.name).toMatch(/^(DeepSeek Desktop|gemini-desktop)$/);
+            expect(metadata.name).toMatch(/^(DeepSeek Desktop|deepseek-desktop)$/);
         } else {
             expect(metadata.name).toBe('DeepSeek Desktop');
         }

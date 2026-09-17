@@ -26,7 +26,7 @@ import {
     GOOGLE_TOS_URL,
     GOOGLE_GENAI_TERMS_URL,
     GOOGLE_SIGNIN_URL,
-    GEMINI_APP_URL,
+    DEEPSEEK_APP_URL,
 } from '../../../src/main/utils/constants';
 
 describe('Constants', () => {
@@ -123,8 +123,8 @@ describe('Constants', () => {
             expect(GOOGLE_SIGNIN_URL).toContain(GOOGLE_ACCOUNTS_URL);
         });
 
-        it('has correct GEMINI_APP_URL', () => {
-            expect(GEMINI_APP_URL).toBe('https://chat.deepseek.com/');
+        it('has correct DEEPSEEK_APP_URL', () => {
+            expect(DEEPSEEK_APP_URL).toBe('https://chat.deepseek.com/');
         });
     });
 

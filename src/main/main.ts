@@ -113,7 +113,7 @@ function exposeForE2E(context: ApplicationContext | null): void {
     const g = global as typeof globalThis & E2EGlobals;
     g.appContext = context ?? undefined;
     if (!context) {
-        g.__e2eGeminiReadyBuffer = undefined;
+        g.__e2eDeepSeekReadyBuffer = undefined;
         g.__e2eQuickChatHandler = undefined;
     }
 }
@@ -340,9 +340,9 @@ if (!gotTheLock) {
         if (process.argv.includes('--e2e-disable-auto-submit')) {
             (
                 global as typeof globalThis & {
-                    __e2eGeminiReadyBuffer?: { enabled: boolean; pending: unknown[] };
+                    __e2eDeepSeekReadyBuffer?: { enabled: boolean; pending: unknown[] };
                 }
-            ).__e2eGeminiReadyBuffer = { enabled: true, pending: [] };
+            ).__e2eDeepSeekReadyBuffer = { enabled: true, pending: [] };
         }
 
         // Setup native application menu (critical for macOS)

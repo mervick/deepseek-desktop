@@ -116,14 +116,14 @@ describe('LinuxWaylandAdapter', () => {
     });
 
     describe('applyAppConfiguration()', () => {
-        it('should set app name to "gemini-desktop"', () => {
+        it('should set app name to "deepseek-desktop"', () => {
             const app = createMockApp();
             const logger = createMockLogger();
             mockGetWaylandPlatformStatus.mockReturnValue(WAYLAND_PORTAL_AVAILABLE);
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect(app.setName).toHaveBeenCalledWith('gemini-desktop');
+            expect(app.setName).toHaveBeenCalledWith('deepseek-desktop');
         });
 
         it('should set WM_CLASS via commandLine switch', () => {
@@ -133,7 +133,7 @@ describe('LinuxWaylandAdapter', () => {
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect(app.commandLine.appendSwitch).toHaveBeenCalledWith('class', 'gemini-desktop');
+            expect(app.commandLine.appendSwitch).toHaveBeenCalledWith('class', 'deepseek-desktop');
         });
 
         it('should call setDesktopName if available', () => {
@@ -143,7 +143,7 @@ describe('LinuxWaylandAdapter', () => {
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect((app as any).setDesktopName).toHaveBeenCalledWith('gemini-desktop');
+            expect((app as any).setDesktopName).toHaveBeenCalledWith('deepseek-desktop');
         });
 
         it('should log Wayland detection status', () => {
@@ -315,7 +315,7 @@ describe('LinuxWaylandAdapter', () => {
 
     describe('getMainWindowPlatformConfig()', () => {
         it('should return wmClass for Linux WM integration', () => {
-            expect(adapter.getMainWindowPlatformConfig()).toEqual({ wmClass: 'gemini-desktop' });
+            expect(adapter.getMainWindowPlatformConfig()).toEqual({ wmClass: 'deepseek-desktop' });
         });
     });
 
@@ -449,13 +449,13 @@ describe('LinuxX11Adapter', () => {
     });
 
     describe('applyAppConfiguration()', () => {
-        it('should set app name to "gemini-desktop"', () => {
+        it('should set app name to "deepseek-desktop"', () => {
             const app = createMockApp();
             const logger = createMockLogger();
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect(app.setName).toHaveBeenCalledWith('gemini-desktop');
+            expect(app.setName).toHaveBeenCalledWith('deepseek-desktop');
         });
 
         it('should set WM_CLASS via commandLine switch', () => {
@@ -464,7 +464,7 @@ describe('LinuxX11Adapter', () => {
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect(app.commandLine.appendSwitch).toHaveBeenCalledWith('class', 'gemini-desktop');
+            expect(app.commandLine.appendSwitch).toHaveBeenCalledWith('class', 'deepseek-desktop');
         });
 
         it('should call setDesktopName if available', () => {
@@ -473,7 +473,7 @@ describe('LinuxX11Adapter', () => {
 
             adapter.applyAppConfiguration(app, logger);
 
-            expect((app as any).setDesktopName).toHaveBeenCalledWith('gemini-desktop');
+            expect((app as any).setDesktopName).toHaveBeenCalledWith('deepseek-desktop');
         });
 
         it('should not log Wayland-specific messages', () => {
@@ -618,7 +618,7 @@ describe('LinuxX11Adapter', () => {
 
     describe('getMainWindowPlatformConfig()', () => {
         it('should return wmClass for Linux WM integration', () => {
-            expect(adapter.getMainWindowPlatformConfig()).toEqual({ wmClass: 'gemini-desktop' });
+            expect(adapter.getMainWindowPlatformConfig()).toEqual({ wmClass: 'deepseek-desktop' });
         });
     });
 

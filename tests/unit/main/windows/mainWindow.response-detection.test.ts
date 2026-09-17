@@ -1,6 +1,6 @@
 /**
  * Unit tests for MainWindow response detection.
- * Tests the network monitoring that detects Gemini response completion.
+ * Tests the network monitoring that detects DeepSeek response completion.
  *
  * @module mainWindow.response-detection.test
  */
@@ -43,7 +43,7 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
     });
 
     describe('response detection setup', () => {
-        it('sets up webRequest.onCompleted with Gemini API filter on create', () => {
+        it('sets up webRequest.onCompleted with DeepSeek API filter on create', () => {
             mainWindow.create();
 
             expect(session.defaultSession.webRequest.onCompleted).toHaveBeenCalledWith(
@@ -52,19 +52,11 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
             );
         });
 
-        it('initializes with response detection inactive', () => {
-            mainWindow.create();
-
-            // Response detection is inactive until after startup delay
-            expect((mainWindow as any).responseDetectionActive).toBe(false);
-        });
     });
 
     describe('response-complete event emission', () => {
         beforeEach(() => {
             mainWindow.create();
-            // Manually activate response detection (simulates after startup delay)
-            (mainWindow as any).responseDetectionActive = true;
         });
 
         it('emits response-complete when StreamGenerate API completes with status 200', () => {

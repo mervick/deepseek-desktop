@@ -2,7 +2,7 @@
  * Coordinated tests for Network Status ↔ UI Component state propagation.
  *
  * Tests the flow: Browser navigator.onLine events → useNetworkStatus hook →
- * useGeminiIframe → UI state (loading, error, offline display)
+ * useDeepSeekIframe → UI state (loading, error, offline display)
  *
  * These tests verify that network status changes propagate correctly through
  * the component hierarchy and trigger appropriate UI states.
@@ -10,7 +10,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useNetworkStatus } from '../../src/renderer/hooks/useNetworkStatus';
-import { useGeminiIframe } from '../../src/renderer/hooks/useGeminiIframe';
+import { useDeepSeekIframe } from '../../src/renderer/hooks/useDeepSeekIframe';
 
 // Mock logger
 vi.mock('../../src/renderer/utils', () => ({
@@ -137,9 +137,9 @@ describe('Network Status Coordination', () => {
         });
     });
 
-    describe('useGeminiIframe ↔ useNetworkStatus Coordination', () => {
-        it('should propagate online status from useNetworkStatus to useGeminiIframe', () => {
-            const { result } = renderHook(() => useGeminiIframe());
+    describe('useDeepSeekIframe ↔ useNetworkStatus Coordination', () => {
+        it('should propagate online status from useNetworkStatus to useDeepSeekIframe', () => {
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             expect(result.current.isOnline).toBe(true);
         });
@@ -150,7 +150,7 @@ describe('Network Status Coordination', () => {
                 value: false,
             });
 
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             expect(result.current.isOnline).toBe(false);
         });
@@ -161,7 +161,7 @@ describe('Network Status Coordination', () => {
                 value: false,
             });
 
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             await waitFor(() => {
                 expect(result.current.error).toBe('Network unavailable');
@@ -170,7 +170,7 @@ describe('Network Status Coordination', () => {
         });
 
         it('should handle successful load when online', async () => {
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             // Simulate iframe load completion
             await act(async () => {
@@ -182,7 +182,7 @@ describe('Network Status Coordination', () => {
         });
 
         it('should set error when load called but offline', async () => {
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             // Simulate going offline after hook init but before load
             Object.defineProperty(navigator, 'onLine', {
@@ -201,7 +201,7 @@ describe('Network Status Coordination', () => {
         it('should set error when connectivity check fails', async () => {
             mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             await act(async () => {
                 await result.current.handleLoad();
@@ -212,7 +212,7 @@ describe('Network Status Coordination', () => {
         });
 
         it('should handle iframe error event', async () => {
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             act(() => {
                 result.current.handleError();
@@ -266,7 +266,7 @@ describe('Network Status Coordination', () => {
                 value: { ...window.electronAPI, reloadTabs: mockReloadTabs },
             });
 
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             act(() => {
                 result.current.retry();

@@ -230,9 +230,9 @@ Styling is plain CSS imported by components such as `App.tsx` and `TabBar.tsx`. 
 Quick Chat is a cross-boundary workflow rather than a standalone renderer feature.
 
 1. The floating quick chat window collects prompt text.
-2. `QuickChatIpcHandler` hides the quick chat window, focuses the main window, creates a correlated request ID and target tab ID, and sends `gemini:navigate` to the renderer.
+2. `QuickChatIpcHandler` hides the quick chat window, focuses the main window, creates a correlated request ID and target tab ID, and sends `deepseek:navigate` to the renderer.
 3. The renderer creates or activates the requested tab; the main process loads DeepSeek directly in a native view.
-4. Once the target view loads, the renderer sends `gemini:ready` back to the main process.
+4. Once the target view loads, the renderer sends `deepseek:ready` back to the main process.
 5. `QuickChatIpcHandler` looks up the target tab webContents and injects the prompt, optionally auto-submitting outside of E2E buffering modes.
 
 This flow is why Quick Chat, tab identity, native view lifecycle, and preload IPC need to stay aligned.

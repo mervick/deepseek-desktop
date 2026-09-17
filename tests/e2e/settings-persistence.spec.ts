@@ -239,10 +239,10 @@ describe('Settings Persistence', () => {
                 const isTestIsolationPath = settingsPath.includes('scoped_dir');
                 expect(isProductionPath || isTestIsolationPath).toBe(true);
             } else {
-                // Linux uses .config/gemini-desktop in production, but E2E tests use
+                // Linux uses .config/deepseek-desktop in production, but E2E tests use
                 // temporary scoped directories like /tmp/.org.chromium.Chromium.scoped_dir.XXX/
                 // for test isolation
-                const isProductionPath = settingsPath.includes('gemini-desktop');
+                const isProductionPath = settingsPath.includes('deepseek-desktop');
                 const isTestIsolationPath = settingsPath.includes('.org.chromium');
                 expect(isProductionPath || isTestIsolationPath).toBe(true);
             }

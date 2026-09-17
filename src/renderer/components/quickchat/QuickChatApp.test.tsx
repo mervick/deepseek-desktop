@@ -112,10 +112,10 @@ describe('QuickChatApp', () => {
 
             const input = screen.getByTestId('quick-chat-input');
             await act(async () => {
-                fireEvent.change(input, { target: { value: 'Hello Gemini' } });
+                fireEvent.change(input, { target: { value: 'Hello DeepSeek' } });
             });
 
-            expect(input).toHaveValue('Hello Gemini');
+            expect(input).toHaveValue('Hello DeepSeek');
         });
 
         it('enables submit button when input has text', async () => {

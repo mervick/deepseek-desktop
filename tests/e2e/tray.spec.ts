@@ -58,7 +58,7 @@ describe('System Tray Functionality', () => {
 
             // Tooltip should be set (from TRAY_TOOLTIP constant)
             expect(tooltip).not.toBeNull();
-            expect(tooltip).toContain('Gemini');
+            expect(tooltip).toContain('DeepSeek');
         });
 
         it('should report tray state correctly', async () => {

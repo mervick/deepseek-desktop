@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { MainLayout, OfflineOverlay, GeminiErrorBoundary, TabBar, TabPanel } from './components';
+import { MainLayout, OfflineOverlay, DeepSeekErrorBoundary, TabBar, TabPanel } from './components';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider, useToast } from './context/ToastContext';
 import { UpdateToastProvider } from './context/UpdateToastContext';
 import { TabProvider, useTabContext } from './context/TabContext';
 import { useTabKeyboardShortcuts } from './hooks';
-import type { GeminiNavigatePayload, GeminiReadyPayload } from '../shared/types/tabs';
+import type { DeepSeekNavigatePayload, DeepSeekReadyPayload } from '../shared/types/tabs';
 import './App.css';
 
 /**
@@ -16,9 +16,9 @@ import './App.css';
  * never embeds the site in an iframe or modifies its frame security headers.
  *
  * Quick Chat Integration:
- * - Listens for gemini:navigate IPC events from main process
+ * - Listens for deepseek:navigate IPC events from main process
  * - Creates a native tab for the prompt
- * - Signals gemini:ready when that tab reports a completed load
+ * - Signals deepseek:ready when that tab reports a completed load
  *
  * Print Progress:
  * - Shows progress overlay during PDF generation
@@ -45,7 +45,7 @@ function AppContent() {
             window.electronAPI?.reloadTabs();
         },
     });
-    const pendingNavigateRef = useRef<GeminiNavigatePayload | null>(null);
+    const pendingNavigateRef = useRef<DeepSeekNavigatePayload | null>(null);
 
     useTabKeyboardShortcuts({
         tabs,
@@ -76,7 +76,7 @@ function AppContent() {
     }, [showToast, showSuccess, showError, showInfo, showWarning, dismissAll]);
 
     useEffect(() => {
-        const unsubscribe = window.electronAPI?.onGeminiNavigate?.((data) => {
+        const unsubscribe = window.electronAPI?.onDeepSeekNavigate?.((data) => {
             pendingNavigateRef.current = data;
 
             const createdTabId = createTabAndActivate(data.targetTabId);
@@ -97,13 +97,13 @@ function AppContent() {
             return;
         }
 
-        const readyPayload: GeminiReadyPayload = {
+        const readyPayload: DeepSeekReadyPayload = {
             requestId: pendingNavigate.requestId,
             targetTabId: pendingNavigate.targetTabId,
         };
 
         window.setTimeout(() => {
-            window.electronAPI?.signalGeminiReady(readyPayload);
+            window.electronAPI?.signalDeepSeekReady(readyPayload);
             if (pendingNavigateRef.current?.requestId === readyPayload.requestId) {
                 pendingNavigateRef.current = null;
             }
@@ -132,14 +132,14 @@ function AppContent() {
             }
         >
             {showOfflineOverlay && <OfflineOverlay onRetry={activeTabStatus.retry} />}
-            <GeminiErrorBoundary>
+            <DeepSeekErrorBoundary>
                 <TabPanel
                     tabs={tabs}
                     activeTabId={activeTabId}
                     onTabReady={handleTabReady}
                     onActiveStatusChange={setActiveTabStatus}
                 />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         </MainLayout>
     );
 }

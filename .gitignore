@@ -28,8 +28,8 @@ coverage/
 coverage-electron/
 /release/
 
-# gemini-cli settings
-.gemini/
+# deepseek-cli settings
+.deepseek/
 
 # GitHub App credentials
 gha-creds-*.json

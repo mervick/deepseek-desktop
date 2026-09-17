@@ -131,13 +131,13 @@ describe('ExportManager URL Validation Security', () => {
      * - chat.deepseek.com.attacker.com (subdomain prefix)
      * - evilchat.deepseek.com (no dot separation)
      */
-    describe('isAllowedGeminiUrl (security)', () => {
+    describe('isAllowedDeepSeekUrl (security)', () => {
         // Access private method for testing
         const isAllowedUrl = (url: string): boolean => {
-            return (exportManager as any).isAllowedGeminiUrl(url);
+            return (exportManager as any).isAllowedDeepSeekUrl(url);
         };
 
-        describe('should ALLOW legitimate Gemini URLs', () => {
+        describe('should ALLOW legitimate DeepSeek URLs', () => {
             it('allows exact chat.deepseek.com domain', () => {
                 expect(isAllowedUrl('https://chat.deepseek.com/')).toBe(true);
                 expect(isAllowedUrl('https://chat.deepseek.com/app')).toBe(true);
@@ -186,10 +186,10 @@ describe('ExportManager URL Validation Security', () => {
             });
 
             it('rejects similar-looking but different domains', () => {
-                expect(isAllowedUrl('https://gemini-deepseek.com/')).toBe(false);
-                expect(isAllowedUrl('https://gemini.google.org/')).toBe(false);
+                expect(isAllowedUrl('https://deepseek-deepseek.com/')).toBe(false);
+                expect(isAllowedUrl('https://deepseek.google.org/')).toBe(false);
                 expect(isAllowedUrl('https://deepseek.org/')).toBe(false);
-                expect(isAllowedUrl('https://gemini.com/')).toBe(false);
+                expect(isAllowedUrl('https://deepseek.com/')).toBe(false);
             });
 
             it('rejects domain in query string', () => {

@@ -45,7 +45,7 @@ export function OfflineOverlay({ onRetry }: OfflineOverlayProps) {
 
                 <div className="offline-message">
                     <h1>Network Unavailable</h1>
-                    <p>Please check your internet connection to continue using Gemini.</p>
+                    <p>Please check your internet connection to continue using DeepSeek.</p>
                 </div>
 
                 {onRetry && (

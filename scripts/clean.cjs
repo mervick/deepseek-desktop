@@ -1,5 +1,5 @@
 /**
- * Cleanup script for Gemini Desktop.
+ * Cleanup script for DeepSeek Desktop.
  * Removes build artifacts, caches, and logs.
  * Kills lingering Electron/ChromeDriver processes.
  */

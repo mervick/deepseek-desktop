@@ -1,5 +1,5 @@
 /**
- * Microphone Activation Utility for Gemini Voice Chat
+ * Microphone Activation Utility for DeepSeek Voice Chat
  *
  * Provides a utility function to inject and execute a microphone button click
  * into the DeepSeek view, enabling voice input via hotkey activation.
@@ -7,7 +7,6 @@
  * @module micActivation
  */
 
-import { GEMINI_MICROPHONE_BUTTON_SELECTORS } from './geminiSelectors';
 import type { WebFrameMain } from 'electron';
 
 /**
@@ -22,10 +21,6 @@ export type MicActivationResult = {
 /**
  * Activates the microphone input in the DeepSeek view by injecting and executing
  * a script that finds and clicks the microphone button.
- *
- * The script uses the standard selector chain from GEMINI_MICROPHONE_BUTTON_SELECTORS
- * and executes with userGesture=true to satisfy browser security policies for
- * microphone access.
  *
  * @param frame - The WebFrameMain instance representing the DeepSeek view
  * @returns Promise resolving to MicActivationResult indicating success or error
@@ -45,22 +40,22 @@ export async function activateMicrophoneInFrame(frame: WebFrameMain): Promise<Mi
     const injectionScript = `
 (function() {
     'use strict';
-    
+
     const LOG_PREFIX = '[MicActivation]';
-    
+
     function log(level, message, ...args) {
         const method = level === 'error' ? 'error' : level === 'warn' ? 'warn' : 'log';
         const prefix = LOG_PREFIX + ' [' + level.toUpperCase() + ']';
         console[method](prefix, message, ...args);
     }
-    
+
     const logger = {
         debug: (msg, ...args) => log('debug', msg, ...args),
         info: (msg, ...args) => log('info', msg, ...args),
         warn: (msg, ...args) => log('warn', msg, ...args),
         error: (msg, ...args) => log('error', msg, ...args),
     };
-    
+
     /**
      * Safely query for an element using multiple selectors.
      */
@@ -69,7 +64,7 @@ export async function activateMicrophoneInFrame(frame: WebFrameMain): Promise<Mi
             logger.error('safeQuerySelector: Invalid selectors array');
             return null;
         }
-        
+
         for (const selector of selectors) {
             try {
                 const element = document.querySelector(selector);
@@ -81,11 +76,11 @@ export async function activateMicrophoneInFrame(frame: WebFrameMain): Promise<Mi
                 logger.warn('Selector query failed:', selector, e.message);
             }
         }
-        
+
         logger.debug('No microphone button found for selectors:', selectors);
         return null;
     }
-    
+
     /**
      * Safely click an element.
      */
@@ -94,7 +89,7 @@ export async function activateMicrophoneInFrame(frame: WebFrameMain): Promise<Mi
             logger.warn('safeClick: No element provided');
             return false;
         }
-        
+
         try {
             element.click();
             return true;
@@ -103,24 +98,24 @@ export async function activateMicrophoneInFrame(frame: WebFrameMain): Promise<Mi
             return false;
         }
     }
-    
+
     const result = {
         success: false,
         error: null
     };
-    
+
     try {
         logger.info('Starting microphone button activation');
-        
-        const selectors = ${JSON.stringify(GEMINI_MICROPHONE_BUTTON_SELECTORS)};
-        
+
+        const selectors = null;
+
         const micButton = safeQuerySelector(selectors);
         if (!micButton) {
             result.error = 'microphone_button_not_found';
             logger.error('Microphone button not found');
             return result;
         }
-        
+
         if (safeClick(micButton)) {
             result.success = true;
             logger.info('Microphone button clicked successfully');
@@ -132,7 +127,7 @@ export async function activateMicrophoneInFrame(frame: WebFrameMain): Promise<Mi
         result.error = e.message || 'unknown_error';
         logger.error('Microphone activation failed:', e);
     }
-    
+
     return result;
 })();
     `.trim();

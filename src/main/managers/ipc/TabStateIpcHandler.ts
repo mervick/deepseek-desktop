@@ -3,8 +3,8 @@ import { randomUUID } from 'node:crypto';
 import { ipcMain } from 'electron';
 
 import SettingsStore from '../../store';
-import { IPC_CHANNELS, isGeminiDomain } from '../../utils/constants';
-import { GEMINI_APP_URL } from '../../../shared/constants/urls';
+import { IPC_CHANNELS, isDeepSeekDomain } from '../../utils/constants';
+import { DEEPSEEK_APP_URL } from '../../../shared/constants/urls';
 import type { TabState, TabsState } from '../../../shared/types/tabs';
 import { BaseIpcHandler } from './BaseIpcHandler';
 import { TITLE_EXTRACTION_SCRIPT } from '../../utils/chatExtraction';
@@ -42,7 +42,7 @@ function normalizeTabState(rawTab: unknown, index: number, seenIds: Set<string>)
     return {
         id,
         title,
-        url: GEMINI_APP_URL,
+        url: DEEPSEEK_APP_URL,
         createdAt,
     };
 }
@@ -88,7 +88,7 @@ function createDefaultTabsState(): TabsState {
             {
                 id: tabId,
                 title: 'New Chat',
-                url: GEMINI_APP_URL,
+                url: DEEPSEEK_APP_URL,
                 createdAt: Date.now(),
             },
         ],
@@ -278,8 +278,8 @@ export class TabStateIpcHandler extends BaseIpcHandler {
                 return;
             }
 
-            if (!isGeminiDomain(targetFrame.url)) {
-                this.logger.warn('Cannot sync tab title: active tab frame is not Gemini domain', {
+            if (!isDeepSeekDomain(targetFrame.url)) {
+                this.logger.warn('Cannot sync tab title: active tab frame is not DeepSeek domain', {
                     activeTabId,
                     url: targetFrame.url,
                 });

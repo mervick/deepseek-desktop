@@ -2,7 +2,7 @@
  * Integration tests for Quick Chat text injection functionality.
  *
  * Tests the core Quick Chat workflow:
- * - Submitting text triggers injection into Gemini
+ * - Submitting text triggers injection into DeepSeek
  * - Quick Chat window hides after submission
  * - Cancel clears and hides
  * - Main window receives focus after submit

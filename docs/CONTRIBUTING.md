@@ -37,8 +37,8 @@ We follow a simple code of conduct: **be kind, be respectful, be helpful**. If y
 
 ```bash
 # Fork the repository on GitHub, then clone your fork
-git clone https://github.com/<your-username>/gemini-desktop.git
-cd gemini-desktop
+git clone https://github.com/<your-username>/deepseek-desktop.git
+cd deepseek-desktop
 
 # Install dependencies
 npm install

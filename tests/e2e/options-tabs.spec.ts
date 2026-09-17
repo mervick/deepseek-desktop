@@ -190,7 +190,7 @@ describe('About Tab Content Verification', () => {
         }
     });
 
-    it('should contain Google/Gemini references', async () => {
+    it('should contain Google/DeepSeek references', async () => {
         await clickMenuItemById('menu-help-about');
         await waitForOptionsWindow();
 
@@ -200,10 +200,10 @@ describe('About Tab Content Verification', () => {
 
             const textContent = await aboutSection.getText();
 
-            const mentionsGemini = textContent.toLowerCase().includes('gemini');
+            const mentionsDeepSeek = textContent.toLowerCase().includes('deepseek');
             const mentionsGoogle = textContent.toLowerCase().includes('google');
 
-            expect(mentionsGemini || mentionsGoogle).toBe(true);
+            expect(mentionsDeepSeek || mentionsGoogle).toBe(true);
         } finally {
             await closeOptionsWindow();
         }

@@ -29,6 +29,6 @@ export interface ApplicationContext extends CoreManagers, ReadyManagers {}
 
 export interface E2EGlobals {
     appContext?: ApplicationContext;
-    __e2eGeminiReadyBuffer?: { enabled: boolean; pending: unknown[] };
+    __e2eDeepSeekReadyBuffer?: { enabled: boolean; pending: unknown[] };
     __e2eQuickChatHandler?: unknown;
 }

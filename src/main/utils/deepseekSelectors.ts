@@ -1,37 +1,37 @@
 /**
- * Gemini DOM Selectors Module
+ * DeepSeek DOM Selectors Module
  *
  * Centralizes all CSS selectors for interacting with the DeepSeek website.
  * Designed for easy updates when chat.deepseek.com changes its DOM structure.
  *
  * MAINTENANCE GUIDE:
- * - When Gemini changes, update selectors here
+ * - When DeepSeek changes, update selectors here
  * - Run E2E tests to verify: npm run test:e2e
- * - Update GEMINI_SELECTORS_LAST_VERIFIED after manual verification
+ * - Update DEEPSEEK_SELECTORS_LAST_VERIFIED after manual verification
  *
- * @module geminiSelectors
+ * @module deepseekSelectors
  */
 
 /**
  * Version of the selector configuration.
  * Increment when making breaking changes to selector structure.
  */
-export const GEMINI_SELECTORS_VERSION = '1.0.0';
+export const DEEPSEEK_SELECTORS_VERSION = '1.0.0';
 
 /**
  * Date when selectors were last manually verified against chat.deepseek.com.
  * Update this after confirming selectors work on the live site.
  */
-export const GEMINI_SELECTORS_LAST_VERIFIED = '2025-12-23';
+export const DEEPSEEK_SELECTORS_LAST_VERIFIED = '2025-12-23';
 
 /**
- * Gemini selector configuration organized by component.
+ * DeepSeek selector configuration organized by component.
  * Each component has:
  * - selectors: Array of CSS selectors in priority order (first match wins)
  * - description: Human-readable description for debugging
  * - Additional component-specific properties
  */
-export const GeminiSelectors = {
+export const DeepSeekSelectors = {
     /**
      * Domain for matching DeepSeek view URLs.
      */
@@ -44,7 +44,7 @@ export const GeminiSelectors = {
 
     /**
      * Chat input editor configuration.
-     * Gemini uses Quill.js for the rich text editor.
+     * DeepSeek uses Quill.js for the rich text editor.
      */
     editor: {
         /**
@@ -109,7 +109,7 @@ export const GeminiSelectors = {
     errorToast: {
         /**
          * CSS selectors for finding error toast messages.
-         * Gemini uses Angular Material snackbar for toasts.
+         * DeepSeek uses Angular Material snackbar for toasts.
          */
         selectors: ['[matsnackbarlabel]', '.mat-mdc-snack-bar-label', '.mdc-snackbar__label'] as const,
 
@@ -159,9 +159,9 @@ export const GeminiSelectors = {
 } as const;
 
 /**
- * Type for the GeminiSelectors configuration object.
+ * Type for the DeepSeekSelectors configuration object.
  */
-export type GeminiSelectorsConfig = typeof GeminiSelectors;
+export type DeepSeekSelectorsConfig = typeof DeepSeekSelectors;
 
 /**
  * Find the first matching element from an array of selectors.
@@ -173,7 +173,7 @@ export type GeminiSelectorsConfig = typeof GeminiSelectors;
  * @param logger - Optional logger function (defaults to console.log)
  * @returns The first matching element or null
  */
-export function findGeminiElement(
+export function findDeepSeekElement(
     document: Document,
     selectors: readonly string[],
     componentName: string,
@@ -190,33 +190,33 @@ export function findGeminiElement(
 
         if (element) {
             if (i === 0) {
-                log(`[GeminiSelectors] ${componentName}: Found with primary selector`);
+                log(`[DeepSeekSelectors] ${componentName}: Found with primary selector`);
             } else {
-                log(`[GeminiSelectors] ${componentName}: Found with fallback selector #${i + 1}: "${selector}"`);
+                log(`[DeepSeekSelectors] ${componentName}: Found with fallback selector #${i + 1}: "${selector}"`);
             }
             return element;
         }
     }
 
-    log(`[GeminiSelectors] ${componentName}: No matching element found`);
+    log(`[DeepSeekSelectors] ${componentName}: No matching element found`);
     return null;
 }
 
 /**
- * Check if a URL belongs to a Gemini domain.
+ * Check if a URL belongs to a DeepSeek domain.
  * Uses proper URL parsing to prevent substring bypass attacks (CWE-20).
  *
  * @param url - URL string to check
- * @returns True if the URL is for Gemini
+ * @returns True if the URL is for DeepSeek
  */
-export function isGeminiDomain(url: string): boolean {
+export function isDeepSeekDomain(url: string): boolean {
     try {
         const hostname = new URL(url).hostname;
         return (
-            hostname === GeminiSelectors.domain ||
-            hostname.endsWith(`.${GeminiSelectors.domain}`) ||
-            hostname === GeminiSelectors.legacyDomain ||
-            hostname.endsWith(`.${GeminiSelectors.legacyDomain}`)
+            hostname === DeepSeekSelectors.domain ||
+            hostname.endsWith(`.${DeepSeekSelectors.domain}`) ||
+            hostname === DeepSeekSelectors.legacyDomain ||
+            hostname.endsWith(`.${DeepSeekSelectors.legacyDomain}`)
         );
     } catch {
         // Invalid URL
@@ -225,12 +225,11 @@ export function isGeminiDomain(url: string): boolean {
 }
 
 // Re-export individual selector arrays for backwards compatibility
-export const GEMINI_DOMAIN = GeminiSelectors.domain;
-export const GEMINI_EDITOR_SELECTORS = GeminiSelectors.editor.selectors;
-export const GEMINI_SUBMIT_BUTTON_SELECTORS = GeminiSelectors.submitButton.selectors;
-export const GEMINI_EDITOR_BLANK_CLASS = GeminiSelectors.editor.blankClass;
-export const GEMINI_SUBMIT_DELAY_MS = GeminiSelectors.timing.submitDelayMs;
-export const GEMINI_MICROPHONE_BUTTON_SELECTORS = GeminiSelectors.microphoneButton.selectors;
-export const GEMINI_ERROR_TOAST_SELECTORS = GeminiSelectors.errorToast.selectors;
-export const GEMINI_MICROPHONE_ERROR_TEXT = GeminiSelectors.errorToast.microphoneErrorText;
-export const GEMINI_CONVERSATION_TITLE_SELECTORS = GeminiSelectors.conversationTitle.selectors;
+export const DEEPSEEK_DOMAIN = DeepSeekSelectors.domain;
+export const DEEPSEEK_EDITOR_SELECTORS = DeepSeekSelectors.editor.selectors;
+export const DEEPSEEK_SUBMIT_BUTTON_SELECTORS = DeepSeekSelectors.submitButton.selectors;
+export const DEEPSEEK_EDITOR_BLANK_CLASS = DeepSeekSelectors.editor.blankClass;
+export const DEEPSEEK_SUBMIT_DELAY_MS = DeepSeekSelectors.timing.submitDelayMs;
+export const DEEPSEEK_ERROR_TOAST_SELECTORS = DeepSeekSelectors.errorToast.selectors;
+export const DEEPSEEK_MICROPHONE_ERROR_TEXT = DeepSeekSelectors.errorToast.microphoneErrorText;
+export const DEEPSEEK_CONVERSATION_TITLE_SELECTORS = DeepSeekSelectors.conversationTitle.selectors;

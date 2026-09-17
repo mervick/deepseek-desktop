@@ -103,9 +103,9 @@ export const GOOGLE_TOS_URL = 'https://cdn.deepseek.com/policies/terms' as const
 export const GOOGLE_GENAI_TERMS_URL = 'https://cdn.deepseek.com/policies/privacy' as const;
 
 /**
- * Main Gemini application URL.
+ * Main DeepSeek application URL.
  */
-export const GEMINI_APP_URL = 'https://chat.deepseek.com/' as const;
+export const DEEPSEEK_APP_URL = 'https://chat.deepseek.com/' as const;
 
 /**
  * AI Studio domain (for checking URL).
@@ -117,38 +117,27 @@ export const AI_STUDIO_DOMAIN = 'chat.deepseek.com' as const;
  */
 export const AI_STUDIO_URL = `https://${AI_STUDIO_DOMAIN}` as const;
 
-/**
- * URL pattern for detecting Gemini response completion.
- * Used in webRequest.onCompleted to detect when DeepSeek finishes generating a response.
- *
- * The StreamGenerate endpoint handles actual chat streaming responses.
- * This is more specific than matching all BardChatUi calls, which would also
- * match log, batchexecute, and other non-response API calls.
- *
- * @example "https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate?..."
- */
-export const GEMINI_RESPONSE_API_PATTERN = '*://chat.deepseek.com/api/*' as const;
 
 // =========================================================================
-// Gemini DOM Selectors
+// DeepSeek DOM Selectors
 // =========================================================================
-// NOTE: These are re-exported from geminiSelectors.ts for backwards compatibility.
-// For new code, import directly from './geminiSelectors' for better organization.
-// See geminiSelectors.ts for version tracking and selector documentation.
+// NOTE: These are re-exported from deepseekSelectors.ts for backwards compatibility.
+// For new code, import directly from './deepseekSelectors' for better organization.
+// See deepseekSelectors.ts for version tracking and selector documentation.
 
 export {
-    GEMINI_DOMAIN,
-    GEMINI_EDITOR_SELECTORS,
-    GEMINI_SUBMIT_BUTTON_SELECTORS,
-    GEMINI_EDITOR_BLANK_CLASS,
-    GEMINI_SUBMIT_DELAY_MS,
-    GEMINI_MICROPHONE_BUTTON_SELECTORS,
-    GEMINI_ERROR_TOAST_SELECTORS,
-    GEMINI_MICROPHONE_ERROR_TEXT,
-    GeminiSelectors,
-    findGeminiElement,
-    isGeminiDomain,
-} from './geminiSelectors';
+    DEEPSEEK_DOMAIN,
+    DEEPSEEK_EDITOR_SELECTORS,
+    DEEPSEEK_SUBMIT_BUTTON_SELECTORS,
+    DEEPSEEK_EDITOR_BLANK_CLASS,
+    DEEPSEEK_SUBMIT_DELAY_MS,
+    DEEPSEEK_ERROR_TOAST_SELECTORS,
+    DEEPSEEK_MICROPHONE_ERROR_TEXT,
+    DeepSeekSelectors,
+    findDeepSeekElement,
+    isDeepSeekDomain,
+} from './deepseekSelectors';
+
 
 // IPC Channel Names
 // =========================================================================

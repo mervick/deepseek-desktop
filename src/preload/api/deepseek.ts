@@ -2,13 +2,13 @@ import { ipcRenderer } from 'electron';
 
 import { IPC_CHANNELS } from '../../shared/constants/ipc-channels';
 import type { ElectronAPI } from '../../shared/types';
-import type { GeminiNavigatePayload, TabShortcutPayload } from '../../shared/types/tabs';
+import type { DeepSeekNavigatePayload, TabShortcutPayload } from '../../shared/types/tabs';
 import { createSubscription } from '../createSubscription';
 
-export const geminiAPI: Pick<
+export const deepseekAPI: Pick<
     ElectronAPI,
-    | 'onGeminiNavigate'
-    | 'signalGeminiReady'
+    | 'onDeepSeekNavigate'
+    | 'signalDeepSeekReady'
     | 'getTabState'
     | 'saveTabState'
     | 'syncTabs'
@@ -23,8 +23,8 @@ export const geminiAPI: Pick<
     | 'updateTabTitle'
     | 'reloadTabs'
 > = {
-    onGeminiNavigate: createSubscription<GeminiNavigatePayload>(IPC_CHANNELS.GEMINI_NAVIGATE),
-    signalGeminiReady: (payload) => ipcRenderer.send(IPC_CHANNELS.GEMINI_READY, payload),
+    onDeepSeekNavigate: createSubscription<DeepSeekNavigatePayload>(IPC_CHANNELS.DEEPSEEK_NAVIGATE),
+    signalDeepSeekReady: (payload) => ipcRenderer.send(IPC_CHANNELS.DEEPSEEK_READY, payload),
     getTabState: () => ipcRenderer.invoke(IPC_CHANNELS.TABS_GET_STATE),
     saveTabState: (state) => ipcRenderer.send(IPC_CHANNELS.TABS_SAVE_STATE, state),
     syncTabs: (state) => ipcRenderer.send(IPC_CHANNELS.TABS_SYNC, state),

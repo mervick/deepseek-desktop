@@ -2,7 +2,7 @@
 # GitHub Actions Release Workflow
 # =============================================================================
 #
-# This workflow handles the automated release process for Gemini Desktop.
+# This workflow handles the automated release process for DeepSeek Desktop.
 # It triggers on version tags (v*), executing:
 #   - Build (via _build.yml)
 #   - Quality Gate Tests (via _test.yml, fail-fast enabled)

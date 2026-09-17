@@ -9,7 +9,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { WebFrameMain } from 'electron';
 
 import { activateMicrophoneInFrame, type MicActivationResult } from '../../../src/main/utils/micActivation';
-import { GEMINI_MICROPHONE_BUTTON_SELECTORS } from '../../../src/main/utils/geminiSelectors';
 
 describe('micActivation', () => {
     let mockFrame: any;
@@ -52,16 +51,6 @@ describe('micActivation', () => {
 
             const callArgs = mockFrame.executeJavaScript.mock.calls[0];
             expect(callArgs[1]).toBe(true); // userGesture param
-        });
-
-        it('should use correct selector chain from GEMINI_MICROPHONE_BUTTON_SELECTORS', async () => {
-            mockFrame.executeJavaScript.mockResolvedValue({ success: true });
-
-            await activateMicrophoneInFrame(mockFrame);
-
-            const script = mockFrame.executeJavaScript.mock.calls[0][0];
-            const selectorsJson = JSON.stringify(GEMINI_MICROPHONE_BUTTON_SELECTORS);
-            expect(script).toContain(selectorsJson);
         });
 
         it('should return error message when executeJavaScript throws', async () => {

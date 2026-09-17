@@ -1,4 +1,4 @@
-export const TAB_FRAME_NAME_PREFIX = 'gemini-tab-';
+export const TAB_FRAME_NAME_PREFIX = 'deepseek-tab-';
 
 export function getTabFrameName(tabId: string): string {
     return `${TAB_FRAME_NAME_PREFIX}${tabId}`;
@@ -16,13 +16,13 @@ export interface TabsState {
     activeTabId: string;
 }
 
-export interface GeminiNavigatePayload {
+export interface DeepSeekNavigatePayload {
     requestId: string;
     targetTabId: string;
     text: string;
 }
 
-export interface GeminiReadyPayload {
+export interface DeepSeekReadyPayload {
     requestId: string;
     targetTabId: string;
 }

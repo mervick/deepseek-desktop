@@ -1,7 +1,7 @@
 import { BrowserWindow, WebContentsView, shell, type WebContents } from 'electron';
 
 import { IPC_CHANNELS } from '../../shared/constants/ipc-channels';
-import { GEMINI_APP_URL } from '../../shared/constants/urls';
+import { DEEPSEEK_APP_URL } from '../../shared/constants/urls';
 import type { TabsState } from '../../shared/types/tabs';
 
 /** Native, top-level web contents for each chat tab. The React shell never frames DeepSeek. */
@@ -60,7 +60,7 @@ export class DeepSeekTabs {
                     this.window.webContents.send(IPC_CHANNELS.TABS_LOAD_ERROR, { tabId: tab.id, error: description });
                 }
             });
-            void contents.loadURL(GEMINI_APP_URL);
+            void contents.loadURL(DEEPSEEK_APP_URL);
         }
 
         this.activeId = ids.has(state.activeTabId) ? state.activeTabId : (state.tabs[0]?.id ?? null);

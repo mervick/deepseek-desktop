@@ -22,7 +22,7 @@ interface UseWebviewInitResult {
 }
 
 /**
- * Custom hook for Gemini webview initialization.
+ * Custom hook for DeepSeek webview initialization.
  *
  * In Electron, we use an iframe instead of a native webview,
  * so this hook immediately returns a ready state.

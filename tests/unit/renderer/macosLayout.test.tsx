@@ -171,7 +171,7 @@ describe('macOS Layout Integration', () => {
             render(
                 <MainLayout tabBar={<div className="tab-bar" data-testid="tab-bar" />}>
                     <div className="webview-container" data-testid="webview-container">
-                        <iframe title="gemini" className="gemini-iframe" />
+                        <iframe title="deepseek" className="deepseek-iframe" />
                     </div>
                 </MainLayout>
             );

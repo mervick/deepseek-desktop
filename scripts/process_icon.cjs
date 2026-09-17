@@ -15,7 +15,7 @@ app.whenReady().then(() => {
     });
 
     const sourcePath =
-        'C:/Users/bwend/.gemini/antigravity/brain/b4c73ec3-179e-4f24-9934-d052c8bb0b7d/icon_variant_minimalist_1765900850889.png';
+        'C:/Users/bwend/.deepseek/antigravity/brain/b4c73ec3-179e-4f24-9934-d052c8bb0b7d/icon_variant_minimalist_1765900850889.png';
     // Ensure build dir exists (we did it in step before, but good practice)
     const destPath = path.join(process.cwd(), 'build', 'icon.png');
 
@@ -36,10 +36,10 @@ app.whenReady().then(() => {
             canvas.height = img.height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
-            
+
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
-            
+
             // Replace white and near-white pixels (threshold 200)
             let pixelsRemoved = 0;
             for (let i = 0; i < data.length; i += 4) {
@@ -54,7 +54,7 @@ app.whenReady().then(() => {
             }
             console.log('Pixels removed:', pixelsRemoved);
             ctx.putImageData(imageData, 0, 0);
-            
+
             const outUrl = canvas.toDataURL('image/png');
             ipcRenderer.send('done', outUrl);
         };

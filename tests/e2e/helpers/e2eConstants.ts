@@ -2,38 +2,37 @@
  * E2E Test Constants for DeepSeek Desktop.
  *
  * Centralizes all selectors, domains, and configuration values used in E2E tests.
- * This makes the tests maintainable if Gemini's DOM structure changes.
+ * This makes the tests maintainable if DeepSeek's DOM structure changes.
  *
  * @module e2eConstants
  */
 
 // =============================================================================
-// Gemini DOM Selectors (Re-exported from main constants)
+// DeepSeek DOM Selectors (Re-exported from main constants)
 // =============================================================================
 
-// Import from geminiSelectors.ts directly to avoid pulling in Electron-dependent code.
+// Import from deepseekSelectors.ts directly to avoid pulling in Electron-dependent code.
 // constants.ts imports waylandDetector -> logger -> electron.app which fails in E2E test runner.
 export {
-    GEMINI_DOMAIN,
-    GEMINI_EDITOR_SELECTORS,
-    GEMINI_SUBMIT_BUTTON_SELECTORS,
-    GEMINI_EDITOR_BLANK_CLASS,
-    GEMINI_SUBMIT_DELAY_MS,
-    GEMINI_MICROPHONE_BUTTON_SELECTORS,
-    GEMINI_ERROR_TOAST_SELECTORS,
-    GEMINI_MICROPHONE_ERROR_TEXT,
-    GEMINI_CONVERSATION_TITLE_SELECTORS,
-} from '../../../src/main/utils/geminiSelectors';
+    DEEPSEEK_DOMAIN,
+    DEEPSEEK_EDITOR_SELECTORS,
+    DEEPSEEK_SUBMIT_BUTTON_SELECTORS,
+    DEEPSEEK_EDITOR_BLANK_CLASS,
+    DEEPSEEK_SUBMIT_DELAY_MS,
+    DEEPSEEK_ERROR_TOAST_SELECTORS,
+    DEEPSEEK_MICROPHONE_ERROR_TEXT,
+    DEEPSEEK_CONVERSATION_TITLE_SELECTORS,
+} from '../../../src/main/utils/deepseekSelectors';
 
 // Import locally for use in other constants
-import { GEMINI_DOMAIN as _GEMINI_DOMAIN } from '../../../src/main/utils/geminiSelectors';
+import { DEEPSEEK_DOMAIN as _DEEPSEEK_DOMAIN } from '../../../src/main/utils/deepseekSelectors';
 
 /**
- * Alternative domain patterns that might appear in Gemini URLs.
+ * Alternative domain patterns that might appear in DeepSeek URLs.
  * Ordered by priority - first match wins.
  */
-export const GEMINI_DOMAIN_PATTERNS = [
-    _GEMINI_DOMAIN,
+export const DEEPSEEK_DOMAIN_PATTERNS = [
+    _DEEPSEEK_DOMAIN,
     'bard.deepseek.com', // Legacy domain fallback
 ] as const;
 
@@ -41,9 +40,9 @@ export const GEMINI_DOMAIN_PATTERNS = [
  * Additional fallback selectors for E2E testing.
  * These supplement the main selectors for edge cases in tests.
  */
-export const GEMINI_EDITOR_FALLBACK_SELECTORS = ['div[contenteditable="true"][data-placeholder]'] as const;
+export const DEEPSEEK_EDITOR_FALLBACK_SELECTORS = ['div[contenteditable="true"][data-placeholder]'] as const;
 
-export const GEMINI_SUBMIT_BUTTON_FALLBACK_SELECTORS = [
+export const DEEPSEEK_SUBMIT_BUTTON_FALLBACK_SELECTORS = [
     'button[aria-label="Send"]',
     'button[data-mat-icon-name="send"]',
 ] as const;
@@ -66,8 +65,8 @@ export const E2E_ERROR_MESSAGES = {
     WINDOW_MANAGER_NOT_FOUND: 'WindowManager not found on app instance',
     MAIN_WINDOW_NOT_FOUND: 'Main window not found',
     QUICK_CHAT_WINDOW_NOT_FOUND: 'Quick Chat window not found',
-    GEMINI_IFRAME_NOT_FOUND: 'DeepSeek view not found in frames',
-    EDITOR_NOT_FOUND: 'Gemini editor element not found',
+    DEEPSEEK_IFRAME_NOT_FOUND: 'DeepSeek view not found in frames',
+    EDITOR_NOT_FOUND: 'DeepSeek editor element not found',
     SUBMIT_BUTTON_NOT_FOUND: 'Submit button not found or disabled',
 } as const;
 
@@ -107,11 +106,11 @@ export function findElementBySelectors(document: Document, selectors: readonly s
 }
 
 /**
- * Check if a URL matches any of the Gemini domain patterns.
+ * Check if a URL matches any of the DeepSeek domain patterns.
  *
  * @param url - The URL to check
- * @returns True if the URL matches a Gemini domain
+ * @returns True if the URL matches a DeepSeek domain
  */
-export function isGeminiUrl(url: string): boolean {
-    return GEMINI_DOMAIN_PATTERNS.some((domain) => url.includes(domain));
+export function isDeepSeekUrl(url: string): boolean {
+    return DEEPSEEK_DOMAIN_PATTERNS.some((domain) => url.includes(domain));
 }

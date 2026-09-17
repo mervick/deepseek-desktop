@@ -9,7 +9,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 
-import type { GeminiNavigatePayload, GeminiReadyPayload } from '../../shared/types/tabs';
+import type { DeepSeekNavigatePayload, DeepSeekReadyPayload } from '../../shared/types/tabs';
 import { createRendererLogger } from '../utils';
 
 const logger = createRendererLogger('[useQuickChatNavigation]');
@@ -30,44 +30,44 @@ export interface QuickChatNavigationState {
 /**
  * Custom hook for Quick Chat navigation via IPC.
  *
- * Subscribes to gemini:navigate events from the main process and coordinates
+ * Subscribes to deepseek:navigate events from the main process and coordinates
  * iframe reload with text injection signaling.
  *
- * @param originalHandleLoad - The original iframe load handler from useGeminiIframe
+ * @param originalHandleLoad - The original iframe load handler from useDeepSeekIframe
  * @returns {QuickChatNavigationState} State and handlers for Quick Chat navigation
  */
 export function useQuickChatNavigation(originalHandleLoad: () => void): QuickChatNavigationState {
     // State for Quick Chat navigation
     const [iframeKey, setIframeKey] = useState(0);
-    const [pendingNavigate, setPendingNavigate] = useState<GeminiNavigatePayload | null>(null);
+    const [pendingNavigate, setPendingNavigate] = useState<DeepSeekNavigatePayload | null>(null);
 
     // Enhanced load handler that signals ready for pending Quick Chat injection
     const handleIframeLoad = useCallback(() => {
         // Call the original load handler
         originalHandleLoad();
 
-        if (pendingNavigate !== null && window.electronAPI?.signalGeminiReady) {
+        if (pendingNavigate !== null && window.electronAPI?.signalDeepSeekReady) {
             // Small delay to ensure iframe content is fully initialized
             setTimeout(() => {
-                const readyPayload: GeminiReadyPayload = {
+                const readyPayload: DeepSeekReadyPayload = {
                     requestId: pendingNavigate.requestId,
                     targetTabId: pendingNavigate.targetTabId,
                 };
-                window.electronAPI!.signalGeminiReady(readyPayload);
+                window.electronAPI!.signalDeepSeekReady(readyPayload);
                 setPendingNavigate(null);
-                logger.log('Signaled Gemini ready for text injection');
+                logger.log('Signaled DeepSeek ready for text injection');
             }, READY_SIGNAL_DELAY_MS);
         }
     }, [originalHandleLoad, pendingNavigate]);
 
-    // Subscribe to Gemini navigation requests from main process
+    // Subscribe to DeepSeek navigation requests from main process
     useEffect(() => {
-        if (!window.electronAPI?.onGeminiNavigate) {
+        if (!window.electronAPI?.onDeepSeekNavigate) {
             return;
         }
 
-        const unsubscribe = window.electronAPI.onGeminiNavigate((data) => {
-            logger.log('Gemini navigation requested for tab:', data.targetTabId);
+        const unsubscribe = window.electronAPI.onDeepSeekNavigate((data) => {
+            logger.log('DeepSeek navigation requested for tab:', data.targetTabId);
 
             setPendingNavigate(data);
 

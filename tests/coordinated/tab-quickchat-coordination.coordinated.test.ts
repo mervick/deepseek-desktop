@@ -162,7 +162,7 @@ describe('Tab + Quick Chat coordination', () => {
         };
         mainWindow.webContents.mainFrame.frames = [wrongFrame, targetFrame];
 
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, {
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, {
             requestId: navigatePayload.requestId,
             targetTabId: navigatePayload.targetTabId,
         });
@@ -204,21 +204,21 @@ describe('Tab + Quick Chat coordination', () => {
         };
         mainWindow.webContents.mainFrame.frames = [targetFrame];
 
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, {
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, {
             requestId: firstPayload.requestId,
             targetTabId: secondPayload.targetTabId,
         });
 
-        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring gemini:ready payload with mismatched targetTabId');
+        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring deepseek:ready payload with mismatched targetTabId');
         expect(targetFrame.executeJavaScript).not.toHaveBeenCalled();
     });
 
     it('ignores stale ready payload with unknown request metadata', async () => {
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, {
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, {
             requestId: 'expired-request',
             targetTabId: 'tab-expired',
         });
 
-        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring stale gemini:ready payload with unknown requestId');
+        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring stale deepseek:ready payload with unknown requestId');
     });
 });

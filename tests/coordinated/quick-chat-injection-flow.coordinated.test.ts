@@ -147,7 +147,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
         expect(windowManager.hideQuickChat).toHaveBeenCalled();
         expect(windowManager.focusMainWindow).toHaveBeenCalled();
         expect(mainWindow.webContents.send).toHaveBeenCalledWith(
-            IPC_CHANNELS.GEMINI_NAVIGATE,
+            IPC_CHANNELS.DEEPSEEK_NAVIGATE,
             expect.objectContaining({
                 requestId: expect.any(String),
                 targetTabId: expect.any(String),
@@ -185,7 +185,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
         };
         mainWindow.webContents.mainFrame.frames = [targetFrame];
 
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, {
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, {
             requestId: navigatePayload.requestId,
             targetTabId: navigatePayload.targetTabId,
         });
@@ -195,12 +195,12 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
     });
 
     it('ignores stale ready payload with unknown request id', async () => {
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, {
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, {
             requestId: 'unknown-request',
             targetTabId: 'unknown-tab',
         });
 
-        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring stale gemini:ready payload with unknown requestId');
+        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring stale deepseek:ready payload with unknown requestId');
     });
 
     it('rejects mismatched target tab id in ready payload', async () => {
@@ -222,12 +222,12 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
             targetTabId: string;
         };
 
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, {
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, {
             requestId: navigatePayload.requestId,
             targetTabId: 'different-tab-id',
         });
 
-        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring gemini:ready payload with mismatched targetTabId');
+        expect(mockLogger.warn).toHaveBeenCalledWith('Ignoring deepseek:ready payload with mismatched targetTabId');
     });
 
     it('logs frame-not-found error when target frame name is missing', async () => {
@@ -237,7 +237,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
                 mainFrame: {
                     frames: [
                         {
-                            name: 'gemini-tab-other',
+                            name: 'deepseek-tab-other',
                             url: 'https://chat.deepseek.com/app',
                             executeJavaScript: vi.fn(),
                         },
@@ -257,7 +257,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
             targetTabId: string;
         };
 
-        await sendMessage(IPC_CHANNELS.GEMINI_READY, navigatePayload);
+        await sendMessage(IPC_CHANNELS.DEEPSEEK_READY, navigatePayload);
 
         expect(mockLogger.error).toHaveBeenCalledWith('Cannot inject text: target tab frame not found');
     });

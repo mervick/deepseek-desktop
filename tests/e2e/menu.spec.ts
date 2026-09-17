@@ -722,7 +722,7 @@ describe('Menu', () => {
         });
 
         describe.skip('Webview Context Menu', () => {
-            it('should show context menu in the Gemini webview container', async () => {
+            it('should show context menu in the DeepSeek webview container', async () => {
                 const webviewContainer = await contextMenu.getWebviewContainer();
 
                 await contextMenu.openContextMenu(webviewContainer);

@@ -20,10 +20,10 @@ import { browser } from '@wdio/globals';
 import { registerHotkeyActionHandler, type HotkeyActionHandler, type HotkeyActionState } from './hotkeyHelpers';
 import { E2ELogger } from './logger';
 import {
-    GEMINI_DOMAIN_PATTERNS,
-    GEMINI_EDITOR_SELECTORS,
-    GEMINI_SUBMIT_BUTTON_SELECTORS,
-    GEMINI_CONVERSATION_TITLE_SELECTORS,
+    DEEPSEEK_DOMAIN_PATTERNS,
+    DEEPSEEK_EDITOR_SELECTORS,
+    DEEPSEEK_SUBMIT_BUTTON_SELECTORS,
+    DEEPSEEK_CONVERSATION_TITLE_SELECTORS,
 } from './e2eConstants';
 
 // =============================================================================
@@ -184,7 +184,7 @@ export async function getQuickChatState(): Promise<QuickChatState> {
 
 /**
  * Hide Quick Chat and focus main window WITHOUT injecting any text.
- * Use this to test window lifecycle behavior without sending messages to Gemini.
+ * Use this to test window lifecycle behavior without sending messages to DeepSeek.
  *
  * Uses IPC to cancel Quick Chat then switches browser context to main window.
  *
@@ -216,7 +216,7 @@ export async function hideAndFocusMainWindow(): Promise<void> {
  * the same code path as when a user clicks the submit button:
  * - IPC 'quick-chat:submit' message
  * - Main process handler in ipcManager
- * - Text injection into Gemini
+ * - Text injection into DeepSeek
  * - Window hide and main window focus
  *
  * @param text - The text to submit
@@ -242,13 +242,13 @@ export async function submitQuickChatText(text: string): Promise<void> {
  *
  * @returns Promise<{ loaded: boolean, url: string | null, frameCount: number }>
  */
-export async function getGeminiIframeState(): Promise<{
+export async function getDeepSeekIframeState(): Promise<{
     loaded: boolean;
     url: string | null;
     frameCount: number;
 }> {
     // Pass domain patterns to the execute context since we can't import there
-    const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+    const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
     return browser.electron.execute((_electron: typeof import('electron'), domains: string[]) => {
         const ctx = (global as { appContext?: any }).appContext;
@@ -272,8 +272,8 @@ export async function getGeminiIframeState(): Promise<{
         const webContents = mainWindow.webContents;
         const frames = webContents.mainFrame.frames;
 
-        // Find frame matching any Gemini domain pattern
-        const geminiFrame = frames.find((frame) => {
+        // Find frame matching any DeepSeek domain pattern
+        const deepseekFrame = frames.find((frame) => {
             try {
                 return domains.some((domain) => frame.url.includes(domain));
             } catch {
@@ -282,8 +282,8 @@ export async function getGeminiIframeState(): Promise<{
         });
 
         return {
-            loaded: geminiFrame != null,
-            url: geminiFrame?.url ?? null,
+            loaded: deepseekFrame != null,
+            url: deepseekFrame?.url ?? null,
             frameCount: frames.length,
         };
     }, domainPatterns);
@@ -306,14 +306,14 @@ export async function getAllWindowStates(): Promise<{ title: string; visible: bo
 }
 
 // =============================================================================
-// Gemini Editor State Verification (READ-ONLY)
+// DeepSeek Editor State Verification (READ-ONLY)
 // =============================================================================
 
 /**
- * Result of reading Gemini editor state.
+ * Result of reading DeepSeek editor state.
  * Used to verify text was injected via production code path.
  */
-export interface GeminiEditorState {
+export interface DeepSeekEditorState {
     /** Whether the DeepSeek view was found */
     iframeFound: boolean;
     /** Whether the editor element was found */
@@ -329,22 +329,22 @@ export interface GeminiEditorState {
 }
 
 /**
- * Read the current state of the Gemini editor (READ-ONLY verification).
+ * Read the current state of the DeepSeek editor (READ-ONLY verification).
  *
- * This helper READS from the Gemini editor to verify text was injected
+ * This helper READS from the DeepSeek editor to verify text was injected
  * via the production Quick Chat flow. It does NOT inject or modify anything.
  *
  * Use this after triggering Quick Chat submission via real user actions
- * to verify the text actually appeared in the Gemini editor.
+ * to verify the text actually appeared in the DeepSeek editor.
  *
- * @returns Promise<GeminiEditorState> - Current state of the editor
+ * @returns Promise<DeepSeekEditorState> - Current state of the editor
  */
-export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
-    E2ELogger.info('gemini-verify', 'Reading Gemini editor state (verification only)');
+export async function verifyDeepSeekEditorState(): Promise<DeepSeekEditorState> {
+    E2ELogger.info('deepseek-verify', 'Reading DeepSeek editor state (verification only)');
 
-    const editorSelectors = [...GEMINI_EDITOR_SELECTORS];
-    const buttonSelectors = [...GEMINI_SUBMIT_BUTTON_SELECTORS];
-    const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+    const editorSelectors = [...DEEPSEEK_EDITOR_SELECTORS];
+    const buttonSelectors = [...DEEPSEEK_SUBMIT_BUTTON_SELECTORS];
+    const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
     return browser.electron.execute(
         (
@@ -352,7 +352,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
             editorSels: string[],
             buttonSels: string[],
             domains: string[]
-        ): GeminiEditorState => {
+        ): DeepSeekEditorState => {
             const ctx = (global as { appContext?: any }).appContext;
             const windowManager = ctx?.windowManager as
                 | { getMainWindow?: () => Electron.BrowserWindow | null }
@@ -385,7 +385,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
             const frames = webContents.mainFrame.frames;
 
             // Find the DeepSeek view
-            const geminiFrame = frames.find((frame) => {
+            const deepseekFrame = frames.find((frame) => {
                 try {
                     return domains.some((domain) => frame.url.includes(domain));
                 } catch {
@@ -393,7 +393,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
                 }
             });
 
-            if (!geminiFrame) {
+            if (!deepseekFrame) {
                 return {
                     iframeFound: false,
                     editorFound: false,
@@ -444,7 +444,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
 
             if (submitButton) {
               result.submitButtonFound = true;
-              result.submitButtonEnabled = !submitButton.disabled && 
+              result.submitButtonEnabled = !submitButton.disabled &&
                 !submitButton.classList.contains('disabled') &&
                 submitButton.getAttribute('aria-disabled') !== 'true';
             }
@@ -466,7 +466,7 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
             try {
                 // Note: executeJavaScript is async, but we're in a sync context here
                 // This will be awaited by the outer browser.electron.execute
-                const _resultPromise = geminiFrame.executeJavaScript(readScript);
+                const _resultPromise = deepseekFrame.executeJavaScript(readScript);
 
                 // Return a promise-wrapped result
                 return {
@@ -495,35 +495,35 @@ export async function verifyGeminiEditorState(): Promise<GeminiEditorState> {
 }
 
 /**
- * Wait for text to appear in Gemini editor, with timeout.
+ * Wait for text to appear in DeepSeek editor, with timeout.
  * Polls the editor state until expected text is found.
  *
  * @param expectedText - Text that should appear in editor
  * @param timeoutMs - Maximum time to wait (default 5000ms)
- * @returns Promise<GeminiEditorState> - Final state
+ * @returns Promise<DeepSeekEditorState> - Final state
  */
-export async function waitForTextInGeminiEditor(
+export async function waitForTextInDeepSeekEditor(
     expectedText: string,
     timeoutMs: number = 5000,
     activeTabId?: string
-): Promise<GeminiEditorState> {
+): Promise<DeepSeekEditorState> {
     const startTime = Date.now();
-    let lastState: GeminiEditorState | null = null;
+    let lastState: DeepSeekEditorState | null = null;
 
     while (Date.now() - startTime < timeoutMs) {
         // Use direct iframe query for more reliable results
-        const state = await readGeminiEditorDirect(expectedText, activeTabId);
+        const state = await readDeepSeekEditorDirect(expectedText, activeTabId);
         lastState = state;
 
         if (state.editorFound && state.editorText?.includes(expectedText)) {
-            E2ELogger.info('gemini-verify', `Text found in editor: "${expectedText.substring(0, 30)}..."`);
+            E2ELogger.info('deepseek-verify', `Text found in editor: "${expectedText.substring(0, 30)}..."`);
             return state;
         }
 
         await browser.pause(200);
     }
 
-    E2ELogger.info('gemini-verify', `Timeout waiting for text. Last state: ${JSON.stringify(lastState)}`);
+    E2ELogger.info('deepseek-verify', `Timeout waiting for text. Last state: ${JSON.stringify(lastState)}`);
     return (
         lastState || {
             iframeFound: false,
@@ -536,9 +536,9 @@ export async function waitForTextInGeminiEditor(
     );
 }
 
-export async function getGeminiConversationTitle(tabId?: string): Promise<string | null> {
-    const titleSelectors = [...GEMINI_CONVERSATION_TITLE_SELECTORS];
-    const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+export async function getDeepSeekConversationTitle(tabId?: string): Promise<string | null> {
+    const titleSelectors = [...DEEPSEEK_CONVERSATION_TITLE_SELECTORS];
+    const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
     return browser.electron.execute(
         async (electron: typeof import('electron'), selectors: string[], domains: string[], activeTabId?: string) => {
@@ -553,9 +553,9 @@ export async function getGeminiConversationTitle(tabId?: string): Promise<string
             }
 
             const frames = mainWindow.webContents.mainFrame.frames;
-            const targetFrameName = activeTabId ? `gemini-tab-${activeTabId}` : null;
+            const targetFrameName = activeTabId ? `deepseek-tab-${activeTabId}` : null;
             const targetFrame = targetFrameName ? frames.find((frame) => frame.name === targetFrameName) : null;
-            const geminiFrames = targetFrame
+            const deepseekFrames = targetFrame
                 ? [targetFrame]
                 : frames.filter((frame) => {
                       try {
@@ -565,7 +565,7 @@ export async function getGeminiConversationTitle(tabId?: string): Promise<string
                       }
                   });
 
-            if (geminiFrames.length === 0) {
+            if (deepseekFrames.length === 0) {
                 return null;
             }
 
@@ -583,7 +583,7 @@ export async function getGeminiConversationTitle(tabId?: string): Promise<string
                                 }
                             }
                         }
-                        const fallback = document.title.replace(' - Gemini', '').trim();
+                        const fallback = document.title.replace(' - DeepSeek', '').trim();
                         return fallback || null;
                     } catch (e) {
                         return null;
@@ -591,7 +591,7 @@ export async function getGeminiConversationTitle(tabId?: string): Promise<string
                 })();
             `;
 
-            for (const frame of geminiFrames) {
+            for (const frame of deepseekFrames) {
                 try {
                     const result = await frame.executeJavaScript(titleScript);
                     if (typeof result === 'string' && result.trim().length > 0) {
@@ -611,13 +611,13 @@ export async function getGeminiConversationTitle(tabId?: string): Promise<string
 }
 
 /**
- * Direct async read from Gemini editor iframe.
+ * Direct async read from DeepSeek editor iframe.
  * More reliable for verification as it awaits the inner executeJavaScript.
  */
-async function readGeminiEditorDirect(expectedText?: string, activeTabId?: string): Promise<GeminiEditorState> {
-    const editorSelectors = [...GEMINI_EDITOR_SELECTORS];
-    const buttonSelectors = [...GEMINI_SUBMIT_BUTTON_SELECTORS];
-    const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+async function readDeepSeekEditorDirect(expectedText?: string, activeTabId?: string): Promise<DeepSeekEditorState> {
+    const editorSelectors = [...DEEPSEEK_EDITOR_SELECTORS];
+    const buttonSelectors = [...DEEPSEEK_SUBMIT_BUTTON_SELECTORS];
+    const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
     // Execute read script in the iframe
     const result = await browser.electron.execute(
@@ -647,9 +647,9 @@ async function readGeminiEditorDirect(expectedText?: string, activeTabId?: strin
             }
 
             const frames = mainWindow.webContents.mainFrame.frames;
-            const targetFrameName = tabId ? `gemini-tab-${tabId}` : null;
+            const targetFrameName = tabId ? `deepseek-tab-${tabId}` : null;
             const targetFrame = targetFrameName ? frames.find((frame) => frame.name === targetFrameName) : null;
-            const geminiFrames = targetFrame
+            const deepseekFrames = targetFrame
                 ? [targetFrame]
                 : frames.filter((frame) => {
                       try {
@@ -659,7 +659,7 @@ async function readGeminiEditorDirect(expectedText?: string, activeTabId?: strin
                       }
                   });
 
-            if (geminiFrames.length === 0) {
+            if (deepseekFrames.length === 0) {
                 return {
                     iframeFound: false,
                     editorFound: false,
@@ -723,13 +723,13 @@ async function readGeminiEditorDirect(expectedText?: string, activeTabId?: strin
         })();
       `;
 
-            type GeminiEditorPartial = Omit<GeminiEditorState, 'iframeFound'>;
-            let lastState: GeminiEditorState | null = null;
+            type DeepSeekEditorPartial = Omit<DeepSeekEditorState, 'iframeFound'>;
+            let lastState: DeepSeekEditorState | null = null;
 
-            for (const frame of geminiFrames) {
+            for (const frame of deepseekFrames) {
                 try {
-                    const scriptResult = (await frame.executeJavaScript(readScript)) as GeminiEditorPartial;
-                    const state: GeminiEditorState = {
+                    const scriptResult = (await frame.executeJavaScript(readScript)) as DeepSeekEditorPartial;
+                    const state: DeepSeekEditorState = {
                         iframeFound: true,
                         ...scriptResult,
                     };
@@ -773,7 +773,7 @@ async function readGeminiEditorDirect(expectedText?: string, activeTabId?: strin
         activeTabId
     );
 
-    return result as GeminiEditorState;
+    return result as DeepSeekEditorState;
 }
 
 // =============================================================================

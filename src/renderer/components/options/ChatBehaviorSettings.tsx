@@ -1,7 +1,7 @@
 /**
  * ChatBehaviorSettings Component
  *
- * Configures behaviors related to the Gemini chat view, including:
+ * Configures behaviors related to the DeepSeek chat view, including:
  * - Smart Enter (blocking submit key while attachments upload)
  * - Scroll-to-Bottom button visibility
  *

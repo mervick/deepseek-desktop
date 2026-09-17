@@ -13,7 +13,7 @@ export type { MenuDefinition, MenuItem } from './menuTypes';
  * IMPORTANT: The `id` fields must match the IDs in `MenuManager.ts`
  * to enable consistent E2E testing across platforms.
  *
- * Note: Edit menu removed as it doesn't affect the embedded Gemini webview.
+ * Note: Edit menu removed as it doesn't affect the embedded DeepSeek webview.
  */
 export function useMenuDefinitions(): MenuDefinition[] {
     // IMPORTANT: When adding items here, also update src/main/managers/menuManager.ts

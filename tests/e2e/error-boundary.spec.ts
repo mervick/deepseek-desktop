@@ -188,19 +188,19 @@ describe('Error Boundary Recovery E2E', () => {
     });
 
     // ========================================================================
-    // Main Window Error Boundary (GeminiErrorBoundary) - Documented for completeness
+    // Main Window Error Boundary (DeepSeekErrorBoundary) - Documented for completeness
     // These tests exist in fatal-error-recovery.spec.ts
     // ========================================================================
 
     describe('Main Window Error Boundary (Reference)', () => {
-        it('should reference existing GeminiErrorBoundary tests', () => {
-            // This test documents that GeminiErrorBoundary E2E tests exist in:
+        it('should reference existing DeepSeekErrorBoundary tests', () => {
+            // This test documents that DeepSeekErrorBoundary E2E tests exist in:
             // tests/e2e/fatal-error-recovery.spec.ts
             //
             // Tests covered there:
             // - "should show error boundary and allow reload on React error"
-            // - Verifies [data-testid="gemini-error-fallback"] appears
-            // - Verifies "Gemini couldn't load" message
+            // - Verifies [data-testid="deepseek-error-fallback"] appears
+            // - Verifies "DeepSeek couldn't load" message
             // - Verifies Reload button works
             expect(true).toBe(true); // Placeholder for documentation purposes
         });

@@ -2,7 +2,7 @@
 # GitHub Actions Test Workflow
 # =============================================================================
 #
-# This workflow runs automated tests for the Gemini Desktop application.
+# This workflow runs automated tests for the DeepSeek Desktop application.
 # It triggers on pushes to main and pull requests, running:
 #   - Build (via _build.yml)
 #   - Unit tests with coverage

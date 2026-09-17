@@ -8,7 +8,7 @@ import { waitForWindowCount } from './helpers/waitUtilities';
  * E2E tests for link handling.
  *
  * Verifies that:
- * - Gemini domain links open in new Electron windows
+ * - DeepSeek domain links open in new Electron windows
  * - External links open in system browser
  */
 describe('Link Handling', () => {
@@ -60,37 +60,37 @@ describe('Link Handling', () => {
         });
     });
 
-    it('should handle Gemini domain links internally (in Electron window)', async () => {
-        // Inject a mock Gemini subdomain link
+    it('should handle DeepSeek domain links internally (in Electron window)', async () => {
+        // Inject a mock DeepSeek subdomain link
         await browser.execute(() => {
             const link = document.createElement('a');
             link.href = 'https://chat.deepseek.com/share/abc123';
             link.target = '_blank';
-            link.textContent = 'Share Gemini Chat';
-            link.id = 'mock-gemini-link';
+            link.textContent = 'Share DeepSeek Chat';
+            link.id = 'mock-deepseek-link';
             link.style.cssText =
                 'position:fixed;top:200px;left:100px;z-index:9999;background:green;padding:20px;color:white;';
             document.body.appendChild(link);
         });
 
-        const link = await browser.$('#mock-gemini-link');
+        const link = await browser.$('#mock-deepseek-link');
         await expect(link).toBeDisplayed();
 
         const initialHandles = await browser.getWindowHandles();
 
         await link.click();
 
-        // Wait for new Electron window to open after Gemini link click
+        // Wait for new Electron window to open after DeepSeek link click
         await waitForWindowCount(initialHandles.length + 1, 3000);
 
         const newHandles = await browser.getWindowHandles();
 
-        // Gemini links should open in new Electron window
+        // DeepSeek links should open in new Electron window
         expect(newHandles.length).toBeGreaterThan(initialHandles.length);
 
         // Cleanup: Remove mock link
         await browser.execute(() => {
-            const link = document.getElementById('mock-gemini-link');
+            const link = document.getElementById('mock-deepseek-link');
             if (link) link.remove();
         });
     });

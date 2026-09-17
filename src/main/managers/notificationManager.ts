@@ -28,7 +28,7 @@ export interface NotificationSettings extends Record<string, unknown> {
  * Manages native OS notifications and taskbar badges for response notifications.
  *
  * ## Features
- * - Shows native OS notification when Gemini response completes and window is unfocused
+ * - Shows native OS notification when DeepSeek response completes and window is unfocused
  * - Shows taskbar badge (via BadgeManager) when unfocused
  * - Clears badge when window regains focus
  * - Respects user setting for enabling/disabling notifications
@@ -139,7 +139,7 @@ export default class NotificationManager {
     }
 
     /**
-     * Handle a completed Gemini response.
+     * Handle a completed DeepSeek response.
      * Shows notification and badge if window is unfocused and notifications are enabled.
      * Each operation is wrapped in try/catch so one failure doesn't block the other.
      */

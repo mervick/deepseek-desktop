@@ -24,13 +24,13 @@ function createElectronApiMock() {
         onZoomLevelChanged: vi.fn().mockReturnValue(() => undefined),
         zoomIn: vi.fn().mockResolvedValue(110),
         zoomOut: vi.fn().mockResolvedValue(90),
-        onGeminiNavigate: vi.fn((listener: (payload: NavigatePayload) => void) => {
+        onDeepSeekNavigate: vi.fn((listener: (payload: NavigatePayload) => void) => {
             navigateListener = listener;
             return () => {
                 navigateListener = null;
             };
         }),
-        signalGeminiReady: vi.fn(),
+        signalDeepSeekReady: vi.fn(),
         onTabReady: vi.fn((listener: (tabId: string) => void) => {
             readyListener = listener;
             return () => {
@@ -101,7 +101,7 @@ describe('App', () => {
         render(<App />);
 
         await waitFor(() => {
-            expect(electron.api.onGeminiNavigate).toHaveBeenCalledTimes(1);
+            expect(electron.api.onDeepSeekNavigate).toHaveBeenCalledTimes(1);
         });
 
         const payload: NavigatePayload = {
@@ -121,7 +121,7 @@ describe('App', () => {
         act(() => electron.emitReady(payload.targetTabId));
 
         await waitFor(() => {
-            expect(electron.api.signalGeminiReady).toHaveBeenCalledWith({
+            expect(electron.api.signalDeepSeekReady).toHaveBeenCalledWith({
                 requestId: payload.requestId,
                 targetTabId: payload.targetTabId,
             });

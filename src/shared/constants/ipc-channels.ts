@@ -40,9 +40,9 @@ export const IPC_CHANNELS = {
     QUICK_CHAT_CANCEL: 'quick-chat:cancel',
     QUICK_CHAT_EXECUTE: 'quick-chat:execute',
 
-    // Gemini Iframe Navigation (for Quick Chat integration)
-    GEMINI_NAVIGATE: 'gemini:navigate',
-    GEMINI_READY: 'gemini:ready',
+    // DeepSeek Iframe Navigation (for Quick Chat integration)
+    DEEPSEEK_NAVIGATE: 'deepseek:navigate',
+    DEEPSEEK_READY: 'deepseek:ready',
 
     TABS_GET_STATE: 'tabs:get-state',
     TABS_SAVE_STATE: 'tabs:save-state',

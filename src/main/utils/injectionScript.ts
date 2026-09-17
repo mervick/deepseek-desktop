@@ -12,10 +12,10 @@
  */
 
 import {
-    GEMINI_EDITOR_SELECTORS,
-    GEMINI_SUBMIT_BUTTON_SELECTORS,
-    GEMINI_EDITOR_BLANK_CLASS,
-    GEMINI_SUBMIT_DELAY_MS,
+    DEEPSEEK_EDITOR_SELECTORS,
+    DEEPSEEK_SUBMIT_BUTTON_SELECTORS,
+    DEEPSEEK_EDITOR_BLANK_CLASS,
+    DEEPSEEK_SUBMIT_DELAY_MS,
 } from './constants';
 
 // =============================================================================
@@ -64,10 +64,10 @@ export interface InjectionResult {
  * Default injection configuration using constants.
  */
 export const DEFAULT_INJECTION_CONFIG: InjectionConfig = {
-    editorSelectors: GEMINI_EDITOR_SELECTORS,
-    submitButtonSelectors: GEMINI_SUBMIT_BUTTON_SELECTORS,
-    editorBlankClass: GEMINI_EDITOR_BLANK_CLASS,
-    submitDelayMs: GEMINI_SUBMIT_DELAY_MS,
+    editorSelectors: DEEPSEEK_EDITOR_SELECTORS,
+    submitButtonSelectors: DEEPSEEK_SUBMIT_BUTTON_SELECTORS,
+    editorBlankClass: DEEPSEEK_EDITOR_BLANK_CLASS,
+    submitDelayMs: DEEPSEEK_SUBMIT_DELAY_MS,
     logLevel: 'info',
 } as const;
 
@@ -124,7 +124,7 @@ function getLogLevelPriority(level: InjectionLogLevel): number {
  * @example
  * ```typescript
  * const script = new InjectionScriptBuilder()
- *     .withText('Hello, Gemini!')
+ *     .withText('Hello, DeepSeek!')
  *     .withLogLevel('debug')
  *     .build();
  * ```
@@ -233,12 +233,12 @@ export class InjectionScriptBuilder {
     // =========================================================================
     // Logging Utilities
     // =========================================================================
-    
+
     const LOG_PREFIX = '[QuickChat]';
     const LOG_LEVEL_PRIORITY = ${logLevelPriority};
-    
+
     const LogLevel = { debug: 0, info: 1, warn: 2, error: 3 };
-    
+
     /**
      * Log a message if the level meets the minimum threshold.
      */
@@ -249,7 +249,7 @@ export class InjectionScriptBuilder {
             console[method](prefix, message, ...args);
         }
     }
-    
+
     const logger = {
         debug: (msg, ...args) => log('debug', msg, ...args),
         info: (msg, ...args) => log('info', msg, ...args),
@@ -260,7 +260,7 @@ export class InjectionScriptBuilder {
     // =========================================================================
     // Defensive Utilities
     // =========================================================================
-    
+
     /**
      * Safely query for an element using multiple selectors.
      * Returns the first match found.
@@ -270,7 +270,7 @@ export class InjectionScriptBuilder {
             logger.error('safeQuerySelector: Invalid selectors array');
             return null;
         }
-        
+
         for (const selector of selectors) {
             try {
                 const element = document.querySelector(selector);
@@ -282,11 +282,11 @@ export class InjectionScriptBuilder {
                 logger.warn('Selector query failed:', selector, e.message);
             }
         }
-        
+
         logger.debug('No element found for selectors:', selectors);
         return null;
     }
-    
+
     /**
      * Safely dispatch an event on an element.
      */
@@ -295,7 +295,7 @@ export class InjectionScriptBuilder {
             logger.warn('safeDispatchEvent: No element provided');
             return false;
         }
-        
+
         try {
             element.dispatchEvent(event);
             return true;
@@ -304,7 +304,7 @@ export class InjectionScriptBuilder {
             return false;
         }
     }
-    
+
     /**
      * Safely focus an element.
      */
@@ -313,7 +313,7 @@ export class InjectionScriptBuilder {
             logger.warn('safeFocus: No element provided');
             return false;
         }
-        
+
         try {
             element.focus();
             return true;
@@ -322,7 +322,7 @@ export class InjectionScriptBuilder {
             return false;
         }
     }
-    
+
     /**
      * Safely click an element.
      */
@@ -331,7 +331,7 @@ export class InjectionScriptBuilder {
             logger.warn('safeClick: No element provided');
             return false;
         }
-        
+
         try {
             element.click();
             return true;
@@ -344,14 +344,14 @@ export class InjectionScriptBuilder {
     // =========================================================================
     // Text Injection Logic
     // =========================================================================
-    
+
     /**
      * Insert text into a contenteditable element using Selection API.
      * This method is Trusted Types compliant.
      */
     function insertTextWithSelectionAPI(editor, text) {
         logger.debug('Inserting text using Selection API');
-        
+
         try {
             // DeepSeek currently uses a native textarea in some layouts. Use
             // the native setter so React/Vue state and browser input events
@@ -369,29 +369,29 @@ export class InjectionScriptBuilder {
 
             // Clear using textContent (Trusted Types safe)
             editor.textContent = '';
-            
+
             // Create text node and insert using Selection API
             const textNode = document.createTextNode(text);
             const selection = window.getSelection();
-            
+
             if (!selection) {
                 logger.error('window.getSelection() returned null');
                 return false;
             }
-            
+
             const range = document.createRange();
             range.selectNodeContents(editor);
             range.collapse(false);
             selection.removeAllRanges();
             selection.addRange(range);
             range.insertNode(textNode);
-            
+
             // Move cursor to end
             range.setStartAfter(textNode);
             range.setEndAfter(textNode);
             selection.removeAllRanges();
             selection.addRange(range);
-            
+
             logger.debug('Text inserted successfully');
             return true;
         } catch (e) {
@@ -399,7 +399,7 @@ export class InjectionScriptBuilder {
             return false;
         }
     }
-    
+
     /**
      * Notify the editor framework (Angular/Quill) of text changes.
      * Uses multiple strategies to ensure the framework detects the change:
@@ -410,7 +410,7 @@ export class InjectionScriptBuilder {
      */
     function notifyEditorOfChanges(editor, text) {
         logger.debug('Dispatching editor change events');
-        
+
         // Strategy 1: Simulate keyboard input sequence
         // This is often required for Angular/Quill to detect changes
         try {
@@ -424,7 +424,7 @@ export class InjectionScriptBuilder {
         } catch (e) {
             logger.debug('beforeinput event not supported:', e.message);
         }
-        
+
         // Simulate keydown/keyup for char-by-char detection
         try {
             safeDispatchEvent(editor, new KeyboardEvent('keydown', {
@@ -442,7 +442,7 @@ export class InjectionScriptBuilder {
         } catch (e) {
             logger.debug('Keyboard events failed:', e.message);
         }
-        
+
         // Strategy 2: InputEvent for modern frameworks
         safeDispatchEvent(editor, new InputEvent('input', {
             bubbles: true,
@@ -450,10 +450,10 @@ export class InjectionScriptBuilder {
             inputType: 'insertText',
             data: text
         }));
-        
+
         // Strategy 3: Quill-specific text-change event
         safeDispatchEvent(editor, new Event('text-change', { bubbles: true }));
-        
+
         // Strategy 4: compositionend event (used by IME and some frameworks)
         try {
             safeDispatchEvent(editor, new CompositionEvent('compositionend', {
@@ -464,13 +464,13 @@ export class InjectionScriptBuilder {
         } catch (e) {
             logger.debug('CompositionEvent not supported:', e.message);
         }
-        
+
         // Strategy 5: Generic input event fallback
         safeDispatchEvent(editor, new Event('input', { bubbles: true }));
-        
+
         // Strategy 6: Change event (for older frameworks)
         safeDispatchEvent(editor, new Event('change', { bubbles: true }));
-        
+
         // Strategy 7: Trigger Angular's change detection via blur/focus cycle
         try {
             editor.blur();
@@ -480,7 +480,7 @@ export class InjectionScriptBuilder {
         } catch (e) {
             logger.debug('Blur/focus cycle failed:', e.message);
         }
-        
+
         logger.debug('All editor change events dispatched');
     }
 
@@ -488,7 +488,7 @@ export class InjectionScriptBuilder {
     // =========================================================================
     // Main Injection Logic
     // =========================================================================
-    
+
     const result = {
         success: false,
         error: null,
@@ -498,25 +498,25 @@ export class InjectionScriptBuilder {
             submitScheduled: false
         }
     };
-    
+
     try {
         logger.info('Starting text injection');
-        
+
         // Configuration
         const editorSelectors = ${editorSelectorsJson};
         const buttonSelectors = ${buttonSelectorsJson};
         const blankClass = '${blankClass}';
         const textToInject = '${escapedText}';
         const shouldAutoSubmit = ${autoSubmit};
-        
-        logger.debug('Config:', { 
-            editorSelectors, 
-            buttonSelectors, 
+
+        logger.debug('Config:', {
+            editorSelectors,
+            buttonSelectors,
             blankClass,
             textLength: textToInject.length,
             autoSubmit: shouldAutoSubmit
         });
-        
+
         // Step 1: Find the editor
         const editor = safeQuerySelector(editorSelectors);
         if (!editor) {
@@ -526,12 +526,12 @@ export class InjectionScriptBuilder {
         }
         result.details.editorFound = true;
         logger.info('Editor found');
-        
+
         // Step 2: Focus the editor
         if (!safeFocus(editor)) {
             logger.warn('Could not focus editor, continuing anyway');
         }
-        
+
         // Step 3: Insert text
         if (!insertTextWithSelectionAPI(editor, textToInject)) {
             result.error = 'text_insertion_failed';
@@ -540,7 +540,7 @@ export class InjectionScriptBuilder {
         }
         result.details.textInjected = true;
         logger.info('Text injected successfully');
-        
+
         // Step 4: Update editor state
         try {
             editor.classList.remove(blankClass);
@@ -548,49 +548,49 @@ export class InjectionScriptBuilder {
         } catch (e) {
             logger.warn('Could not remove blank class:', e.message);
         }
-        
+
         // Step 5: Notify editor of changes
         notifyEditorOfChanges(editor, textToInject);
-        
+
         // Step 6: Schedule submit button click (if auto-submit enabled)
         if (shouldAutoSubmit) {
             logger.debug('Scheduling submit button click in ${submitDelay}ms');
-            
+
             setTimeout(() => {
                 logger.debug('Looking for submit button');
-                
+
                 const submitButton = safeQuerySelector(buttonSelectors);
-                
+
                 if (!submitButton) {
                     logger.error('Submit button not found. Tried selectors:', buttonSelectors);
                     return;
                 }
-                
+
                 if (submitButton.disabled) {
                     logger.warn('Submit button is disabled');
                     return;
                 }
-                
+
                 if (safeClick(submitButton)) {
                     logger.info('Submit button clicked');
                 } else {
                     logger.error('Failed to click submit button');
                 }
             }, ${submitDelay});
-            
+
             result.details.submitScheduled = true;
         } else {
             logger.info('Auto-submit disabled, skipping submit button click');
         }
-        
+
         result.success = true;
         logger.info('Injection completed successfully');
-        
+
     } catch (e) {
         result.error = e.message || 'unknown_error';
         logger.error('Injection failed with error:', e);
     }
-    
+
     return result;
 })();
         `.trim();

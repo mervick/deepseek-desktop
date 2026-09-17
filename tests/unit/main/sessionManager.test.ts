@@ -63,7 +63,7 @@ describe('Session Sharing', () => {
     });
 
     describe('Cookie-based authentication flow', () => {
-        it('auth window closes after navigation to Gemini, allowing main window to access cookies', () => {
+        it('auth window closes after navigation to DeepSeek, allowing main window to access cookies', () => {
             // Create main window first
             windowManager.createMainWindow();
 
@@ -75,7 +75,7 @@ describe('Session Sharing', () => {
             expect(navigateCall).toBeDefined();
             const navigateHandler = navigateCall![1];
 
-            // Simulate successful login - navigation to Gemini
+            // Simulate successful login - navigation to DeepSeek
             navigateHandler({}, 'https://chat.deepseek.com/app');
 
             // Auth window should close

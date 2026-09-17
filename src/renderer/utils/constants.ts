@@ -33,6 +33,6 @@ export const GOOGLE_TOS_URL = 'https://cdn.deepseek.com/policies/terms' as const
 export const GOOGLE_GENAI_TERMS_URL = 'https://cdn.deepseek.com/policies/privacy' as const;
 
 /**
- * Main Gemini application URL.
+ * Main DeepSeek application URL.
  */
-export const GEMINI_APP_URL = 'https://chat.deepseek.com/' as const;
+export const DEEPSEEK_APP_URL = 'https://chat.deepseek.com/' as const;

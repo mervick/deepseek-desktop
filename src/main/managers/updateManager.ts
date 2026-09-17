@@ -696,7 +696,7 @@ export default class UpdateManager {
 
     private async checkGitHubForLatestRelease(): Promise<UpdateInfo | null> {
         const response = await net.fetch('https://api.github.com/repos/mervick/deepseek-desktop/releases/latest', {
-            headers: { 'User-Agent': 'gemini-desktop-updater' },
+            headers: { 'User-Agent': 'deepseek-desktop-updater' },
         });
 
         if (!response.ok) {

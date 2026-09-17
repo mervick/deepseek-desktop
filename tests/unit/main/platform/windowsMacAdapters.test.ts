@@ -16,7 +16,7 @@ vi.mock('../../../../src/main/utils/constants', () => ({
     isLinux: false,
     isWindows: true,
     isWayland: false,
-    APP_ID: 'com.benwendell.gemini-desktop',
+    APP_ID: 'com.benwendell.deepseek-desktop',
 }));
 
 vi.mock('../../../../src/main/utils/logger', () => ({
@@ -120,7 +120,7 @@ describe('WindowsAdapter', () => {
 
             adapter.applyAppUserModelId(app);
 
-            expect(app.setAppUserModelId).toHaveBeenCalledWith('com.benwendell.gemini-desktop');
+            expect(app.setAppUserModelId).toHaveBeenCalledWith('com.benwendell.deepseek-desktop');
         });
     });
 
@@ -653,8 +653,8 @@ describe('MacAdapter', () => {
             };
             const template = adapter.getDockMenuTemplate(callbacks)!;
 
-            const showGemini = template.find((item) => item.label === 'Show DeepSeek');
-            showGemini?.click?.(null as any, null as any, null as any);
+            const showDeepSeek = template.find((item) => item.label === 'Show DeepSeek');
+            showDeepSeek?.click?.(null as any, null as any, null as any);
 
             expect(callbacks.restoreFromTray).toHaveBeenCalled();
         });

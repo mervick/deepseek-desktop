@@ -535,8 +535,8 @@ describe('IpcManager', () => {
             ipcManager.setupIpcHandlers();
         });
 
-        // Option A Flow: quick-chat:submit sends gemini:navigate to renderer
-        it('handles quick-chat:submit by sending gemini:navigate', async () => {
+        // Option A Flow: quick-chat:submit sends deepseek:navigate to renderer
+        it('handles quick-chat:submit by sending deepseek:navigate', async () => {
             const handler = (ipcMain as any)._listeners.get('quick-chat:submit');
             const mockMainWindow = {
                 webContents: {
@@ -551,7 +551,7 @@ describe('IpcManager', () => {
             expect(mockWindowManager.hideQuickChat).toHaveBeenCalled();
             expect(mockWindowManager.focusMainWindow).toHaveBeenCalled();
             expect(mockMainWindow.webContents.send).toHaveBeenCalledWith(
-                'gemini:navigate',
+                'deepseek:navigate',
                 expect.objectContaining({
                     requestId: expect.any(String),
                     targetTabId: expect.any(String),
@@ -569,10 +569,10 @@ describe('IpcManager', () => {
             expect(mockLogger.error).toHaveBeenCalledWith('Cannot navigate: main window not found');
         });
 
-        // Option A Flow: gemini:ready triggers injection into child frame
-        it('handles gemini:ready by injecting into iframe', async () => {
+        // Option A Flow: deepseek:ready triggers injection into child frame
+        it('handles deepseek:ready by injecting into iframe', async () => {
             const submitHandler = (ipcMain as any)._listeners.get('quick-chat:submit');
-            const handler = (ipcMain as any)._listeners.get('gemini:ready');
+            const handler = (ipcMain as any)._listeners.get('deepseek:ready');
 
             let navigatePayload: { requestId: string; targetTabId: string; text: string } | undefined;
             const mockMainWindow = {
@@ -606,9 +606,9 @@ describe('IpcManager', () => {
             expect(mockLogger.log).toHaveBeenCalledWith('Text injected into DeepSeek successfully');
         });
 
-        it('handles gemini:ready without DeepSeek view', async () => {
+        it('handles deepseek:ready without DeepSeek view', async () => {
             const submitHandler = (ipcMain as any)._listeners.get('quick-chat:submit');
-            const handler = (ipcMain as any)._listeners.get('gemini:ready');
+            const handler = (ipcMain as any)._listeners.get('deepseek:ready');
 
             let navigatePayload: { requestId: string; targetTabId: string; text: string } | undefined;
             const mockMainWindow = {
@@ -639,9 +639,9 @@ describe('IpcManager', () => {
             expect(mockLogger.error).toHaveBeenCalledWith('Cannot inject text: target tab frame not found');
         });
 
-        it('handles gemini:ready injection failure', async () => {
+        it('handles deepseek:ready injection failure', async () => {
             const submitHandler = (ipcMain as any)._listeners.get('quick-chat:submit');
-            const handler = (ipcMain as any)._listeners.get('gemini:ready');
+            const handler = (ipcMain as any)._listeners.get('deepseek:ready');
 
             let navigatePayload: { requestId: string; targetTabId: string; text: string } | undefined;
             const mockMainWindow = {
@@ -683,9 +683,9 @@ describe('IpcManager', () => {
             );
         });
 
-        it('handles gemini:ready executeJavaScript error', async () => {
+        it('handles deepseek:ready executeJavaScript error', async () => {
             const submitHandler = (ipcMain as any)._listeners.get('quick-chat:submit');
-            const handler = (ipcMain as any)._listeners.get('gemini:ready');
+            const handler = (ipcMain as any)._listeners.get('deepseek:ready');
 
             let navigatePayload: { requestId: string; targetTabId: string; text: string } | undefined;
             const mockMainWindow = {
@@ -715,7 +715,7 @@ describe('IpcManager', () => {
 
             await handler({}, { requestId: navigatePayload!.requestId, targetTabId: navigatePayload!.targetTabId });
 
-            expect(mockLogger.error).toHaveBeenCalledWith('Failed to inject text into Gemini:', expect.any(Error));
+            expect(mockLogger.error).toHaveBeenCalledWith('Failed to inject text into DeepSeek:', expect.any(Error));
         });
 
         it('handles quick-chat:hide', () => {
@@ -1382,7 +1382,7 @@ describe('IpcManager', () => {
 
         it('uses frame-name targeting without touching unrelated frame URLs', async () => {
             const submitHandler = (ipcMain as any)._listeners.get('quick-chat:submit');
-            const handler = (ipcMain as any)._listeners.get('gemini:ready');
+            const handler = (ipcMain as any)._listeners.get('deepseek:ready');
 
             let navigatePayload: { requestId: string; targetTabId: string; text: string } | undefined;
             const mockMainWindow = {

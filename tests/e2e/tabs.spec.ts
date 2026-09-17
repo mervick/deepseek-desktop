@@ -35,7 +35,7 @@ describe('Tabs E2E', () => {
             expect(activeAfter).not.toBe(activeBefore);
         }
 
-        const iframeCount = await tabBar.getGeminiIframeCount();
+        const iframeCount = await tabBar.getDeepSeekIframeCount();
         expect(iframeCount).toBeGreaterThanOrEqual(beforeCount + 1);
     });
 

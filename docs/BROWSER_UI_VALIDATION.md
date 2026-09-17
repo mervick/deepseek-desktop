@@ -19,7 +19,7 @@ When the Vite dev server is running (`npm run electron:dev`), you can view indiv
 | Quick Chat | `http://localhost:1420/src/renderer/windows/quickchat/quickchat.html` | Floating prompt UI |
 
 > [!IMPORTANT]
-> The main window (`http://localhost:1420/`) will show a broken iframe because the Gemini embed requires Electron's header stripping to work.
+> The main window (`http://localhost:1420/`) will show a broken iframe because the DeepSeek embed requires Electron's header stripping to work.
 
 ## What Works
 
@@ -43,7 +43,7 @@ When the Vite dev server is running (`npm run electron:dev`), you can view indiv
 
 The app uses Electron-specific APIs:
 
-1. **Header Stripping**: Electron's `session.webRequest.onHeadersReceived` strips `X-Frame-Options` from Gemini responses - browsers enforce these headers
+1. **Header Stripping**: Electron's `session.webRequest.onHeadersReceived` strips `X-Frame-Options` from DeepSeek responses - browsers enforce these headers
 2. **IPC Bridge**: `window.electronAPI` is exposed via Electron's `contextBridge` in the preload script
 3. **Multi-Window**: Settings/Auth/Quick Chat windows are separate `BrowserWindow` instances
 

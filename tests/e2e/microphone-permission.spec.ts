@@ -15,14 +15,13 @@
 import { browser, expect } from '@wdio/globals';
 import { waitForUIState, waitForDuration } from './helpers/waitUtilities';
 import {
-    GEMINI_MICROPHONE_BUTTON_SELECTORS,
-    GEMINI_ERROR_TOAST_SELECTORS,
-    GEMINI_MICROPHONE_ERROR_TEXT,
-    GEMINI_DOMAIN_PATTERNS,
+    DEEPSEEK_ERROR_TOAST_SELECTORS,
+    DEEPSEEK_MICROPHONE_ERROR_TEXT,
+    DEEPSEEK_DOMAIN_PATTERNS,
 } from './helpers/e2eConstants';
 
-async function findGeminiFrameInfo(): Promise<{ frameUrl: string; frameCount: number }> {
-    const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+async function findDeepSeekFrameInfo(): Promise<{ frameUrl: string; frameCount: number }> {
+    const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
     const frameInfo = await browser.electron.execute((electron: typeof import('electron'), domains: string[]) => {
         const windows = electron.BrowserWindow.getAllWindows();
@@ -32,7 +31,7 @@ async function findGeminiFrameInfo(): Promise<{ frameUrl: string; frameCount: nu
         }
 
         const frames = mainWindow.webContents.mainFrame.frames;
-        const geminiFrame = frames.find((f) => {
+        const deepseekFrame = frames.find((f) => {
             try {
                 return domains.some((domain) => f.url.includes(domain));
             } catch {
@@ -40,11 +39,11 @@ async function findGeminiFrameInfo(): Promise<{ frameUrl: string; frameCount: nu
             }
         });
 
-        if (!geminiFrame) {
+        if (!deepseekFrame) {
             return null;
         }
 
-        return { frameUrl: geminiFrame.url, frameCount: frames.length };
+        return { frameUrl: deepseekFrame.url, frameCount: frames.length };
     }, domainPatterns);
 
     if (frameInfo && typeof frameInfo.frameUrl === 'string') {
@@ -54,9 +53,8 @@ async function findGeminiFrameInfo(): Promise<{ frameUrl: string; frameCount: nu
     throw new Error('DeepSeek frame not loaded');
 }
 
-async function clickMicrophoneInGeminiFrame(): Promise<{ executed: boolean }> {
-    const micSelectors = [...GEMINI_MICROPHONE_BUTTON_SELECTORS];
-    const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+async function clickMicrophoneInDeepSeekFrame(): Promise<{ executed: boolean }> {
+    const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
     const clickResult = await browser.electron.execute(
         (electron: typeof import('electron'), micSels: string[], domains: string[]) => {
@@ -67,7 +65,7 @@ async function clickMicrophoneInGeminiFrame(): Promise<{ executed: boolean }> {
             }
 
             const frames = mainWindow.webContents.mainFrame.frames;
-            const geminiFrame = frames.find((f) => {
+            const deepseekFrame = frames.find((f) => {
                 try {
                     return domains.some((domain) => f.url.includes(domain));
                 } catch {
@@ -75,7 +73,7 @@ async function clickMicrophoneInGeminiFrame(): Promise<{ executed: boolean }> {
                 }
             });
 
-            if (!geminiFrame) {
+            if (!deepseekFrame) {
                 return null;
             }
 
@@ -94,10 +92,10 @@ async function clickMicrophoneInGeminiFrame(): Promise<{ executed: boolean }> {
             })();
           `;
 
-            geminiFrame.executeJavaScript(clickScript);
+            deepseekFrame.executeJavaScript(clickScript);
             return { executed: true };
         },
-        micSelectors,
+        [],
         domainPatterns
     );
 
@@ -114,7 +112,7 @@ describe('Microphone Permission', () => {
         await waitForUIState(
             async () => {
                 try {
-                    const iframe = await browser.$('iframe[data-testid="gemini-iframe"]');
+                    const iframe = await browser.$('iframe[data-testid="deepseek-iframe"]');
                     return await iframe.isDisplayed();
                 } catch {
                     return false;
@@ -127,7 +125,7 @@ describe('Microphone Permission', () => {
     describe('Iframe Configuration', () => {
         it('should have iframe with microphone permission attribute', async () => {
             const allowAttr = await browser.execute(() => {
-                const iframe = document.querySelector('iframe[data-testid="gemini-iframe"]');
+                const iframe = document.querySelector('iframe[data-testid="deepseek-iframe"]');
                 if (!iframe) throw new Error('Iframe not found');
                 return iframe.getAttribute('allow') || '';
             });
@@ -142,7 +140,7 @@ describe('Microphone Permission', () => {
             const frameReady = await waitForUIState(
                 async () => {
                     try {
-                        await findGeminiFrameInfo();
+                        await findDeepSeekFrameInfo();
                         return true;
                     } catch {
                         return false;
@@ -153,20 +151,20 @@ describe('Microphone Permission', () => {
 
             expect(frameReady).toBe(true);
 
-            const frameInfo = await findGeminiFrameInfo();
+            const frameInfo = await findDeepSeekFrameInfo();
 
-            expect(frameInfo.frameUrl).toContain('gemini');
+            expect(frameInfo.frameUrl).toContain('deepseek');
         });
 
         it('should not show error toast when clicking microphone button', async () => {
-            const toastSelectors = [...GEMINI_ERROR_TOAST_SELECTORS];
-            const errorText = GEMINI_MICROPHONE_ERROR_TEXT;
-            const domainPatterns = [...GEMINI_DOMAIN_PATTERNS];
+            const toastSelectors = [...DEEPSEEK_ERROR_TOAST_SELECTORS];
+            const errorText = DEEPSEEK_MICROPHONE_ERROR_TEXT;
+            const domainPatterns = [...DEEPSEEK_DOMAIN_PATTERNS];
 
             await waitForUIState(
                 async () => {
                     try {
-                        await findGeminiFrameInfo();
+                        await findDeepSeekFrameInfo();
                         return true;
                     } catch {
                         return false;
@@ -175,7 +173,7 @@ describe('Microphone Permission', () => {
                 { timeout: 15000, description: 'DeepSeek frame to be discoverable before microphone click' }
             );
 
-            const clickResult = await clickMicrophoneInGeminiFrame();
+            const clickResult = await clickMicrophoneInDeepSeekFrame();
 
             expect(clickResult.executed).toBe(true);
 
@@ -190,7 +188,7 @@ describe('Microphone Permission', () => {
                     if (!mainWindow) return false;
 
                     const frames = mainWindow.webContents.mainFrame.frames;
-                    const geminiFrame = frames.find((f) => {
+                    const deepseekFrame = frames.find((f) => {
                         try {
                             return domains.some((domain) => f.url.includes(domain));
                         } catch {
@@ -198,7 +196,7 @@ describe('Microphone Permission', () => {
                         }
                     });
 
-                    if (!geminiFrame) return false;
+                    if (!deepseekFrame) return false;
 
                     // Build toast check script
                     const selectorsJson = JSON.stringify(toastSels);
@@ -217,7 +215,7 @@ describe('Microphone Permission', () => {
 
                     // Note: executeJavaScript is async, so we can't get the result synchronously
                     // We return optimistic false here and rely on page state
-                    geminiFrame.executeJavaScript(toastScript);
+                    deepseekFrame.executeJavaScript(toastScript);
                     return false;
                 },
                 toastSelectors,

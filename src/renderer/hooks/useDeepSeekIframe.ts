@@ -4,14 +4,14 @@
  * Encapsulates loading, error, and network status logic for the DeepSeek iframe.
  * Provides a cleaner interface for App.tsx.
  *
- * @module useGeminiIframe
+ * @module useDeepSeekIframe
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useNetworkStatus } from './useNetworkStatus';
 import { createRendererLogger } from '../utils';
 
-const logger = createRendererLogger('[useGeminiIframe]');
+const logger = createRendererLogger('[useDeepSeekIframe]');
 
 /** Timeout for connectivity check (ms) */
 const CONNECTIVITY_TIMEOUT_MS = 10000;
@@ -22,7 +22,7 @@ const CONNECTIVITY_TEST_URL = 'https://chat.deepseek.com/favicon.ico';
 /**
  * State and handlers for the DeepSeek iframe.
  */
-export interface GeminiIframeState {
+export interface DeepSeekIframeState {
     /** Whether the iframe is currently loading */
     isLoading: boolean;
     /** Error message if loading failed, null otherwise */
@@ -41,7 +41,7 @@ export interface GeminiIframeState {
  * Check if DeepSeek is reachable by attempting to fetch its favicon.
  * This detects DNS failures, network issues, etc.
  */
-async function checkGeminiConnectivity(): Promise<boolean> {
+async function checkDeepSeekConnectivity(): Promise<boolean> {
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), CONNECTIVITY_TIMEOUT_MS);
@@ -64,9 +64,9 @@ async function checkGeminiConnectivity(): Promise<boolean> {
 /**
  * Custom hook for DeepSeek iframe state management.
  *
- * @returns {GeminiIframeState} State and handlers for the iframe
+ * @returns {DeepSeekIframeState} State and handlers for the iframe
  */
-export function useGeminiIframe(): GeminiIframeState {
+export function useDeepSeekIframe(): DeepSeekIframeState {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const isOnline = useNetworkStatus();
@@ -99,7 +99,7 @@ export function useGeminiIframe(): GeminiIframeState {
 
         // Perform actual connectivity check
         logger.log('Checking DeepSeek connectivity...');
-        const isReachable = await checkGeminiConnectivity();
+        const isReachable = await checkDeepSeekConnectivity();
 
         if (isReachable) {
             setIsLoading(false);

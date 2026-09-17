@@ -45,7 +45,7 @@ describe('AuthWindow', () => {
             expect(navigateCall).toBeDefined();
         });
 
-        it('auto-closes auth window when navigating to Gemini domain', () => {
+        it('auto-closes auth window when navigating to DeepSeek domain', () => {
             const win = authWindow.create('https://chat.deepseek.com');
             const navigateCall = win.webContents.on.mock.calls.find((c: any) => c[0] === 'did-navigate');
             const navigateHandler = navigateCall[1];

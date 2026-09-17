@@ -63,7 +63,7 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
             const windowManager = new WindowManager(false);
 
             // Create mock main window with webContents
-            const mockGeminiFrame = {
+            const mockDeepSeekFrame = {
                 name: 'placeholder',
                 url: 'https://chat.deepseek.com/app',
                 executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
@@ -73,7 +73,7 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
                 webContents: {
                     send: vi.fn(),
                     mainFrame: {
-                        frames: [mockGeminiFrame],
+                        frames: [mockDeepSeekFrame],
                     },
                 },
                 show: vi.fn(),
@@ -91,7 +91,7 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
             const submitListener = (ipcMain as any)._listeners.get('quick-chat:submit');
             expect(submitListener).toBeDefined();
 
-            submitListener({}, 'Hello Gemini from Quick Chat');
+            submitListener({}, 'Hello DeepSeek from Quick Chat');
 
             // Verify Quick Chat was hidden and main window focused
             expect(windowManager.hideQuickChat).toHaveBeenCalled();
@@ -99,11 +99,11 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
 
             // Verify navigate was sent to renderer
             expect(mockMainWindow.webContents.send).toHaveBeenCalledWith(
-                'gemini:navigate',
+                'deepseek:navigate',
                 expect.objectContaining({
                     requestId: expect.any(String),
                     targetTabId: expect.any(String),
-                    text: 'Hello Gemini from Quick Chat',
+                    text: 'Hello DeepSeek from Quick Chat',
                 })
             );
 
@@ -113,16 +113,16 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
                 text: string;
             };
 
-            mockGeminiFrame.name = getTabFrameName(navigatePayload.targetTabId);
+            mockDeepSeekFrame.name = getTabFrameName(navigatePayload.targetTabId);
 
-            // Step 2: Simulate gemini:ready signal (renderer signals iframe loaded)
-            const readyListener = (ipcMain as any)._listeners.get('gemini:ready');
+            // Step 2: Simulate deepseek:ready signal (renderer signals iframe loaded)
+            const readyListener = (ipcMain as any)._listeners.get('deepseek:ready');
             expect(readyListener).toBeDefined();
 
             await readyListener({}, { requestId: navigatePayload.requestId, targetTabId: navigatePayload.targetTabId });
 
             // Verify injection was executed
-            expect(mockGeminiFrame.executeJavaScript).toHaveBeenCalled();
+            expect(mockDeepSeekFrame.executeJavaScript).toHaveBeenCalled();
         });
 
         it('should handle hide and cancel operations', () => {
@@ -176,7 +176,7 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
                 targetTabId: string;
             };
 
-            const readyListener = (ipcMain as any)._listeners.get('gemini:ready');
+            const readyListener = (ipcMain as any)._listeners.get('deepseek:ready');
             await readyListener({}, { requestId: navigatePayload.requestId, targetTabId: navigatePayload.targetTabId });
 
             expect(mockLogger.error).toHaveBeenCalledWith('Cannot inject text: main window not found');

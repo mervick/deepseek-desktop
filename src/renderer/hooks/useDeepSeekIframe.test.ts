@@ -1,6 +1,6 @@
 import { renderHook, act, waitFor as _waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useGeminiIframe } from './useGeminiIframe';
+import { useDeepSeekIframe } from './useDeepSeekIframe';
 import * as useNetworkStatusModule from './useNetworkStatus';
 
 // Mock useNetworkStatus
@@ -17,7 +17,7 @@ Object.defineProperty(window, 'electronAPI', {
     configurable: true,
 });
 
-describe('useGeminiIframe', () => {
+describe('useDeepSeekIframe', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         // Default to online
@@ -27,7 +27,7 @@ describe('useGeminiIframe', () => {
     });
 
     it('initializes with loading state', () => {
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
 
         expect(result.current.isLoading).toBe(true);
         expect(result.current.error).toBeNull();
@@ -37,13 +37,13 @@ describe('useGeminiIframe', () => {
     it('provides network status from useNetworkStatus', () => {
         vi.mocked(useNetworkStatusModule.useNetworkStatus).mockReturnValue(false);
 
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
 
         expect(result.current.isOnline).toBe(false);
     });
 
     it('handleLoad sets loading to false and clears error', async () => {
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
 
         await act(async () => {
             await result.current.handleLoad();
@@ -54,7 +54,7 @@ describe('useGeminiIframe', () => {
     });
 
     it('handleError sets loading to false and sets error message', () => {
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
 
         act(() => {
             result.current.handleError();
@@ -65,7 +65,7 @@ describe('useGeminiIframe', () => {
     });
 
     it('retry clears error state, sets loading, and calls reloadTabs', () => {
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
 
         // First set error state
         act(() => {
@@ -86,7 +86,7 @@ describe('useGeminiIframe', () => {
     });
 
     it('handleLoad after error clears error state', async () => {
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
 
         // Set error
         act(() => {
@@ -105,7 +105,7 @@ describe('useGeminiIframe', () => {
     });
 
     it('provides stable callback references', () => {
-        const { result, rerender } = renderHook(() => useGeminiIframe());
+        const { result, rerender } = renderHook(() => useDeepSeekIframe());
 
         const initialHandleLoad = result.current.handleLoad;
         const initialHandleError = result.current.handleError;
@@ -119,7 +119,7 @@ describe('useGeminiIframe', () => {
     });
 
     it('network status updates are reflected', () => {
-        const { result, rerender } = renderHook(() => useGeminiIframe());
+        const { result, rerender } = renderHook(() => useDeepSeekIframe());
 
         expect(result.current.isOnline).toBe(true);
 

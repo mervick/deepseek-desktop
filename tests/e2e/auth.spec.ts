@@ -4,7 +4,7 @@
  * E2E Test: Authentication Flow
  *
  * Verifies that the "Sign in to DeepSeek" menu item opens the authentication window,
- * and that the window auto-closes on successful login (navigation to Gemini) or can be closed manually.
+ * and that the window auto-closes on successful login (navigation to DeepSeek) or can be closed manually.
  */
 
 import { browser, $, expect } from '@wdio/globals';
@@ -53,7 +53,7 @@ describe('Authentication Flow', () => {
         await authWindow.close();
     });
 
-    it('should auto-close auth window when user navigates to Gemini domain (simulated login)', async () => {
+    it('should auto-close auth window when user navigates to DeepSeek domain (simulated login)', async () => {
         // 1. Verify we start with 1 window
         const initialHandles = await browser.getWindowHandles();
         expect(initialHandles.length).toBe(1);
@@ -61,7 +61,7 @@ describe('Authentication Flow', () => {
         // 2. Open and switch to auth window
         await authWindow.openAndSwitchTo();
 
-        // 3. Simulate successful login by navigating to the Gemini URL
+        // 3. Simulate successful login by navigating to the DeepSeek URL
         await authWindow.simulateSuccessfulLogin();
 
         // 4. Wait for auth window to auto-close

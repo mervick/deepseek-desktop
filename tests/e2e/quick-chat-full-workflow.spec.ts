@@ -11,7 +11,7 @@
  * 7. Submit button is visible and clickable (NOT clicked - E2E flag prevents)
  *
  * IMPORTANT: This test clicks the REAL submit button, but the E2E flag
- * (--e2e-disable-auto-submit) prevents actual submission to Gemini.
+ * (--e2e-disable-auto-submit) prevents actual submission to DeepSeek.
  * This tests the full production code path.
  *
  * @module quick-chat-full-workflow.spec
@@ -22,7 +22,7 @@
 import { browser, expect } from '@wdio/globals';
 import { QuickChatPage } from './pages';
 import { waitForAppReady, ensureSingleWindow, switchToMainWindow, waitForWindowTransition } from './helpers/workflows';
-import { getGeminiConversationTitle, waitForTextInGeminiEditor } from './helpers/quickChatActions';
+import { getDeepSeekConversationTitle, waitForTextInDeepSeekEditor } from './helpers/quickChatActions';
 import { TabBarPage } from './pages';
 import { waitForUIState } from './helpers/waitUtilities';
 
@@ -57,7 +57,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
              * This test exercises the REAL production code path:
              * - Actually clicks the Quick Chat submit button
              * - Actually triggers the IPC flow
-             * - Actually navigates to Gemini and injects text
+             * - Actually navigates to DeepSeek and injects text
              * - Submit button is found but NOT clicked (E2E flag in ipcManager)
              *
              * This catches bugs that tests using injectTextOnly() would miss.
@@ -96,7 +96,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
 
             // Step 6: Switch to main window and wait for text injection
             // With tabbed chat, submit creates a new tab → iframe loads → 500ms delay → injection.
-            // waitForTextInGeminiEditor polls all DeepSeek frames until the expected text appears.
+            // waitForTextInDeepSeekEditor polls all DeepSeek frames until the expected text appears.
             await switchToMainWindow();
             await tabBar.waitForTabCountAtLeast(2, {
                 timeout: 8000,
@@ -179,7 +179,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                                 return { ok: false, reason: 'Main window not available' };
                             }
 
-                            const targetFrameName = `gemini-tab-${activeTabId}`;
+                            const targetFrameName = `deepseek-tab-${activeTabId}`;
                             let targetFrame = mainWindow.webContents.mainFrame.frames.find(
                                 (frame) => frame.name === targetFrameName
                             );
@@ -258,7 +258,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                                         }
 
                                         titleEl.textContent = title;
-                                        document.title = title + ' - Gemini';
+                                        document.title = title + ' - DeepSeek';
                                     })();
                                 `);
                             } catch (error) {
@@ -306,7 +306,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                 }
             );
 
-            const conversationTitle = await getGeminiConversationTitle(tabId);
+            const conversationTitle = await getDeepSeekConversationTitle(tabId);
             expect(conversationTitle).toBe(testTitle);
         });
 
@@ -355,11 +355,11 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                 async () => {
                     const buffered = (await wdioBrowser.electron.execute(async (_electron, expectedTabId: string) => {
                         const globalState = global as typeof globalThis & {
-                            __e2eGeminiReadyBuffer?: { enabled?: boolean; pending?: unknown[] };
+                            __e2eDeepSeekReadyBuffer?: { enabled?: boolean; pending?: unknown[] };
                         };
 
-                        const pending = Array.isArray(globalState.__e2eGeminiReadyBuffer?.pending)
-                            ? globalState.__e2eGeminiReadyBuffer.pending
+                        const pending = Array.isArray(globalState.__e2eDeepSeekReadyBuffer?.pending)
+                            ? globalState.__e2eDeepSeekReadyBuffer.pending
                             : [];
 
                         const hasMatching = pending.some((payload) => {
@@ -377,17 +377,17 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                 },
                 {
                     timeout: 10000,
-                    timeoutMsg: 'Expected gemini:ready to be buffered before injection',
+                    timeoutMsg: 'Expected deepseek:ready to be buffered before injection',
                 }
             );
 
             const bufferedReady = await wdioBrowser.electron.execute(async (_electron, expectedTabId: string) => {
                 const globalState = global as typeof globalThis & {
-                    __e2eGeminiReadyBuffer?: { enabled?: boolean; pending?: unknown[] };
+                    __e2eDeepSeekReadyBuffer?: { enabled?: boolean; pending?: unknown[] };
                 };
 
-                const pending = Array.isArray(globalState.__e2eGeminiReadyBuffer?.pending)
-                    ? globalState.__e2eGeminiReadyBuffer.pending
+                const pending = Array.isArray(globalState.__e2eDeepSeekReadyBuffer?.pending)
+                    ? globalState.__e2eDeepSeekReadyBuffer.pending
                     : [];
 
                 return (
@@ -423,7 +423,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                                 return { ok: false, reason: 'Main window not found' };
                             }
 
-                            const targetFrameName = `gemini-tab-${activeTabId}`;
+                            const targetFrameName = `deepseek-tab-${activeTabId}`;
                             const frames = mainWindow.webContents.mainFrame.frames;
                             const targetFrame = frames.find((frame) => frame.name === targetFrameName);
 
@@ -469,7 +469,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                         return;
                     }
 
-                    const targetFrameName = `gemini-tab-${activeTabId}`;
+                    const targetFrameName = `deepseek-tab-${activeTabId}`;
                     const frames = mainWindow.webContents.mainFrame.frames;
                     const targetFrame = frames.find((frame) => frame.name === targetFrameName);
 
@@ -512,7 +512,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                             button.textContent = 'Send';
 
                             document.body.replaceChildren(editor, button);
-                            document.title = 'Gemini - E2E';
+                            document.title = 'DeepSeek - E2E';
                         })();
                     `);
 
@@ -546,7 +546,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                 globalState.__e2eQuickChatHandler?.flushE2EBufferedReady?.();
             });
 
-            const editorState = await waitForTextInGeminiEditor(testMessage, 15000, enterTabId);
+            const editorState = await waitForTextInDeepSeekEditor(testMessage, 15000, enterTabId);
 
             expect(editorState.iframeFound).toBe(true);
             expect(editorState.editorFound).toBe(true);

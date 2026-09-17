@@ -9,7 +9,7 @@
  * 2. Direct navigation attempts to external URLs are blocked
  *
  * NOTE: DOM injection is used to create test links because there are no
- * guaranteed external links in the Gemini UI. This is an accepted pattern
+ * guaranteed external links in the DeepSeek UI. This is an accepted pattern
  * for security boundary testing.
  *
  * Cross-platform: Windows, macOS, Linux

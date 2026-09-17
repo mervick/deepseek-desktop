@@ -108,9 +108,9 @@ const mockElectronAPI = {
     cancelQuickChat: vi.fn(),
     onQuickChatExecute: vi.fn().mockReturnValue(() => {}),
 
-    // Gemini Iframe Navigation API
-    onGeminiNavigate: vi.fn().mockReturnValue(() => {}),
-    signalGeminiReady: vi.fn(),
+    // DeepSeek Iframe Navigation API
+    onDeepSeekNavigate: vi.fn().mockReturnValue(() => {}),
+    signalDeepSeekReady: vi.fn(),
     reloadTabs: vi.fn(),
     setTabMenuOpen: vi.fn(),
 
@@ -136,7 +136,7 @@ const mockElectronAPI = {
     getLastUpdateCheckTime: vi.fn().mockResolvedValue(Date.now()),
 
     // Tray API
-    getTrayTooltip: vi.fn().mockResolvedValue('Gemini'),
+    getTrayTooltip: vi.fn().mockResolvedValue('DeepSeek'),
 
     // Text Prediction API
     getTextPredictionEnabled: vi.fn().mockResolvedValue(false),

@@ -19,9 +19,8 @@ import {
     isOAuthDomain,
     getDevUrl,
     READY_TO_SHOW_FALLBACK_MS,
-    GEMINI_RESPONSE_API_PATTERN,
     IPC_CHANNELS,
-    isGeminiDomain,
+    isDeepSeekDomain,
 } from '../utils/constants';
 import SettingsStore from '../store';
 import { getIconPath, getDistHtmlPath } from '../utils/paths';
@@ -52,12 +51,6 @@ export default class MainWindow extends BaseWindow {
 
     /** Callback to close auth window when closing main window */
     private closeAuthWindowCallback?: () => void;
-
-    /** Debounce cooldown in milliseconds for response-complete events */
-    private static readonly RESPONSE_DEBOUNCE_MS = 1000;
-
-    /** Timestamp of the last response-complete event (for debouncing) */
-    private lastResponseCompleteTime = 0;
 
     /** Timestamp of the last fullscreen toggle (to prevent double F11 triggers) */
     private lastFullscreenToggleTime = 0;
@@ -148,7 +141,6 @@ export default class MainWindow extends BaseWindow {
         this.setupNavigationHandler();
         this.setupCloseHandler();
         this.setupCrashHandlers();
-        this.setupResponseDetection();
         this.setupTabShortcutForwarding();
         this.setupFrameLoadHandler();
         this.setupFullscreenHandlers();
@@ -459,86 +451,6 @@ export default class MainWindow extends BaseWindow {
         return this.window?.isAlwaysOnTop() ?? false;
     }
 
-    /** Delay in milliseconds before enabling response detection after page load */
-    private static readonly RESPONSE_DETECTION_STARTUP_DELAY_MS = 10000;
-
-    /** Whether response detection is active (disabled during startup) */
-    private responseDetectionActive = false;
-
-    /**
-     * Set up response detection to monitor when DeepSeek finishes generating a response.
-     * Uses network request monitoring to detect streaming completion.
-     * Emits 'response-complete' event with debouncing to prevent rapid-fire notifications.
-     *
-     * Note: Detection is delayed until after page load + startup delay to avoid
-     * false positives from initial page load network requests.
-     */
-    private setupResponseDetection(): void {
-        if (!this.window) return;
-
-        // Wait for page to finish loading before enabling response detection
-        // This prevents false positives from initial page load network requests
-        this.window.webContents.once('did-finish-load', () => {
-            this.logger.log(
-                `Response detection will activate in ${MainWindow.RESPONSE_DETECTION_STARTUP_DELAY_MS / 1000}s`
-            );
-
-            setTimeout(() => {
-                this.responseDetectionActive = true;
-                this.logger.log('Response detection now active');
-            }, MainWindow.RESPONSE_DETECTION_STARTUP_DELAY_MS);
-        });
-
-        // Monitor DeepSeek's streaming API endpoints for response completion
-        // The BardChatUi endpoint handles chat streaming responses
-        const deepSeekApiFilter = {
-            urls: [GEMINI_RESPONSE_API_PATTERN],
-        };
-        // Store filter for cleanup (Task 12.8)
-        this.responseDetectionFilter = deepSeekApiFilter;
-
-        // Task 12.8: Store listener reference for potential cleanup
-        // Task 12.9: Wrap registration in try/catch for robustness
-        try {
-            this.responseDetectionListener = (details: Electron.OnCompletedListenerDetails) => {
-                // Skip if response detection is not yet active (during startup)
-                if (!this.responseDetectionActive) {
-                    return;
-                }
-
-                // Only process successful streaming response completions
-                if (details.statusCode !== 200) {
-                    return;
-                }
-
-                // Apply debouncing to prevent rapid notifications
-                const now = Date.now();
-                if (now - this.lastResponseCompleteTime < MainWindow.RESPONSE_DEBOUNCE_MS) {
-                    // Only log in dev/CI mode to avoid main thread overhead in production
-                    if (this.isDev || process.env.CI) {
-                        this.logger.debug('Response-complete debounced');
-                    }
-                    return;
-                }
-
-                this.lastResponseCompleteTime = now;
-                this.logger.debug('Response complete detected, emitting event');
-                // Task 12.3: wrap emit in try/catch to prevent listener exceptions from crashing
-                try {
-                    this.emit('response-complete');
-                } catch (error) {
-                    this.logger.error('Error in response-complete listener:', error);
-                }
-            };
-
-            session.defaultSession.webRequest.onCompleted(deepSeekApiFilter, this.responseDetectionListener);
-        } catch (error) {
-            this.logger.error('Failed to set up response detection:', error);
-        }
-
-        this.logger.log('Response detection initialized (will activate after page load + delay)');
-    }
-
     private resolveTabShortcutPayload(input: Electron.Input): TabShortcutPayload | null {
         if (input.isAutoRepeat) {
             return null;
@@ -627,7 +539,7 @@ export default class MainWindow extends BaseWindow {
 
         // Pipe subframe console messages to Electron main process terminal
         this.window.webContents.on('console-message', (_event, _level, message, line, _sourceId) => {
-            if (message.includes('[GeminiDesktop]') || message.includes('[GeminiEnter]')) {
+            if (message.includes('[DeepSeekDesktop]') || message.includes('[DeepSeekEnter]')) {
                 this.logger.log(`[Iframe Console] ${message} (line ${line})`);
             }
         });
@@ -642,9 +554,9 @@ export default class MainWindow extends BaseWindow {
                 const url = frame.url;
                 if (!url) return;
 
-                if (isGeminiDomain(url)) {
+                if (isDeepSeekDomain(url)) {
                     this.logger.log(`DeepSeek frame loaded, checking script injection status for: ${url}`);
-                    this.injectGeminiScripts(frame);
+                    this.injectDeepSeekScripts(frame);
                 }
             } catch (error) {
                 this.logger.error('Error in did-frame-finish-load handler:', error);
@@ -670,10 +582,10 @@ export default class MainWindow extends BaseWindow {
     }
 
     /**
-     * Inject custom client side scripts (Smart Enter / Scroll-to-Bottom button) into the Gemini subframe.
+     * Inject custom client side scripts (Smart Enter / Scroll-to-Bottom button) into the DeepSeek subframe.
      * Checks user preferences from store before injecting.
      */
-    private injectGeminiScripts(frame: Electron.WebFrameMain): void {
+    private injectDeepSeekScripts(frame: Electron.WebFrameMain): void {
         try {
             const preferencesStore = new SettingsStore<Record<string, unknown>>({
                 configName: 'user-preferences',
@@ -690,19 +602,19 @@ export default class MainWindow extends BaseWindow {
             const injectionScript = `
 (function() {
     'use strict';
-    
+
     // Prevent duplicate injections
-    if (window.__geminiDesktopInjected) {
-        console.log('[GeminiDesktop] Scripts already injected.');
+    if (window.__deepseekDesktopInjected) {
+        console.log('[DeepSeekDesktop] Scripts already injected.');
         return;
     }
-    window.__geminiDesktopInjected = true;
+    window.__deepseekDesktopInjected = true;
 
     const smartEnterEnabled = ${smartEnterEnabled};
     const scrollToBottomButtonEnabled = ${scrollToBottomButtonEnabled};
 
-    console.log('[GeminiDesktop] Smart Enter enabled:', smartEnterEnabled);
-    console.log('[GeminiDesktop] Scroll to Bottom button enabled:', scrollToBottomButtonEnabled);
+    console.log('[DeepSeekDesktop] Smart Enter enabled:', smartEnterEnabled);
+    console.log('[DeepSeekDesktop] Scroll to Bottom button enabled:', scrollToBottomButtonEnabled);
 
     // ==========================================
     // Helper Functions (Shadow DOM Support)
@@ -710,15 +622,15 @@ export default class MainWindow extends BaseWindow {
     function querySelectorDeep(selector, root = document) {
         const el = root.querySelector(selector);
         if (el) return el;
-        
+
         const queue = [root];
         while (queue.length > 0) {
             const node = queue.shift();
             if (!node) continue;
-            
+
             const found = node.querySelector(selector);
             if (found) return found;
-            
+
             if (node.children) {
                 for (let i = 0; i < node.children.length; i++) {
                     queue.push(node.children[i]);
@@ -745,7 +657,7 @@ export default class MainWindow extends BaseWindow {
         const tagName = el.tagName;
         if (tagName === 'TEXTAREA' || tagName === 'INPUT') return true;
         if (el.isContentEditable) return true;
-        
+
         let current = el;
         while (current) {
             if (current.isContentEditable) return true;
@@ -776,8 +688,8 @@ export default class MainWindow extends BaseWindow {
     }
 
     function isInputEmpty(container = document) {
-        const textarea = querySelectorDeep('.ql-editor', container) || 
-                         querySelectorDeep('textarea', container) || 
+        const textarea = querySelectorDeep('.ql-editor', container) ||
+                         querySelectorDeep('textarea', container) ||
                          querySelectorDeep('[contenteditable="true"][role="textbox"]', container) ||
                          querySelectorDeep('[contenteditable]', container);
         if (!textarea) return true;
@@ -791,7 +703,7 @@ export default class MainWindow extends BaseWindow {
 
     function findInputContainer(activeEl) {
         if (!activeEl) return document;
-        
+
         let current = activeEl;
         while (current) {
             const hasSend = querySelectorDeep('button[aria-label="Send message"]', current) ||
@@ -802,7 +714,7 @@ export default class MainWindow extends BaseWindow {
             if (hasSend) {
                 return current;
             }
-            
+
             if (current.parentNode) {
                 current = current.parentNode;
             } else if (current.host) {
@@ -850,21 +762,21 @@ export default class MainWindow extends BaseWindow {
             if (querySelectorDeep('.loading-spinner', container)) return true;
             if (querySelectorDeep('progress', container)) return true;
             if (querySelectorDeep('.xap-uploader-dropzone', container)?.querySelector('.mdc-circular-progress--indeterminate')) return true;
-            
+
             // Check for un-loaded images
             const img = querySelectorDeep('img', container);
             if (img && img.naturalWidth === 0) return true;
-            
+
             // Check loading classes
             if (querySelectorDeep('.loading', container)) return true;
             if (querySelectorDeep('[class*="loading"]', container)) return true;
-            
+
             // If button is disabled and there is an attachment/text, it is likely uploading
             const btn = findSubmitButton(container);
             if (btn && (btn.disabled || btn.getAttribute('aria-disabled') === 'true')) {
                 return true;
             }
-            
+
             return false;
         }
 
@@ -878,13 +790,13 @@ export default class MainWindow extends BaseWindow {
                     btn.click();
                     enterQueued = false;
                     clearInterval(retry);
-                    console.log('[GeminiDesktop] Submitted queued message.');
+                    console.log('[DeepSeekDesktop] Submitted queued message.');
                     return;
                 }
                 if (attempts > 30) {
                     enterQueued = false;
                     clearInterval(retry);
-                    console.warn('[GeminiDesktop] Button stayed disabled after 30 attempts.');
+                    console.warn('[DeepSeekDesktop] Button stayed disabled after 30 attempts.');
                 }
             }, 150);
         }
@@ -896,14 +808,14 @@ export default class MainWindow extends BaseWindow {
                 if (!enterQueued) { clearInterval(poll); return; }
                 if (!isUploading(container)) {
                     clearInterval(poll);
-                    console.log('[GeminiDesktop] Upload complete, triggering submission.');
+                    console.log('[DeepSeekDesktop] Upload complete, triggering submission.');
                     retrySubmit(container);
                     return;
                 }
                 if (elapsed > 30000) { // 30s timeout
                     enterQueued = false;
                     clearInterval(poll);
-                    console.warn('[GeminiDesktop] Upload timed out.');
+                    console.warn('[DeepSeekDesktop] Upload timed out.');
                 }
             }, 100);
         }
@@ -913,7 +825,7 @@ export default class MainWindow extends BaseWindow {
 
             const active = getActiveElementDeep();
             const target = e.target;
-            
+
             const excludeTags = ['BUTTON', 'A', 'SELECT', 'OPTION'];
             const excludeRoles = ['button', 'link', 'menuitem', 'tab', 'checkbox', 'radio', 'switch'];
             const isExcluded = (el) => {
@@ -923,7 +835,7 @@ export default class MainWindow extends BaseWindow {
                     const role = el.getAttribute('role');
                     if (role && excludeRoles.includes(role)) return true;
                 }
-                
+
                 // Cross Shadow DOM boundary when checking closest role="dialog"
                 let current = el;
                 while (current) {
@@ -943,19 +855,19 @@ export default class MainWindow extends BaseWindow {
 
             const ignored = isExcluded(active) || isExcluded(target);
 
-            console.log('[GeminiDesktop] Enter KeyDown event. ' + 
-                        'Target: ' + (target ? target.tagName : 'null') + 
+            console.log('[DeepSeekDesktop] Enter KeyDown event. ' +
+                        'Target: ' + (target ? target.tagName : 'null') +
                         ' (class="' + (target ? target.className : '') + '"' +
                         ' contenteditable="' + (target ? target.getAttribute('contenteditable') : '') + '"' +
                         ' isContentEditable=' + (target ? target.isContentEditable : 'false') + '), ' +
-                        'Active: ' + (active ? active.tagName : 'null') + 
+                        'Active: ' + (active ? active.tagName : 'null') +
                         ' (class="' + (active ? active.className : '') + '"' +
                         ' contenteditable="' + (active ? active.getAttribute('contenteditable') : '') + '"' +
                         ' isContentEditable=' + (active ? active.isContentEditable : 'false') + '), ' +
                         'ignored: ' + ignored);
 
             if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) {
-                console.log('[GeminiDesktop] Modifier key pressed, ignoring.');
+                console.log('[DeepSeekDesktop] Modifier key pressed, ignoring.');
                 return;
             }
 
@@ -977,22 +889,22 @@ export default class MainWindow extends BaseWindow {
             };
 
             if (active && isEditable(active) && !isPromptEditor(active)) {
-                console.log('[GeminiDesktop] Enter pressed in another input element, ignoring.');
+                console.log('[DeepSeekDesktop] Enter pressed in another input element, ignoring.');
                 return;
             }
 
             // Always try to find the actual prompt editor to locate the scoped input container
-            const editor = querySelectorDeep('.ql-editor') || 
-                           querySelectorDeep('textarea') || 
+            const editor = querySelectorDeep('.ql-editor') ||
+                           querySelectorDeep('textarea') ||
                            querySelectorDeep('[contenteditable="true"][role="textbox"]');
-            const container = (editor ? findInputContainer(editor) : null) || 
-                              findInputContainer(target) || 
+            const container = (editor ? findInputContainer(editor) : null) ||
+                              findInputContainer(target) ||
                               findInputContainer(active);
             const empty = isInputEmpty(container);
             const attached = hasAttachment(container);
             const uploading = isUploading(container);
 
-            console.log('[GeminiDesktop] Queue checks:', {
+            console.log('[DeepSeekDesktop] Queue checks:', {
                 empty,
                 attached,
                 uploading,
@@ -1000,7 +912,7 @@ export default class MainWindow extends BaseWindow {
             });
 
             if ((!empty || attached) && uploading) {
-                console.log('[GeminiDesktop] Submission intercepted & queued.');
+                console.log('[DeepSeekDesktop] Submission intercepted & queued.');
                 e.preventDefault();
                 e.stopPropagation();
                 if (!enterQueued) {
@@ -1008,7 +920,7 @@ export default class MainWindow extends BaseWindow {
                     pollForUploadDone(container);
                 }
             } else {
-                console.log('[GeminiDesktop] Not queued. (Not uploading or input completely empty with no attachments)');
+                console.log('[DeepSeekDesktop] Not queued. (Not uploading or input completely empty with no attachments)');
             }
         }, true);
     }
@@ -1031,7 +943,7 @@ export default class MainWindow extends BaseWindow {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 lineHeight: '1', transition: 'opacity 0.2s'
             });
-            
+
             btn.addEventListener('click', () => {
                 const containers = document.querySelectorAll('*');
                 for (const el of containers) {
@@ -1042,7 +954,7 @@ export default class MainWindow extends BaseWindow {
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             });
             document.body.appendChild(btn);
-            console.log('[GeminiDesktop] Scroll button added.');
+            console.log('[DeepSeekDesktop] Scroll button added.');
         }
 
         const observer = new MutationObserver(() => {
@@ -1060,7 +972,7 @@ export default class MainWindow extends BaseWindow {
                 this.logger.error('Failed to execute injection script in DeepSeek frame:', error);
             });
         } catch (error) {
-            this.logger.error('Error during Gemini script injection:', error);
+            this.logger.error('Error during DeepSeek script injection:', error);
         }
     }
 }

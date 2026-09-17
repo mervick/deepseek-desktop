@@ -12,7 +12,7 @@ describe('OfflineOverlay', () => {
     it('renders offline message', () => {
         render(<OfflineOverlay />);
         expect(screen.getByText('Network Unavailable')).toBeInTheDocument();
-        expect(screen.getByText('Please check your internet connection to continue using Gemini.')).toBeInTheDocument();
+        expect(screen.getByText('Please check your internet connection to continue using DeepSeek.')).toBeInTheDocument();
     });
 
     it('renders offline icon', () => {

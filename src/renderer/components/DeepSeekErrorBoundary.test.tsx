@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GeminiErrorBoundary } from './GeminiErrorBoundary';
+import { DeepSeekErrorBoundary } from './DeepSeekErrorBoundary';
 
 // Component that throws an error for testing
 const ThrowError = ({ shouldThrow }: { shouldThrow?: boolean }) => {
@@ -10,7 +10,7 @@ const ThrowError = ({ shouldThrow }: { shouldThrow?: boolean }) => {
     return <div>Working component</div>;
 };
 
-describe('GeminiErrorBoundary', () => {
+describe('DeepSeekErrorBoundary', () => {
     // Suppress console.error during tests
     const originalError = console.error;
     beforeEach(() => {
@@ -23,9 +23,9 @@ describe('GeminiErrorBoundary', () => {
 
     it('renders children when there is no error', () => {
         render(
-            <GeminiErrorBoundary>
+            <DeepSeekErrorBoundary>
                 <div data-testid="child">Child content</div>
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
         expect(screen.getByTestId('child')).toBeInTheDocument();
@@ -34,21 +34,21 @@ describe('GeminiErrorBoundary', () => {
 
     it('renders default error fallback when error is caught', () => {
         render(
-            <GeminiErrorBoundary>
+            <DeepSeekErrorBoundary>
                 <ThrowError shouldThrow={true} />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
-        expect(screen.getByTestId('gemini-error-fallback')).toBeInTheDocument();
-        expect(screen.getByText("Gemini couldn't load")).toBeInTheDocument();
-        expect(screen.getByText('There was a problem displaying the Gemini interface.')).toBeInTheDocument();
+        expect(screen.getByTestId('deepseek-error-fallback')).toBeInTheDocument();
+        expect(screen.getByText("DeepSeek couldn't load")).toBeInTheDocument();
+        expect(screen.getByText('There was a problem displaying the DeepSeek interface.')).toBeInTheDocument();
     });
 
     it('displays error message in technical details', () => {
         render(
-            <GeminiErrorBoundary>
+            <DeepSeekErrorBoundary>
                 <ThrowError shouldThrow={true} />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
         expect(screen.getByText('Technical Details')).toBeInTheDocument();
@@ -63,9 +63,9 @@ describe('GeminiErrorBoundary', () => {
         });
 
         render(
-            <GeminiErrorBoundary>
+            <DeepSeekErrorBoundary>
                 <ThrowError shouldThrow={true} />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
         const reloadButton = screen.getByRole('button', { name: /reload/i });
@@ -79,23 +79,23 @@ describe('GeminiErrorBoundary', () => {
         const customFallback = <div data-testid="custom-fallback">Custom error message</div>;
 
         render(
-            <GeminiErrorBoundary fallback={customFallback}>
+            <DeepSeekErrorBoundary fallback={customFallback}>
                 <ThrowError shouldThrow={true} />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
         expect(screen.getByTestId('custom-fallback')).toBeInTheDocument();
         expect(screen.getByText('Custom error message')).toBeInTheDocument();
-        expect(screen.queryByTestId('gemini-error-fallback')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('deepseek-error-fallback')).not.toBeInTheDocument();
     });
 
     it('calls onError callback when error is caught', () => {
         const onErrorMock = vi.fn();
 
         render(
-            <GeminiErrorBoundary onError={onErrorMock}>
+            <DeepSeekErrorBoundary onError={onErrorMock}>
                 <ThrowError shouldThrow={true} />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
         expect(onErrorMock).toHaveBeenCalled();
@@ -111,9 +111,9 @@ describe('GeminiErrorBoundary', () => {
         const onErrorMock = vi.fn();
 
         render(
-            <GeminiErrorBoundary onError={onErrorMock}>
+            <DeepSeekErrorBoundary onError={onErrorMock}>
                 <ThrowError shouldThrow={true} />
-            </GeminiErrorBoundary>
+            </DeepSeekErrorBoundary>
         );
 
         const errorArg = onErrorMock.mock.calls[0][0];

@@ -27,13 +27,11 @@ The project uses **npm** for package management and **Vitest** + **WebdriverIO**
 - `npm run test:watch` - Run unit tests in watch mode
 - `npm run test:electron` - Run electron-specific unit tests
 - `npm run test:coordinated` - Run coordinated multi-window tests
-- `npm run test:e2e` - Run E2E tests sequentially
 - `npm run test:all` - Run all test suites
 
 **Running a Single Test:**
 
 - **Vitest:** `npx vitest tests/unit/shared/hotkeys.test.ts` (or any path)
-- **WDIO (E2E):** `npm run test:e2e:spec -- --spec=tests/e2e/auth.spec.ts`
 - **WDIO (Integration):** `npm run test:integration -- --spec=tests/integration/your-test.integration.test.ts`
 
 **Headless ARM Linux Notes:**
@@ -75,7 +73,7 @@ import './App.css';
 ### 3. Naming Conventions
 
 - **Components:** `PascalCase` (e.g., `ToastContainer.tsx`).
-- **Hooks:** `camelCase` with `use` prefix (e.g., `useGeminiIframe.ts`).
+- **Hooks:** `camelCase` with `use` prefix (e.g., `useDeepSeekIframe.ts`).
 - **Functions/Variables:** `camelCase`.
 - **Constants:** `SCREAMING_SNAKE_CASE`.
 - **Types/Interfaces:** `PascalCase`. Prefer `type` for simple definitions and `interface` for complex objects.
@@ -84,7 +82,7 @@ import './App.css';
 
 - Use the custom logger: `import { createLogger } from './utils/logger';`
 - Always log errors with context: `logger.error('Failed to initialize tray:', error);`
-- Use React **Error Boundaries** (`GeminiErrorBoundary`) to wrap risky UI sections.
+- Use React **Error Boundaries** (`DeepSeekErrorBoundary`) to wrap risky UI sections.
 - Main process: Handle `uncaughtException` and `unhandledRejection` (already implemented in `main.ts`).
 
 ### 5. Types
@@ -121,7 +119,6 @@ import './App.css';
     - `integration/`: WDIO integration tests for real Electron cross-boundary behavior.
     - `coordinated/`: Vitest tests for multi-window coordination.
     - `shared/`: Shared WDIO test infrastructure (wait utilities, timing constants, logging).
-    - `e2e/`: WDIO End-to-End tests.
 
 For a full architecture deep-dive (managers, IPC handler pattern, data stores, security model), see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 If you need help deciding which doc to read next, use [docs/AI_AGENT_DOC_INDEX.md](docs/AI_AGENT_DOC_INDEX.md).
@@ -191,7 +188,7 @@ AI agents should actively avoid the following patterns, as they violate the proj
 - **DO NOT** use `browser.pause()` in E2E tests for waiting. Always use explicit conditions with `browser.waitUntil()` or similar deterministic waits.
 - **DO NOT** add Node.js APIs (like `fs`, `path`, `child_process`) directly into the Renderer process. They must be exposed safely via the `preload.ts` bridge and typed in IPC channels.
 - **DO NOT** duplicate WDIO configurations. Standalone config files should extend `wdio.base.conf.js`.
-- **DO NOT** bypass `GeminiErrorBoundary` for risky UI sections; always ensure appropriate React error boundaries are established.
+- **DO NOT** bypass `DeepSeekErrorBoundary` for risky UI sections; always ensure appropriate React error boundaries are established.
 
 ---
 
@@ -211,7 +208,7 @@ If you are an AI assistant (like GitHub Copilot, Cursor, Windsurf, or a custom a
 - **DeepSeek Web App:** Each tab loads `https://chat.deepseek.com/` as a top-level `WebContentsView` over the React shell. The main process owns tab views and the renderer supplies their bounds.
 - **Quick Chat:** Spotlight-style floating window activated by global hotkey (`Ctrl+Shift+Alt+Space`) for quick prompts.
 - **Peek and Hide:** Instantly hide app to system tray via hotkey (`Ctrl+Shift+Space`).
-- **Session Persistence:** Google auth sessions stored in Chromium's encrypted cookie storage via `persist:gemini` partition.
+- **Session Persistence:** Google auth sessions stored in Chromium's encrypted cookie storage via `persist:deepseek` partition.
 
 ---
 

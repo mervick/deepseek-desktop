@@ -1,9 +1,9 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { createRendererLogger } from '../utils';
 
-const logger = createRendererLogger('[GeminiErrorBoundary]');
+const logger = createRendererLogger('[DeepSeekErrorBoundary]');
 
-interface GeminiErrorBoundaryProps {
+interface DeepSeekErrorBoundaryProps {
     children: ReactNode;
     /** Custom fallback to render on error */
     fallback?: ReactNode;
@@ -11,7 +11,7 @@ interface GeminiErrorBoundaryProps {
     onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-interface GeminiErrorBoundaryState {
+interface DeepSeekErrorBoundaryState {
     hasError: boolean;
     error?: Error;
 }
@@ -23,10 +23,10 @@ interface GeminiErrorBoundaryState {
  * a more specific error message than the global ErrorBoundary.
  * Also allows a custom fallback and error callback.
  */
-export class GeminiErrorBoundary extends Component<GeminiErrorBoundaryProps, GeminiErrorBoundaryState> {
+export class DeepSeekErrorBoundary extends Component<DeepSeekErrorBoundaryProps, DeepSeekErrorBoundaryState> {
     private unsubscribeDebug?: () => void;
 
-    constructor(props: GeminiErrorBoundaryProps) {
+    constructor(props: DeepSeekErrorBoundaryProps) {
         super(props);
         this.state = { hasError: false, error: undefined };
     }
@@ -45,7 +45,7 @@ export class GeminiErrorBoundary extends Component<GeminiErrorBoundaryProps, Gem
 
         // Expose direct trigger for E2E tests (bypasses IPC channel complexity)
         // @ts-expect-error: dynamic E2E trigger key is attached to window only in test runtime
-        window.__GEMINI_TRIGGER_FATAL_ERROR__ = () => {
+        window.__DEEPSEEK_TRIGGER_FATAL_ERROR__ = () => {
             this.setState({
                 hasError: true,
                 error: new Error('Global Trigger Manual Error'),
@@ -57,12 +57,12 @@ export class GeminiErrorBoundary extends Component<GeminiErrorBoundaryProps, Gem
         this.unsubscribeDebug?.();
     }
 
-    static getDerivedStateFromError(error: Error): GeminiErrorBoundaryState {
+    static getDerivedStateFromError(error: Error): DeepSeekErrorBoundaryState {
         return { hasError: true, error };
     }
 
     componentDidCatch(error: Error, info: ErrorInfo): void {
-        logger.error('Gemini content error:', {
+        logger.error('DeepSeek content error:', {
             error,
             componentStack: info.componentStack,
             timestamp: new Date().toISOString(),
@@ -85,10 +85,10 @@ export class GeminiErrorBoundary extends Component<GeminiErrorBoundaryProps, Gem
             }
 
             return (
-                <div className="gemini-error-fallback" data-testid="gemini-error-fallback">
-                    <div className="gemini-error-content">
-                        <h3>Gemini couldn&apos;t load</h3>
-                        <p>There was a problem displaying the Gemini interface.</p>
+                <div className="deepseek-error-fallback" data-testid="deepseek-error-fallback">
+                    <div className="deepseek-error-content">
+                        <h3>DeepSeek couldn&apos;t load</h3>
+                        <p>There was a problem displaying the DeepSeek interface.</p>
                         {this.state.error && (
                             <details>
                                 <summary>Technical Details</summary>

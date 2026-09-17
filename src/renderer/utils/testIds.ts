@@ -15,7 +15,7 @@ export const APP_TEST_IDS = {
     WEBVIEW_CONTAINER: 'webview-container',
     WEBVIEW_LOADING: 'webview-loading',
     WEBVIEW_ERROR: 'webview-error',
-    GEMINI_IFRAME: 'gemini-iframe',
+    DEEPSEEK_IFRAME: 'deepseek-iframe',
 } as const;
 
 // =============================================================================

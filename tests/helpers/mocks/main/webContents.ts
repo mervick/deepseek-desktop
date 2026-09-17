@@ -44,14 +44,14 @@ export interface MockWebContentsOptions {
     withScrollCapture?: boolean;
 
     /**
-     * Mock scroll height for the gemini iframe.
+     * Mock scroll height for the deepseek iframe.
      * Only used when withScrollCapture is true.
      * @default 800
      */
     scrollHeight?: number;
 
     /**
-     * Mock client height (viewport height) for the gemini iframe.
+     * Mock client height (viewport height) for the deepseek iframe.
      * Only used when withScrollCapture is true.
      * @default 1000
      */
@@ -171,8 +171,8 @@ export function createMockWebContents(options: MockWebContentsOptions = {}): Moc
         };
 
         // Create mock frame for iframe scroll info
-        const mockGeminiFrame = {
-            name: 'gemini-tab-0',
+        const mockDeepSeekFrame = {
+            name: 'deepseek-tab-0',
             url: 'https://chat.deepseek.com/app',
             executeJavaScript: vi.fn().mockResolvedValue({
                 scrollHeight,
@@ -184,7 +184,7 @@ export function createMockWebContents(options: MockWebContentsOptions = {}): Moc
         mock.capturePage = vi.fn().mockResolvedValue(mockImage);
         mock.printToPDF = vi.fn().mockResolvedValue(Buffer.from('mock-pdf'));
         mock.mainFrame = {
-            frames: [mockGeminiFrame],
+            frames: [mockDeepSeekFrame],
         };
     }
 

@@ -1,10 +1,10 @@
 /**
  * E2E Test: Webview Content Verification
  *
- * Tests that the Gemini webview loads and functions correctly.
+ * Tests that the DeepSeek webview loads and functions correctly.
  *
  * Verifies:
- * 1. Gemini.deepseek.com actually loads in the webview
+ * 1. DeepSeek.deepseek.com actually loads in the webview
  * 2. Webview responds to navigation
  * 3. Webview content security (sandbox enabled, CSP)
  *
@@ -27,8 +27,8 @@ import { waitForUIState, waitForDuration } from './helpers/waitUtilities';
 async function getWebviewInfo(): Promise<{
     hasWebview: boolean;
     frameCount: number;
-    geminiFrameFound: boolean;
-    geminiUrl: string | null;
+    deepseekFrameFound: boolean;
+    deepseekUrl: string | null;
 }> {
     return browser.electron.execute((electron: typeof import('electron')) => {
         const windows = electron.BrowserWindow.getAllWindows();
@@ -38,8 +38,8 @@ async function getWebviewInfo(): Promise<{
             return {
                 hasWebview: false,
                 frameCount: 0,
-                geminiFrameFound: false,
-                geminiUrl: null,
+                deepseekFrameFound: false,
+                deepseekUrl: null,
             };
         }
 
@@ -47,7 +47,7 @@ async function getWebviewInfo(): Promise<{
         const frames = webContents.mainFrame.frames;
 
         // Find DeepSeek frame (uses proper URL parsing to prevent substring bypass)
-        const geminiFrame = frames.find((frame) => {
+        const deepseekFrame = frames.find((frame) => {
             try {
                 const hostname = new URL(frame.url).hostname;
                 return hostname === 'chat.deepseek.com' || hostname.endsWith('.chat.deepseek.com');
@@ -59,8 +59,8 @@ async function getWebviewInfo(): Promise<{
         return {
             hasWebview: frames.length > 0,
             frameCount: frames.length,
-            geminiFrameFound: !!geminiFrame,
-            geminiUrl: geminiFrame?.url ?? null,
+            deepseekFrameFound: !!deepseekFrame,
+            deepseekUrl: deepseekFrame?.url ?? null,
         };
     });
 }
@@ -113,7 +113,7 @@ describe('Webview Content Verification', () => {
             expect(isDisplayed).toBe(true);
         });
 
-        it('should have at least one frame (for Gemini content)', async () => {
+        it('should have at least one frame (for DeepSeek content)', async () => {
             const info = await getWebviewInfo();
 
             expect(info.hasWebview).toBe(true);
@@ -121,7 +121,7 @@ describe('Webview Content Verification', () => {
         });
     });
 
-    describe('Gemini Content Loading', () => {
+    describe('DeepSeek Content Loading', () => {
         it('should load DeepSeek view (may be flaky due to network)', async () => {
             // Wait for content to load (give network time)
             await waitForUIState(
@@ -135,13 +135,13 @@ describe('Webview Content Verification', () => {
             const info = await getWebviewInfo();
 
             // Log the result regardless of pass/fail for debugging
-            if (info.geminiUrl) {
-                expect(info.geminiUrl).toContain('chat.deepseek.com');
+            if (info.deepseekUrl) {
+                expect(info.deepseekUrl).toContain('chat.deepseek.com');
             }
 
             // NOTE: This may fail in CI without network access
             // We use a soft assertion pattern here
-            if (!info.geminiFrameFound) {
+            if (!info.deepseekFrameFound) {
                 console.warn('[E2E] DeepSeek frame not found - may be network issue');
             }
 
@@ -149,19 +149,19 @@ describe('Webview Content Verification', () => {
             expect(info.hasWebview).toBe(true);
         });
 
-        it('should have valid Gemini URL when frame is loaded', async () => {
+        it('should have valid DeepSeek URL when frame is loaded', async () => {
             await waitForUIState(
                 async () => {
                     const info = await getWebviewInfo();
-                    return info.geminiFrameFound;
+                    return info.deepseekFrameFound;
                 },
                 { timeout: 3000, description: 'DeepSeek frame to load' }
             );
 
             const info = await getWebviewInfo();
 
-            if (info.geminiFrameFound) {
-                expect(info.geminiUrl).toContain('chat.deepseek.com');
+            if (info.deepseekFrameFound) {
+                expect(info.deepseekUrl).toContain('chat.deepseek.com');
             }
         });
     });

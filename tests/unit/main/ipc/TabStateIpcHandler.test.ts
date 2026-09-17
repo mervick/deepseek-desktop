@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TabStateIpcHandler } from '../../../../src/main/managers/ipc/TabStateIpcHandler';
 import type { IpcHandlerDependencies } from '../../../../src/main/managers/ipc/types';
 import { IPC_CHANNELS } from '../../../../src/shared/constants/ipc-channels';
-import { GEMINI_APP_URL } from '../../../../src/shared/constants';
+import { DEEPSEEK_APP_URL } from '../../../../src/shared/constants';
 import { getTabFrameName } from '../../../../src/shared/types/tabs';
 import { createMockLogger, createMockStore, createMockWindowManager } from '../../../helpers/mocks';
 
@@ -116,13 +116,13 @@ describe('TabStateIpcHandler', () => {
         const activeTabId = 'tab-active';
         const activeFrame = {
             name: getTabFrameName(activeTabId),
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             isDestroyed: vi.fn().mockReturnValue(false),
             reload: vi.fn().mockReturnValue(true),
         };
         const backgroundFrame = {
             name: getTabFrameName('tab-bg'),
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             isDestroyed: vi.fn().mockReturnValue(false),
             reload: vi.fn().mockReturnValue(true),
         };
@@ -155,8 +155,8 @@ describe('TabStateIpcHandler', () => {
             {},
             {
                 tabs: [
-                    { id: 'tab-old', title: 'Old', url: GEMINI_APP_URL, createdAt: 1 },
-                    { id: 'tab-new', title: 'New', url: GEMINI_APP_URL, createdAt: 2 },
+                    { id: 'tab-old', title: 'Old', url: DEEPSEEK_APP_URL, createdAt: 1 },
+                    { id: 'tab-new', title: 'New', url: DEEPSEEK_APP_URL, createdAt: 2 },
                 ],
                 activeTabId: 'tab-old',
             }
@@ -264,13 +264,13 @@ describe('TabStateIpcHandler', () => {
         handler.unregister();
     });
 
-    it('reload handler falls back to first gemini frame when no active tab id payload or store', () => {
+    it('reload handler falls back to first deepseek frame when no active tab id payload or store', () => {
         handler.register();
         const reloadListener = mockIpcMain._listeners.get(IPC_CHANNELS.TABS_RELOAD);
 
         const fallbackFrame = {
             name: getTabFrameName('tab-fallback'),
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             isDestroyed: vi.fn().mockReturnValue(false),
             reload: vi.fn().mockReturnValue(true),
         };
@@ -310,7 +310,7 @@ describe('TabStateIpcHandler', () => {
                     {
                         id: 'tab-1',
                         title: 'My Tab',
-                        url: 'https://example.com/not-gemini',
+                        url: 'https://example.com/not-deepseek',
                         createdAt: 100,
                     },
                 ],
@@ -324,7 +324,7 @@ describe('TabStateIpcHandler', () => {
         expect(state.tabs[0]).toEqual({
             id: 'tab-1',
             title: 'My Tab',
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             createdAt: 100,
         });
         expect(state.activeTabId).toBe('tab-1');
@@ -347,7 +347,7 @@ describe('TabStateIpcHandler', () => {
 
         expect(state.tabs).toHaveLength(1);
         expect(state.tabs[0]?.title).toBe('New Chat');
-        expect(state.tabs[0]?.url).toBe(GEMINI_APP_URL);
+        expect(state.tabs[0]?.url).toBe(DEEPSEEK_APP_URL);
         expect(state.activeTabId).toBe(state.tabs[0]?.id);
 
         handler.unregister();
@@ -370,7 +370,7 @@ describe('TabStateIpcHandler', () => {
                     {
                         id: 'tab-1',
                         title: 'My Tab',
-                        url: 'https://example.com/not-gemini',
+                        url: 'https://example.com/not-deepseek',
                         createdAt: 100,
                     },
                 ],
@@ -407,7 +407,7 @@ describe('TabStateIpcHandler', () => {
                     {
                         id: tabId,
                         title: 'New Chat',
-                        url: GEMINI_APP_URL,
+                        url: DEEPSEEK_APP_URL,
                         createdAt: 100,
                     },
                 ],
@@ -417,7 +417,7 @@ describe('TabStateIpcHandler', () => {
 
         const targetFrame = {
             name: getTabFrameName(tabId),
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             executeJavaScript: vi.fn().mockResolvedValue('Test Conversation Title'),
         };
 
@@ -466,7 +466,7 @@ describe('TabStateIpcHandler', () => {
                     {
                         id: tabId,
                         title: 'Stale Title From Previous Session',
-                        url: GEMINI_APP_URL,
+                        url: DEEPSEEK_APP_URL,
                         createdAt: 100,
                     },
                 ],
@@ -476,7 +476,7 @@ describe('TabStateIpcHandler', () => {
 
         const targetFrame = {
             name: getTabFrameName(tabId),
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             // Return empty string to simulate home/new chat page (no conversation title)
             executeJavaScript: vi.fn().mockResolvedValue(''),
         };
@@ -525,7 +525,7 @@ describe('TabStateIpcHandler', () => {
                     {
                         id: tabId,
                         title: 'New Chat',
-                        url: GEMINI_APP_URL,
+                        url: DEEPSEEK_APP_URL,
                         createdAt: 100,
                     },
                 ],
@@ -535,7 +535,7 @@ describe('TabStateIpcHandler', () => {
 
         const targetFrame = {
             name: getTabFrameName(tabId),
-            url: GEMINI_APP_URL,
+            url: DEEPSEEK_APP_URL,
             executeJavaScript: vi.fn().mockResolvedValue(''),
         };
 

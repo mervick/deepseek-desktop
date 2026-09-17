@@ -55,7 +55,7 @@ describe('IndividualHotkeyToggles', () => {
 
         it('should render voiceChat with correct description', () => {
             render(<IndividualHotkeyToggles />);
-            expect(screen.getByText('Toggle Gemini microphone input from anywhere')).toBeInTheDocument();
+            expect(screen.getByText('Toggle DeepSeek microphone input from anywhere')).toBeInTheDocument();
         });
 
         it('should render hotkey row with testId for voiceChat', () => {

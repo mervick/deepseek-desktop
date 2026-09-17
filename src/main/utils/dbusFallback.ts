@@ -543,8 +543,8 @@ export async function registerViaDBus(
         // ----------------------------------------------------------------
         // CreateSession with proper Response signal handling
         // ----------------------------------------------------------------
-        const sessionHandleToken = `gemini_session_${Date.now()}`;
-        const createHandleToken = `gemini_create_${Date.now()}`;
+        const sessionHandleToken = `deepseek_session_${Date.now()}`;
+        const createHandleToken = `deepseek_create_${Date.now()}`;
         const createRequestPath = `/org/freedesktop/portal/desktop/request/${sender}/${createHandleToken}`;
 
         // Start listening BEFORE making the call (Response is ephemeral)
@@ -648,7 +648,7 @@ export async function registerViaDBus(
             ];
         });
 
-        const bindHandleToken = `gemini_bind_${Date.now()}`;
+        const bindHandleToken = `deepseek_bind_${Date.now()}`;
         const bindRequestPath = `/org/freedesktop/portal/desktop/request/${sender}/${bindHandleToken}`;
 
         // Start listening for BindShortcuts Response BEFORE calling

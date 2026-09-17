@@ -42,7 +42,7 @@ Update notifications are reserved for actionable update states; successful check
 
 - Importing Node.js APIs directly in renderer code
 - Forgetting to clean up IPC subscriptions in `useEffect` return
-- Skipping `GeminiErrorBoundary` around risky UI areas
+- Skipping `DeepSeekErrorBoundary` around risky UI areas
 - Missing `AbortController.abort()` in async cleanup paths
 
 ## When You Change Files Here

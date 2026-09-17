@@ -77,11 +77,11 @@ describe('Tab Persistence E2E', () => {
         if (!hasFocus) {
             console.warn('[E2E] Window focus not gained; iframe shortcut test may be unreliable in this environment.');
         }
-        const iframe = await wdioBrowser.$('[data-testid="gemini-iframe"]');
+        const iframe = await wdioBrowser.$('[data-testid="deepseek-iframe"]');
         await iframe.waitForExist({ timeout: 10000 });
 
         await wdioBrowser.execute(() => {
-            const iframeEl = document.querySelector<HTMLIFrameElement>('[data-testid="gemini-iframe"]');
+            const iframeEl = document.querySelector<HTMLIFrameElement>('[data-testid="deepseek-iframe"]');
             iframeEl?.focus();
         });
 

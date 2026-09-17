@@ -83,10 +83,10 @@ export function createMockElectronAPI(overrides: MockElectronAPIOverrides = {}):
         onQuickChatExecute: vi.fn().mockReturnValue(defaultUnsubscribe),
 
         // =========================================================================
-        // Gemini Iframe Navigation API
+        // DeepSeek Iframe Navigation API
         // =========================================================================
-        onGeminiNavigate: vi.fn().mockReturnValue(defaultUnsubscribe),
-        signalGeminiReady: vi.fn(),
+        onDeepSeekNavigate: vi.fn().mockReturnValue(defaultUnsubscribe),
+        signalDeepSeekReady: vi.fn(),
         onTabTitleUpdated: vi.fn().mockReturnValue(defaultUnsubscribe),
         updateTabTitle: vi.fn(),
         getTabState: vi.fn().mockResolvedValue(null),
@@ -172,7 +172,7 @@ export function createMockElectronAPI(overrides: MockElectronAPIOverrides = {}):
         // =========================================================================
         // E2E Testing Helpers
         // =========================================================================
-        getTrayTooltip: vi.fn().mockResolvedValue('Gemini'),
+        getTrayTooltip: vi.fn().mockResolvedValue('DeepSeek'),
         onCheckingForUpdate: vi.fn().mockReturnValue(defaultUnsubscribe),
         getLastUpdateCheckTime: vi.fn().mockResolvedValue(0),
         onDebugTriggerError: vi.fn().mockReturnValue(defaultUnsubscribe),

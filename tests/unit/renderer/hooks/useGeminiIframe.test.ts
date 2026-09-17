@@ -1,10 +1,10 @@
 /**
- * Unit tests for useGeminiIframe hook.
+ * Unit tests for useDeepSeekIframe hook.
  */
 
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { useGeminiIframe } from '../../../../src/renderer/hooks/useGeminiIframe';
+import { useDeepSeekIframe } from '../../../../src/renderer/hooks/useDeepSeekIframe';
 import { useNetworkStatus } from '../../../../src/renderer/hooks/useNetworkStatus';
 import { mockElectronAPI } from '../test/setup';
 
@@ -17,7 +17,7 @@ vi.mock('../../../../src/renderer/hooks/useNetworkStatus', () => ({
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
-describe('useGeminiIframe', () => {
+describe('useDeepSeekIframe', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         (useNetworkStatus as Mock).mockReturnValue(true); // Default online
@@ -25,14 +25,14 @@ describe('useGeminiIframe', () => {
     });
 
     it('initializes with loading state', () => {
-        const { result } = renderHook(() => useGeminiIframe());
+        const { result } = renderHook(() => useDeepSeekIframe());
         expect(result.current.isLoading).toBe(true);
         expect(result.current.error).toBeNull();
     });
 
     describe('handleLoad', () => {
         it('sets success state when connectivity check passes', async () => {
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             await act(async () => {
                 result.current.handleLoad();
@@ -45,7 +45,7 @@ describe('useGeminiIframe', () => {
 
         it('sets error state when connectivity check fails', async () => {
             mockFetch.mockRejectedValue(new Error('Network error'));
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             await act(async () => {
                 result.current.handleLoad();
@@ -63,7 +63,7 @@ describe('useGeminiIframe', () => {
                 value: false,
             });
 
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             await act(async () => {
                 result.current.handleLoad();
@@ -83,7 +83,7 @@ describe('useGeminiIframe', () => {
 
     describe('handleError', () => {
         it('sets error state on iframe error', async () => {
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             await act(async () => {
                 result.current.handleError();
@@ -96,7 +96,7 @@ describe('useGeminiIframe', () => {
 
     describe('retry', () => {
         it('requests active tab reload through electronAPI', () => {
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             act(() => {
                 result.current.retry();
@@ -115,7 +115,7 @@ describe('useGeminiIframe', () => {
                 value: false,
             });
 
-            const { result } = renderHook(() => useGeminiIframe());
+            const { result } = renderHook(() => useDeepSeekIframe());
 
             // Initial effect runs on mount via queueMicrotask, so we need to wait
             await waitFor(() => {

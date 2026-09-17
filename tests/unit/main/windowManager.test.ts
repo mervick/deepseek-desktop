@@ -280,7 +280,7 @@ describe('WindowManager', () => {
             (webContents as any).mainFrame = {
                 frames: [
                     {
-                        name: 'gemini-tab-active-tab',
+                        name: 'deepseek-tab-active-tab',
                         url: 'https://chat.deepseek.com/app',
                         executeJavaScript,
                     },
@@ -319,7 +319,7 @@ describe('WindowManager', () => {
             (webContents as any).mainFrame = {
                 frames: [
                     {
-                        name: 'gemini-tab-other',
+                        name: 'deepseek-tab-other',
                         url: 'https://chat.deepseek.com/app',
                         executeJavaScript,
                     },
@@ -358,7 +358,7 @@ describe('WindowManager', () => {
             (webContents as any).mainFrame = {
                 frames: [
                     {
-                        name: 'gemini-tab-fallback',
+                        name: 'deepseek-tab-fallback',
                         url: 'https://chat.deepseek.com/app',
                         executeJavaScript,
                     },
@@ -374,7 +374,7 @@ describe('WindowManager', () => {
             expect(executeJavaScript).toHaveBeenCalledWith(expect.any(String), true);
         });
 
-        it('no-ops when fallback frame is non-Gemini domain', async () => {
+        it('no-ops when fallback frame is non-DeepSeek domain', async () => {
             const win = windowManager.createMainWindow();
             const webContents = createMockWebContents({
                 url: 'https://example.com',
@@ -383,7 +383,7 @@ describe('WindowManager', () => {
             (webContents as any).mainFrame = {
                 frames: [
                     {
-                        name: 'gemini-tab-fallback',
+                        name: 'deepseek-tab-fallback',
                         url: 'https://example.com',
                         executeJavaScript,
                     },

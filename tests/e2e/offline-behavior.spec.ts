@@ -5,7 +5,7 @@
  *
  * Strategy: Uses CDP Network.emulateNetworkConditions to block network requests.
  * While CDP cannot change navigator.onLine, it DOES block fetch() requests.
- * The app's useGeminiIframe hook performs a connectivity check via fetch() on load.
+ * The app's useDeepSeekIframe hook performs a connectivity check via fetch() on load.
  * When that fetch fails, the error state is set, triggering the offline overlay.
  *
  * Cross-platform: Windows, macOS, Linux
@@ -21,17 +21,17 @@ import { waitForDuration } from './helpers/waitUtilities';
 // ============================================================================
 
 /**
- * Block all network requests to Gemini by intercepting and failing them.
+ * Block all network requests to DeepSeek by intercepting and failing them.
  * This is more reliable than Network.emulateNetworkConditions in Electron.
  */
-async function blockGeminiRequests(): Promise<void> {
+async function blockDeepSeekRequests(): Promise<void> {
     await browser.electron.execute(async (electron) => {
         const wins = electron.BrowserWindow.getAllWindows();
         const wc = wins[0].webContents;
         try {
             if (!wc.debugger.isAttached()) wc.debugger.attach('1.3');
 
-            // Enable request interception for Gemini URLs
+            // Enable request interception for DeepSeek URLs
             await wc.debugger.sendCommand('Fetch.enable', {
                 patterns: [{ urlPattern: '*chat.deepseek.com*', requestStage: 'Request' }],
             });
@@ -107,8 +107,8 @@ describe('Offline Behavior', () => {
         const title = await browser.getTitle();
         expect(title).not.toBe('');
 
-        // 2. Block Gemini requests via CDP Fetch interception
-        await blockGeminiRequests();
+        // 2. Block DeepSeek requests via CDP Fetch interception
+        await blockDeepSeekRequests();
 
         // 3. Reload to trigger offline state
         await reloadPage();
@@ -132,8 +132,8 @@ describe('Offline Behavior', () => {
     });
 
     it('should restore functionality when network returns', async () => {
-        // 1. Block Gemini requests briefly then restore
-        await blockGeminiRequests();
+        // 1. Block DeepSeek requests briefly then restore
+        await blockDeepSeekRequests();
 
         // 2. Restore network
         await restoreNetwork();
@@ -147,8 +147,8 @@ describe('Offline Behavior', () => {
     });
 
     it('should reload page and recover when retry button is clicked after connection restored', async () => {
-        // 1. Block Gemini requests
-        await blockGeminiRequests();
+        // 1. Block DeepSeek requests
+        await blockDeepSeekRequests();
 
         // 2. Reload page while blocked to trigger connectivity check failure
         await reloadPage();
@@ -170,7 +170,7 @@ describe('Offline Behavior', () => {
         // 6. Verify overlay disappears (reload happened and connectivity check passed)
         await expect(await $('[data-testid="offline-overlay"]')).not.toBeDisplayed({ wait: 15000 });
 
-        // 7. Verify gemini iframe is visible
-        await expect(await $('[data-testid="gemini-iframe"]')).toBeDisplayed({ wait: 5000 });
+        // 7. Verify deepseek iframe is visible
+        await expect(await $('[data-testid="deepseek-iframe"]')).toBeDisplayed({ wait: 5000 });
     });
 });

@@ -4,7 +4,7 @@ import type { ElectronAPI } from '../shared/types';
 import { alwaysOnTopAPI } from './api/alwaysOnTop';
 import { devTestingAPI } from './api/devTesting';
 import { exportAPI } from './api/export';
-import { geminiAPI } from './api/gemini';
+import { deepseekAPI } from './api/deepseek';
 import { hotkeysAPI } from './api/hotkeys';
 import { notificationsAPI } from './api/notifications';
 import { platformAPI } from './api/platform';
@@ -24,7 +24,7 @@ const electronAPI: ElectronAPI = {
     ...platformAPI,
     ...themeAPI,
     ...quickChatAPI,
-    ...geminiAPI,
+    ...deepseekAPI,
     ...hotkeysAPI,
     ...alwaysOnTopAPI,
     ...zoomAPI,

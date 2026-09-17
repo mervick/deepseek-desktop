@@ -72,24 +72,24 @@ describe('Fatal Error Recovery E2E', () => {
             // Note: We use a global function instead of IPC to avoid test environment flakiness
             // This still tests the error boundary UI rendering and recovery flow
             await browser.execute(() => {
-                // @ts-expect-error: GeminiErrorBoundary registers this dynamic trigger on window for E2E only
-                if (window.__GEMINI_TRIGGER_FATAL_ERROR__) {
-                    // @ts-expect-error: GeminiErrorBoundary registers this dynamic trigger on window for E2E only
-                    window.__GEMINI_TRIGGER_FATAL_ERROR__();
+                // @ts-expect-error: DeepSeekErrorBoundary registers this dynamic trigger on window for E2E only
+                if (window.__DEEPSEEK_TRIGGER_FATAL_ERROR__) {
+                    // @ts-expect-error: DeepSeekErrorBoundary registers this dynamic trigger on window for E2E only
+                    window.__DEEPSEEK_TRIGGER_FATAL_ERROR__();
                 } else {
                     throw new Error('Global error trigger not found');
                 }
             });
 
             // Verify the error boundary fallback is displayed
-            const fallbackSelector = '[data-testid="gemini-error-fallback"]';
+            const fallbackSelector = '[data-testid="deepseek-error-fallback"]';
             await expect(await $(fallbackSelector)).toBeDisplayed({
                 wait: 10000,
                 message: 'Error fallback UI did not appear',
             });
 
             // Verify the error title text
-            await expect(await $(`${fallbackSelector} h3`)).toHaveText(expect.stringContaining("Gemini couldn't load"));
+            await expect(await $(`${fallbackSelector} h3`)).toHaveText(expect.stringContaining("DeepSeek couldn't load"));
 
             // 3. User can recover by clicking Reload
             const reloadButton = await $(`${fallbackSelector} button`);

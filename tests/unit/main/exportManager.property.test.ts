@@ -71,10 +71,10 @@ function isHostnameAllowed(hostname: string): boolean {
 }
 
 /**
- * Wrapper around ExportManager.isAllowedGeminiUrl.
+ * Wrapper around ExportManager.isAllowedDeepSeekUrl.
  */
-function isAllowedGeminiUrl(url: string): boolean {
-    return (exportManager as any).isAllowedGeminiUrl(url);
+function isAllowedDeepSeekUrl(url: string): boolean {
+    return (exportManager as any).isAllowedDeepSeekUrl(url);
 }
 
 describe('ExportManager URL validation property tests', () => {
@@ -155,13 +155,13 @@ describe('ExportManager URL validation property tests', () => {
 
         it('typosquatting variations are rejected', () => {
             const typos = [
-                'gemini.google.co',
-                'gemini.googIe.com', // capital I instead of l
-                'gemini.gogle.com',
+                'deepseek.google.co',
+                'deepseek.googIe.com', // capital I instead of l
+                'deepseek.gogle.com',
                 'chat.deepseek.comm',
                 'gemimi.deepseek.com',
                 'gemnii.deepseek.com',
-                'gemini.g00gle.com',
+                'deepseek.g00gle.com',
                 'aistudio.googl.com',
                 'aistudi0.deepseek.com',
             ];
@@ -193,7 +193,7 @@ describe('ExportManager URL validation property tests', () => {
         it('never throws on malformed URLs', () => {
             fc.assert(
                 fc.property(fc.string(), (s) => {
-                    expect(() => isAllowedGeminiUrl(s)).not.toThrow();
+                    expect(() => isAllowedDeepSeekUrl(s)).not.toThrow();
                 }),
                 { numRuns: 1000 }
             );
@@ -203,7 +203,7 @@ describe('ExportManager URL validation property tests', () => {
             // Test with strings containing extended characters
             fc.assert(
                 fc.property(fc.string({ minLength: 0, maxLength: 100 }), (s: string) => {
-                    expect(() => isAllowedGeminiUrl(s)).not.toThrow();
+                    expect(() => isAllowedDeepSeekUrl(s)).not.toThrow();
                 }),
                 { numRuns: 500 }
             );
@@ -215,7 +215,7 @@ describe('ExportManager URL validation property tests', () => {
             fc.assert(
                 fc.property(fc.constantFrom(...ALLOWED_DOMAINS), path, (domain, p) => {
                     const url = `https://${domain}${p}`;
-                    expect(isAllowedGeminiUrl(url)).toBe(true);
+                    expect(isAllowedDeepSeekUrl(url)).toBe(true);
                 }),
                 { numRuns: 200 }
             );
@@ -231,7 +231,7 @@ describe('ExportManager URL validation property tests', () => {
                     (user, pass, domain) => {
                         const url = `https://${user}:${pass}@${domain}/app`;
                         // URL parser should extract hostname correctly, ignoring credentials
-                        expect(isAllowedGeminiUrl(url)).toBe(true);
+                        expect(isAllowedDeepSeekUrl(url)).toBe(true);
                     }
                 ),
                 { numRuns: 100 }
@@ -244,7 +244,7 @@ describe('ExportManager URL validation property tests', () => {
                 fc.property(fc.integer({ min: 1, max: 65535 }), fc.constantFrom(...ALLOWED_DOMAINS), (port, domain) => {
                     const url = `https://${domain}:${port}/app`;
                     // URL with port should still be valid if domain is correct
-                    expect(isAllowedGeminiUrl(url)).toBe(true);
+                    expect(isAllowedDeepSeekUrl(url)).toBe(true);
                 }),
                 { numRuns: 100 }
             );

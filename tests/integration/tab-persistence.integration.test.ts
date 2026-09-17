@@ -2,7 +2,7 @@ import { browser, expect } from '@wdio/globals';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { GEMINI_APP_URL } from '../../src/shared/constants';
+import { DEEPSEEK_APP_URL } from '../../src/shared/constants';
 
 describe('Tab Persistence (Integration)', () => {
     let userDataPath: string;
@@ -27,8 +27,8 @@ describe('Tab Persistence (Integration)', () => {
     it('persists tab state to disk via saveTabState IPC', async () => {
         const payload = {
             tabs: [
-                { id: 'tab-1', title: 'First', url: GEMINI_APP_URL, createdAt: 1 },
-                { id: 'tab-2', title: 'Second', url: GEMINI_APP_URL, createdAt: 2 },
+                { id: 'tab-1', title: 'First', url: DEEPSEEK_APP_URL, createdAt: 1 },
+                { id: 'tab-2', title: 'Second', url: DEEPSEEK_APP_URL, createdAt: 2 },
             ],
             activeTabId: 'tab-2',
         };
@@ -51,8 +51,8 @@ describe('Tab Persistence (Integration)', () => {
     it('returns persisted tab state through getTabState IPC', async () => {
         const payload = {
             tabs: [
-                { id: 'tab-a', title: 'Alpha', url: GEMINI_APP_URL, createdAt: 10 },
-                { id: 'tab-b', title: 'Beta', url: GEMINI_APP_URL, createdAt: 20 },
+                { id: 'tab-a', title: 'Alpha', url: DEEPSEEK_APP_URL, createdAt: 10 },
+                { id: 'tab-b', title: 'Beta', url: DEEPSEEK_APP_URL, createdAt: 20 },
             ],
             activeTabId: 'tab-b',
         };
@@ -94,7 +94,7 @@ describe('Tab Persistence (Integration)', () => {
         expect(loaded).not.toBeNull();
         expect(loaded?.tabs.length).toBe(1);
         expect(loaded?.tabs[0]?.title).toBe('New Chat');
-        expect(loaded?.tabs[0]?.url).toBe(GEMINI_APP_URL);
+        expect(loaded?.tabs[0]?.url).toBe(DEEPSEEK_APP_URL);
         expect(loaded?.activeTabId).toBe(loaded?.tabs[0]?.id);
     });
 });

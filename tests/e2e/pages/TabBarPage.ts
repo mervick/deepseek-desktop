@@ -95,7 +95,7 @@ export class TabBarPage extends BasePage {
         });
     }
 
-    async getGeminiIframeCount(): Promise<number> {
+    async getDeepSeekIframeCount(): Promise<number> {
         return this.execute(() => document.querySelectorAll('iframe[src*="chat.deepseek.com"]').length);
     }
 }

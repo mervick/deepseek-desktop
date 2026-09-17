@@ -62,12 +62,12 @@ describe('macOS Window Frame Integration Tests', () => {
         expect(webviewSize.width).toBeGreaterThan(0);
         expect(webviewSize.height).toBeGreaterThan(0);
 
-        // Check gemini-iframe (inside webview-container) exists and has size
-        const geminiIframe = await browser.$('.webview-container .gemini-iframe');
-        await expect(geminiIframe).toBeExisting();
+        // Check deepseek-iframe (inside webview-container) exists and has size
+        const deepseekIframe = await browser.$('.webview-container .deepseek-iframe');
+        await expect(deepseekIframe).toBeExisting();
 
         const iframeSize = await browser.execute(() => {
-            const iframe = document.querySelector('iframe.gemini-iframe');
+            const iframe = document.querySelector('iframe.deepseek-iframe');
             if (!iframe) return { width: 0, height: 0 };
             return {
                 width: (iframe as HTMLElement).offsetWidth,

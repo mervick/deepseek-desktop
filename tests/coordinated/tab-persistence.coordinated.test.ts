@@ -39,7 +39,7 @@ vi.mock('../../src/main/utils/logger');
 
 import SettingsStore from '../../src/main/store';
 import { IPC_CHANNELS } from '../../src/shared/constants/ipc-channels';
-import { GEMINI_APP_URL } from '../../src/shared/constants';
+import { DEEPSEEK_APP_URL } from '../../src/shared/constants';
 import { TabStateIpcHandler } from '../../src/main/managers/ipc/TabStateIpcHandler';
 import { mockLogger } from '../../src/main/utils/__mocks__/logger';
 import {
@@ -119,8 +119,8 @@ describe.each(['darwin', 'win32', 'linux'] as const)('Tab persistence IPC roundt
     it('saves and loads tab state through IPC handlers', () => {
         const payload = {
             tabs: [
-                { id: 'tab-1', title: 'First', url: GEMINI_APP_URL, createdAt: 1 },
-                { id: 'tab-2', title: 'Second', url: GEMINI_APP_URL, createdAt: 2 },
+                { id: 'tab-1', title: 'First', url: DEEPSEEK_APP_URL, createdAt: 1 },
+                { id: 'tab-2', title: 'Second', url: DEEPSEEK_APP_URL, createdAt: 2 },
             ],
             activeTabId: 'tab-2',
         };
@@ -133,14 +133,14 @@ describe.each(['darwin', 'win32', 'linux'] as const)('Tab persistence IPC roundt
 
     it('overwrites previously saved state on consecutive saves', () => {
         sendMessage(IPC_CHANNELS.TABS_SAVE_STATE, {
-            tabs: [{ id: 'tab-a', title: 'A', url: GEMINI_APP_URL, createdAt: 1 }],
+            tabs: [{ id: 'tab-a', title: 'A', url: DEEPSEEK_APP_URL, createdAt: 1 }],
             activeTabId: 'tab-a',
         });
 
         const latest = {
             tabs: [
-                { id: 'tab-a', title: 'A', url: GEMINI_APP_URL, createdAt: 1 },
-                { id: 'tab-b', title: 'B', url: GEMINI_APP_URL, createdAt: 2 },
+                { id: 'tab-a', title: 'A', url: DEEPSEEK_APP_URL, createdAt: 1 },
+                { id: 'tab-b', title: 'B', url: DEEPSEEK_APP_URL, createdAt: 2 },
             ],
             activeTabId: 'tab-b',
         };
@@ -153,7 +153,7 @@ describe.each(['darwin', 'win32', 'linux'] as const)('Tab persistence IPC roundt
 
     it('updates a tab title via IPC', () => {
         sendMessage(IPC_CHANNELS.TABS_SAVE_STATE, {
-            tabs: [{ id: 'tab-a', title: 'A', url: GEMINI_APP_URL, createdAt: 1 }],
+            tabs: [{ id: 'tab-a', title: 'A', url: DEEPSEEK_APP_URL, createdAt: 1 }],
             activeTabId: 'tab-a',
         });
 
@@ -161,7 +161,7 @@ describe.each(['darwin', 'win32', 'linux'] as const)('Tab persistence IPC roundt
 
         const loaded = invokeHandler(IPC_CHANNELS.TABS_GET_STATE);
         expect(loaded).toEqual({
-            tabs: [{ id: 'tab-a', title: 'Updated Title', url: GEMINI_APP_URL, createdAt: 1 }],
+            tabs: [{ id: 'tab-a', title: 'Updated Title', url: DEEPSEEK_APP_URL, createdAt: 1 }],
             activeTabId: 'tab-a',
         });
         expect(tabTitleBroadcast).toHaveBeenCalledWith(IPC_CHANNELS.TABS_TITLE_UPDATED, {
@@ -172,7 +172,7 @@ describe.each(['darwin', 'win32', 'linux'] as const)('Tab persistence IPC roundt
 
     it('polling resets stale title to New Chat on home page', () => {
         sendMessage(IPC_CHANNELS.TABS_SAVE_STATE, {
-            tabs: [{ id: 'tab-a', title: 'Stale Persisted Title', url: GEMINI_APP_URL, createdAt: 1 }],
+            tabs: [{ id: 'tab-a', title: 'Stale Persisted Title', url: DEEPSEEK_APP_URL, createdAt: 1 }],
             activeTabId: 'tab-a',
         });
 
@@ -198,7 +198,7 @@ describe.each(['darwin', 'win32', 'linux'] as const)('Tab persistence IPC roundt
 
     it('title update from polling replaces stale title with conversation title', () => {
         sendMessage(IPC_CHANNELS.TABS_SAVE_STATE, {
-            tabs: [{ id: 'tab-a', title: 'New Chat', url: GEMINI_APP_URL, createdAt: 1 }],
+            tabs: [{ id: 'tab-a', title: 'New Chat', url: DEEPSEEK_APP_URL, createdAt: 1 }],
             activeTabId: 'tab-a',
         });
 

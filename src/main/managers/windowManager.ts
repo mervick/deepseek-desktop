@@ -11,7 +11,7 @@
 import { BrowserWindow, type WebContents, type WebFrameMain } from 'electron';
 import { EventEmitter } from 'events';
 import { createLogger } from '../utils/logger';
-import { isGeminiDomain } from '../utils/constants';
+import { isDeepSeekDomain } from '../utils/constants';
 import { activateMicrophoneInFrame } from '../utils/micActivation';
 import MainWindow from '../windows/mainWindow';
 import AuthWindow from '../windows/authWindow';
@@ -278,7 +278,7 @@ export default class WindowManager extends EventEmitter {
             }
 
             const targetFrame = this.getActiveDeepSeekContents()?.mainFrame;
-            if (!targetFrame || !isGeminiDomain(targetFrame.url)) {
+            if (!targetFrame || !isDeepSeekDomain(targetFrame.url)) {
                 logger.debug('Voice chat activation skipped: active DeepSeek tab not available');
                 return;
             }

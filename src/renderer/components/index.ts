@@ -10,7 +10,7 @@ export { OptionsWindow } from './options/OptionsWindow';
 export { OptionsWindowTitlebar } from './options/OptionsWindowTitlebar';
 export { MainLayout } from './layout/MainLayout';
 export { ErrorBoundary } from './ErrorBoundary';
-export { GeminiErrorBoundary } from './GeminiErrorBoundary';
+export { DeepSeekErrorBoundary } from './DeepSeekErrorBoundary';
 export { OfflineOverlay } from './common/OfflineOverlay';
 export { Tab } from './tabs/Tab';
 export { TabBar } from './tabs/TabBar';

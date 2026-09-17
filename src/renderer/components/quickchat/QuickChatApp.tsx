@@ -1,7 +1,7 @@
 /**
  * Quick Chat Application Component
  *
- * A macOS Spotlight-inspired floating input for sending prompts to Gemini.
+ * A macOS Spotlight-inspired floating input for sending prompts to DeepSeek.
  * Features glassmorphism styling, auto-focus, and keyboard shortcuts.
  *
  * @module QuickChatApp

@@ -4,7 +4,7 @@
  * This test validates that:
  * 1. The app starts successfully
  * 2. There is 1 main window
- * 3. The main window contains a Gemini webview
+ * 3. The main window contains a DeepSeek webview
  * 4. The main window contains a custom titlebar
  *
  * Platform-aware: On macOS, custom window controls and menu bar are not rendered.

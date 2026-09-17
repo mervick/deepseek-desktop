@@ -7,7 +7,7 @@ export { useWindowControls } from './useWindowControls';
 export { useOptionsWindow } from './useOptionsWindow';
 export { useWebviewInit } from './useWebviewInit';
 export { useNetworkStatus } from './useNetworkStatus';
-export { useGeminiIframe } from './useGeminiIframe';
+export { useDeepSeekIframe } from './useDeepSeekIframe';
 export { useUpdateNotifications } from './useUpdateNotifications';
 export { useQuickChatNavigation } from './useQuickChatNavigation';
 export { useTabKeyboardShortcuts } from './useTabKeyboardShortcuts';
