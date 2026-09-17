@@ -1,0 +1,28 @@
+.cookie-login-settings {
+    display: grid;
+    gap: 10px;
+}
+
+.cookie-login-settings p {
+    margin: 0;
+}
+
+.cookie-login-settings textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+.cookie-login-settings button {
+    width: fit-content;
+}
+
+.cookie-login-settings__status.success {
+    color: #3fb950;
+}
+
+.cookie-login-settings__status.error {
+    color: #f85149;
+}

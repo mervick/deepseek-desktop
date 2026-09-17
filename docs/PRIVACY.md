@@ -18,7 +18,8 @@ The Application acts strictly as a web wrapper (browser) for `https://chat.deeps
 
 - Authentication happens directly on DeepSeek's secure login pages (`chat.deepseek.com`).
 - The Application uses standard Electron `session` storage to persist your login cookies locally on your device, just like Chrome or Edge.
-- We do NOT have access to your raw credentials.
+- If you explicitly use the cookie import option, the pasted Cookie header is handled locally by the main process and is not written to application settings or logs.
+- We do NOT transmit your cookie header to any service other than DeepSeek.
 
 ### Telemetry & Analytics
 

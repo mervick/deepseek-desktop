@@ -30,6 +30,7 @@ export const IPC_CHANNELS = {
     // App
     OPEN_OPTIONS: 'open-options-window',
     OPEN_GOOGLE_SIGNIN: 'open-google-signin',
+    IMPORT_DEEPSEEK_COOKIES: 'import-deepseek-cookies',
     APP_RESTART: 'app:restart',
     APP_QUIT: 'app:quit',
 

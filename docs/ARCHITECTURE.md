@@ -350,6 +350,7 @@ Gemini Desktop uses local persistence only.
 ### Chromium Session Persistence
 
 Authentication and DeepSeek session state are separate from `SettingsStore`. Native chat views use Chromium's default persistent session/cookie storage, shared with the app's auth window.
+The Options window also supports importing a copied `Cookie` header. The main process parses it, writes only valid name/value pairs to the DeepSeek session, and reloads the active native tab; the raw header is not persisted in application settings or logged.
 
 ### Boundaries to Remember
 

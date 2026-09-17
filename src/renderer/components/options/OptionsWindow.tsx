@@ -20,6 +20,7 @@ import { TextPredictionSettings } from './TextPredictionSettings';
 import { NotificationSettings } from './NotificationSettings';
 import { StartupSettings } from './StartupSettings';
 import { ChatBehaviorSettings } from './ChatBehaviorSettings';
+import { CookieLoginSettings } from './CookieLoginSettings';
 import './options-window.css';
 
 // ============================================================================
@@ -200,6 +201,10 @@ export function OptionsWindow() {
                             {/* Chat Settings */}
                             <OptionsSection title="Chat Settings" testId="options-chat-settings">
                                 <ChatBehaviorSettings />
+                            </OptionsSection>
+
+                            <OptionsSection title="Sign in using cookies" testId="options-cookie-login">
+                                <CookieLoginSettings />
                             </OptionsSection>
                         </>
                     )}

@@ -58,6 +58,7 @@ export interface ElectronAPI {
 
     /** Open Google sign-in window */
     openGoogleSignIn: () => Promise<void>;
+    importDeepSeekCookies: (cookieHeader: string) => Promise<{ success: boolean; error?: string }>;
 
     restartApp: () => Promise<void>;
 

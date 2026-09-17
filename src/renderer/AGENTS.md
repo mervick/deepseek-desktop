@@ -21,6 +21,7 @@ Use React Context for global UI state (Theme, Toast, Auth) and local state/reduc
 All system access must flow through preload bridge methods on `window.electronAPI`.
 `TabPanel` is a geometry placeholder: it sends tab state and measured content bounds to the main process. Do not mount a DeepSeek iframe there; the native tab view occupies the same screen region.
 `TitlebarMenu` temporarily uncovers the React shell with `setTabMenuOpen()` while its dropdown is visible. Native views otherwise paint over React portals regardless of CSS z-index.
+`CookieLoginSettings` sends a user-supplied DeepSeek Cookie header only through the preload bridge; the main process writes it to Chromium session cookies and never to `SettingsStore` or logs.
 See renderer sections in `docs/ARCHITECTURE.md` for deeper rationale.
 
 ## IPC Communication from Renderer

@@ -16,6 +16,7 @@ export const windowAPI: Pick<
     | 'onFullscreenChanged'
     | 'openOptions'
     | 'openGoogleSignIn'
+    | 'importDeepSeekCookies'
     | 'restartApp'
     | 'quitApp'
 > = {
@@ -29,6 +30,7 @@ export const windowAPI: Pick<
     onFullscreenChanged: createSubscription<boolean>(IPC_CHANNELS.FULLSCREEN_CHANGED),
     openOptions: (tab?: 'settings' | 'about') => ipcRenderer.send(IPC_CHANNELS.OPEN_OPTIONS, tab),
     openGoogleSignIn: () => ipcRenderer.invoke(IPC_CHANNELS.OPEN_GOOGLE_SIGNIN),
+    importDeepSeekCookies: (cookieHeader) => ipcRenderer.invoke(IPC_CHANNELS.IMPORT_DEEPSEEK_COOKIES, cookieHeader),
     restartApp: () => ipcRenderer.invoke(IPC_CHANNELS.APP_RESTART),
     quitApp: () => ipcRenderer.send(IPC_CHANNELS.APP_QUIT),
 };
