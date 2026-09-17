@@ -1,129 +1,98 @@
 # Transparency Report
 
-> **"Sunlight is the best disinfectant."**
+This document describes how DeepSeek Desktop interacts with your system, network, and data.
 
-This document exists to provide complete transparency into what DeepSeek Desktop does, how it works, and who built it. In light of malware masquerading as open-source tools, trust must be earned through verification, not just promises.
+DeepSeek Desktop is an independent, unofficial open-source project. It is not affiliated with, endorsed by, or sponsored by DeepSeek.
 
-## ⚠️ The "GeminiDesk" Malware Warning
+## Network Activity
 
-You may have seen warnings on Reddit about a similar-sounding app called "GeminiDesk" that contained surveillance software. **That is NOT this application.**
+DeepSeek Desktop communicates with:
 
-Here is a direct comparison of the malicious behaviors found in that clone versus how DeepSeek Desktop operates:
+| Domain | Purpose |
+| --- | --- |
+| `*.deepseek.com` | DeepSeek web interface, authentication, and related services |
+| `api.github.com` | Checking for application updates |
 
-| Malicious Behavior (GeminiDesk)                                      | DeepSeek Desktop (This App)                                                                                                                             | Verification                                                          |
-| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| **Credential Theft**<br>Captures email/password fields               | **❌ No Access**<br>Authentication is handled entirely by DeepSeek's login page. The app never sees your credentials.                                 | [View Auth Code](../src/main/windows/authWindow.ts#L95-124)           |
-| **Cookie Exfiltration**<br>Zips cookies and sends to external server | **❌ Local Only**<br>Cookies are stored encrypted on your local machine, just like Chrome. They are never transmitted anywhere except `deepseek.com`. | [View Session Code](../src/main/utils/security.ts#L20-57)             |
-| **Hidden Files**<br>Uses `.svchost` and `attrib +H` to hide files    | **❌ Standard Install**<br>Installs to standard OS application folders. No hidden system files.                                                       | [View Installer Config](../config/electron-builder.config.cjs#L47-55) |
-| **External Code**<br>Downloads `MicrosoftEdgeUpdate.exe` from GitHub | **❌ No External Downloads**<br>The app is self-contained. It never downloads executable code from the internet.                                      | [View Security Policy](../src/main/utils/security.ts#L65-71)          |
-| **Persistence**<br>Uses `takeown` to lock files                      | **❌ No Persistence**<br>Uninstalling the app removes it completely.                                                                                  |                                                                       |
+DeepSeek Desktop does not operate its own backend service. Communication with DeepSeek happens directly between the application and DeepSeek services.
 
----
+## Data & Privacy
 
-## 🌐 Network Activity
+DeepSeek Desktop does not collect application telemetry or usage analytics.
 
-We believe you should know exactly who your computer is talking to. DeepSeek Desktop **ONLY** communicates with these domains:
+The application does not independently collect or transmit:
 
-| Domain           | Purpose                                                      |
-| ---------------- | ------------------------------------------------------------ |
-| `*.deepseek.com` | Loading the DeepSeek web interface and authentication.       |
-| `api.github.com` | Checking for app updates (metadata only, no user data sent). |
+- prompts or conversation history;
+- DeepSeek account credentials;
+- usage analytics or telemetry.
 
-**We do not have a backend server.** There is no "DeepSeek Desktop Cloud." All data flows directly between your machine and DeepSeek.
+The following data may be stored locally:
 
----
+- cookies and session data used by the embedded Chromium environment;
+- application preferences;
+- window position and size;
+- other settings required for desktop features.
 
-## � Navigation Security
+Authentication is performed through DeepSeek's own web interface.
 
-Malicious apps often redirect users to phishing sites or load remote payloads from attacker-controlled servers. DeepSeek Desktop blocks these attack vectors at the code level:
+For additional information, see:
 
-| Protection                   | Description                                                                                              | Verification                                                           |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **URL Allowlist**            | Navigation is restricted to HTTPS DeepSeek domains. All other URLs are blocked.                          | [View Navigation Handler](../src/main/windows/mainWindow.ts#L196-237)  |
-| **External Links → Browser** | Clicking a non-DeepSeek link opens your system browser, not inside the app. The app cannot be hijacked.  | [View Window Open Handler](../src/main/windows/mainWindow.ts#L243-283) |
-| **Permission Lockdown**      | Microphone access is only granted to `*.deepseek.com` domains. All other requests are denied.            | [View Permission Handler](../src/main/utils/security.ts#L84-112)       |
-| **Domain Constants**         | Allowed domains are defined in a single, auditable file—no hidden allowlists scattered through the code. | [View Domain Config](../src/main/utils/constants.ts#L12-22)            |
+- [Privacy Policy](PRIVACY.md)
+- [Security Policy](SECURITY.md)
 
----
+## Security Model
 
-## �🔐 Data Privacy
+DeepSeek Desktop limits navigation and permissions available to the embedded web interface.
 
-### What We Store Locally
+Key protections include:
 
-- **Cookies & Session Tokens**: Encrypted by Electron (Chromium) standard protections.
-- **Window State**: Last position and size of the window.
-- **Preferences**: Your settings for the app (e.g., "Always on Top").
+- **Restricted navigation** — application navigation is limited to approved DeepSeek HTTPS domains.
+- **External links** — links outside the allowed DeepSeek domains are opened in the system browser.
+- **Permission restrictions** — browser permissions are restricted according to their origin.
+- **Centralized domain configuration** — allowed DeepSeek domains are defined explicitly in the application source.
+- **No remote executable loading** — the application does not download and execute application code from third-party servers.
 
-### What We NEVER Collect
+Because the project is open source, these behaviors can be reviewed directly in the repository.
 
-- ❌ Your prompts or chat history
-- ❌ Your email or password
-- ❌ Telemetry or usage analytics
-- ❌ System information beyond what's needed for the OS window
+## Release Verification
 
----
+Official builds are published only through the project's GitHub Releases page:
 
-## 👨‍💻 About the Authors
+https://github.com/mervick/deepseek-desktop/releases
 
-Malware is often distributed by anonymous accounts that disappear quickly. The project history and current maintainer are documented here so users know who is responsible for which part of the app.
+SHA-256 checksum files are published with releases and can be used to verify downloaded artifacts.
 
-### Original Gemini Desktop Author
+### Windows
 
-Ben Wendell created the original Gemini Desktop project that this app is based on: [bwendell/gemini-desktop](https://github.com/bwendell/gemini-desktop).
+```powershell
+Get-FileHash .\DeepSeek-Desktop-x.y.z-x64-installer.exe -Algorithm SHA256
+```
 
-- **GitHub**: [@bwendell](https://github.com/bwendell) (Active since 2012)
-- **Website**: [benwendell.com](https://benwendell.com)
-- **LinkedIn**: [Benjamin Wendell](https://linkedin.com/in/benjamin-wendell)
+Compare the result with the checksum published for the release.
 
-### Current DeepSeek Desktop Maintainer
+Windows releases are digitally signed. You can inspect the signature from:
 
-Andrey Izman maintains this DeepSeek Desktop project. For questions, bug reports, security reports, release questions, or anything else related to this project, contact Andrey.
+`Properties → Digital Signatures`
 
-- **GitHub**: [@mervick](https://github.com/mervick)
-- **Email**: <izmanw@gmail.com>
+### macOS
 
-This project adapts the desktop wrapper experience for DeepSeek and is maintained separately from the original Gemini Desktop repository.
+```bash
+shasum -a 256 DeepSeek-Desktop-x.y.z-arm64.dmg
+```
 
----
+### Linux
 
-## ✍️ Windows Code Signing
+```bash
+sha256sum DeepSeek-Desktop-x.y.z-x64.AppImage
+```
 
-All Windows releases are **digitally signed** using [Azure Trusted Signing](https://learn.microsoft.com/en-us/azure/trusted-signing/overview).
+Compare the resulting SHA-256 hash with the corresponding checksum file included with the release.
 
-This means:
+## Open Source
 
-- **Microsoft has verified my identity** before issuing the certificate
-- **Windows SmartScreen** will recognize the application as trusted
-- **You can verify the signature** by right-clicking the `.exe` → Properties → Digital Signatures
+The complete source code, build configuration, security-related code, and release history are publicly available in this repository.
 
-> [!IMPORTANT]
-> Malware authors avoid code signing because it creates a traceable paper trail. A signed executable is a strong signal that the developer is accountable.
+DeepSeek Desktop is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop) project originally created by [Ben Wendell](https://github.com/bwendell).
 
-<p align="center">
-  <img src="assets/certificate_signature.png" alt="Code Signing Certificate Signature">
-</p>
+The DeepSeek Desktop fork is maintained by [Andrey Izman](https://github.com/mervick).
 
----
-
-## 🐧 Linux Security Hardening
-
-Linux users can choose to run DeepSeek Desktop in an enhanced security environment. Contributor [@hightowe](https://github.com/hightowe) developed a custom launcher using **Firejail** and **Netfilter** for additional isolation from your system.
-
-- **Repository**: [linux-jails/Gemini-Desktop](https://github.com/hightowe/linux-jails/tree/main/Gemini-Desktop)
-
-This allows you to put the Linux app inside a strict jail for enhanced security if desired.
-
----
-
-## 🛡️ Verify Your Download
-
-To ensure you have the genuine, unaltered version of DeepSeek Desktop:
-
-1. **Only download** from the [Official Releases Page](https://github.com/mervick/deepseek-desktop/releases).
-2. **Check the Checksum**: We publish a checksum file for each platform with every release.
-    - **Windows x64 (PowerShell)**: `Get-FileHash .\DeepSeek-Desktop-x.y.z-x64-installer.exe` — compare with `checksums-windows.txt`
-    - **Windows ARM64 (PowerShell)**: `Get-FileHash .\DeepSeek-Desktop-x.y.z-arm64-installer.exe` — compare with `checksums-windows-arm64.txt`
-    - **Mac**: `shasum -a 256 DeepSeek-Desktop.dmg` — compare with `checksums-mac.txt`
-    - **Linux**: `sha256sum DeepSeek-Desktop.AppImage` — compare with `checksums-linux.txt`
-
-If you find _anything_ suspicious, please open an issue or contact me directly.
+Security issues should be reported according to the project's [Security Policy](SECURITY.md).
