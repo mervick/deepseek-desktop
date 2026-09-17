@@ -31,7 +31,7 @@ import * as path from 'path';
  * error — independently of whether the local text-prediction (node-llama-cpp)
  * feature is enabled.
  *
- * See https://github.com/bwendell/gemini-desktop/issues/119 (and #315, #334).
+ * See the project issue tracker for the related Linux V8 sandbox reports.
  */
 export const V8_SANDBOX_INCOMPATIBLE_KERNEL_MAJOR = 7;
 

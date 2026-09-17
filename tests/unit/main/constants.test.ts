@@ -93,7 +93,7 @@ describe('Constants', () => {
 
     describe('URL constants', () => {
         it('has correct GITHUB_REPO_URL', () => {
-            expect(GITHUB_REPO_URL).toBe('https://github.com/bwendell/gemini-desktop');
+            expect(GITHUB_REPO_URL).toBe('https://github.com/mervick/deepseek-desktop');
         });
 
         it('has correct GITHUB_ISSUES_URL', () => {

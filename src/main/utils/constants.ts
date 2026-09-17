@@ -75,7 +75,7 @@ export const GOOGLE_SIGNIN_URL = GOOGLE_ACCOUNTS_URL;
 /**
  * GitHub repository base URL.
  */
-export const GITHUB_REPO_URL = 'https://github.com/bwendell/gemini-desktop' as const;
+export const GITHUB_REPO_URL = 'https://github.com/mervick/deepseek-desktop' as const;
 
 /**
  * GitHub issues URL for bug reports.

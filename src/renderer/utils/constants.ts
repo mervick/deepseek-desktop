@@ -10,7 +10,7 @@
 /**
  * GitHub repository base URL.
  */
-export const GITHUB_REPO_URL = 'https://github.com/bwendell/gemini-desktop' as const;
+export const GITHUB_REPO_URL = 'https://github.com/mervick/deepseek-desktop' as const;
 
 /**
  * GitHub license file URL.

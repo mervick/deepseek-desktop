@@ -110,7 +110,7 @@ This allows you to put the Linux app inside a strict jail for enhanced security 
 
 To ensure you have the genuine, unaltered version of Gemini Desktop:
 
-1. **Only download** from the [Official Releases Page](https://github.com/bwendell/gemini-desktop/releases).
+1. **Only download** from the [Official Releases Page](https://github.com/mervick/deepseek-desktop/releases).
 2. **Check the Checksum**: We publish a checksum file for each platform with every release.
     - **Windows x64 (PowerShell)**: `Get-FileHash .\Gemini-Desktop-x.y.z-x64-installer.exe` — compare with `checksums-windows.txt`
     - **Windows ARM64 (PowerShell)**: `Get-FileHash .\Gemini-Desktop-x.y.z-arm64-installer.exe` — compare with `checksums-windows-arm64.txt`

@@ -23,7 +23,7 @@ Instead, please email: **<github@benwendell.com>**
 
 Or use GitHub's private vulnerability reporting:
 
-1. Go to the [Security tab](https://github.com/bwendell/gemini-desktop/security)
+1. Go to the [Security tab](https://github.com/mervick/deepseek-desktop/security)
 2. Click "Report a vulnerability"
 3. Fill out the form
 
@@ -68,7 +68,7 @@ We employ automated security scanning to ensure code quality and safety:
 
 - **CodeQL**: All code changes are scanned for vulnerabilities using GitHub's CodeQL.
 - **Dependency Auditing**: We regularly audit dependencies (`npm audit`) for known vulnerabilities.
-- **Open Source**: You can view our [Security Scan Workflows](https://github.com/bwendell/gemini-desktop/actions/workflows/scorecard.yml) publicly.
+- **Open Source**: You can view our [Security Scan Workflows](https://github.com/mervick/deepseek-desktop/actions/workflows/scorecard.yml) publicly.
 
 ### 🔒 Data Handling
 
