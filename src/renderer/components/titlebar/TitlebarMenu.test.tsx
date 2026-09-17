@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { TitlebarMenu } from './TitlebarMenu';
 import type { MenuDefinition } from './menuTypes';
-import { setMockPlatform } from '../../../../tests/unit/renderer/test/setup';
+import { mockElectronAPI, setMockPlatform } from '../../../../tests/unit/renderer/test/setup';
 import '@testing-library/jest-dom'; // Ensure jest-dom matchers are available
 
 describe('TitlebarMenu', () => {
@@ -75,6 +75,20 @@ describe('TitlebarMenu', () => {
             // Check if dropdown items are visible
             expect(screen.getByText('New')).toBeVisible();
             expect(screen.getByText('Exit')).toBeVisible();
+        });
+
+        it('uncovers the native tab only while the dropdown is open', () => {
+            const { unmount } = render(<TitlebarMenu menus={sampleMenus} />);
+            fireEvent.click(screen.getByText('File'));
+            expect(mockElectronAPI.setTabMenuOpen).toHaveBeenLastCalledWith(true);
+
+            fireEvent.keyDown(document, { key: 'Escape' });
+            expect(mockElectronAPI.setTabMenuOpen).toHaveBeenLastCalledWith(false);
+
+            fireEvent.click(screen.getByText('Edit'));
+            expect(mockElectronAPI.setTabMenuOpen).toHaveBeenLastCalledWith(true);
+            unmount();
+            expect(mockElectronAPI.setTabMenuOpen).toHaveBeenLastCalledWith(false);
         });
 
         it('closes dropdown on second click', () => {

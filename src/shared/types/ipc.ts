@@ -124,6 +124,9 @@ export interface ElectronAPI {
     setTabBounds: (bounds: { x: number; y: number; width: number; height: number }) => void;
     setTabVisible: (visible: boolean) => void;
 
+    /** Temporarily uncover React dropdowns without changing network visibility. */
+    setTabMenuOpen: (open: boolean) => void;
+
     onTabReady: (callback: (tabId: string) => void) => () => void;
 
     onTabLoadError: (callback: (payload: { tabId: string; error: string }) => void) => () => void;

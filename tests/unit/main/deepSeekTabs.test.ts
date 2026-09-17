@@ -87,6 +87,16 @@ describe('DeepSeekTabs', () => {
 
         manager.setVisible(false);
         expect(window.contentView.removeChildView).toHaveBeenCalledWith(views[1]);
+
+        manager.setMenuOpen(true);
+        manager.setVisible(true);
+        expect(window.contentView.addChildView).toHaveBeenCalledTimes(2);
+        expect(manager.getActiveContents()).toBe(views[1]?.webContents);
+        expect(views[1]?.webContents.close).not.toHaveBeenCalled();
+        manager.setMenuOpen(false);
+        expect(window.contentView.addChildView).toHaveBeenCalledTimes(3);
+        expect(manager.getActiveContents()).toBe(views[1]?.webContents);
+        expect(views[1]?.webContents.close).not.toHaveBeenCalled();
     });
 
     it('rejects navigation outside the DeepSeek HTTPS hosts', () => {

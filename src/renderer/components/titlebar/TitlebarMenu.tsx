@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { usesCustomWindowControls } from '../../utils';
 import type { MenuDefinition } from './menuTypes';
@@ -25,6 +25,16 @@ export function TitlebarMenu({ menus }: TitlebarMenuProps) {
 
     // Determine if we should render custom menus (all platforms except macOS)
     const shouldRender = usesCustomWindowControls();
+
+    // Native WebContentsViews always paint above the React shell. Uncover the
+    // shell while its dropdown is open, independently of offline visibility.
+    useLayoutEffect(() => {
+        if (!shouldRender) return;
+        window.electronAPI?.setTabMenuOpen?.(activeMenuIndex !== null);
+        return () => {
+            if (activeMenuIndex !== null) window.electronAPI?.setTabMenuOpen?.(false);
+        };
+    }, [activeMenuIndex, shouldRender]);
 
     // Handle Escape key to close menu
     // Note: All hooks must be called unconditionally, so we guard inside the effect

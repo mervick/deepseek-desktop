@@ -112,6 +112,7 @@ const mockElectronAPI = {
     onGeminiNavigate: vi.fn().mockReturnValue(() => {}),
     signalGeminiReady: vi.fn(),
     reloadTabs: vi.fn(),
+    setTabMenuOpen: vi.fn(),
 
     // Export API
     exportChatToPdf: vi.fn(),

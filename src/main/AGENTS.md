@@ -20,6 +20,7 @@ All managers are injected via `ApplicationContext`. Do not use global mutable ma
 For architecture details, see `docs/ARCHITECTURE.md` (Manager Architecture section).
 
 `MainWindow` lazily owns `DeepSeekTabs`, a map of sandboxed `WebContentsView` tabs. `TabStateIpcHandler` validates renderer tab state and bounds before syncing native views. Export and Quick Chat use `WindowManager.getActiveDeepSeekContents()` / `getDeepSeekTabContents(id)` rather than searching iframe subframes. Do not re-enable header stripping.
+The React titlebar dropdown sets a separate menu-open visibility flag; keep it independent of offline/load-error visibility so closing a menu cannot expose an offline tab.
 
 ## IPC Handler Pattern
 

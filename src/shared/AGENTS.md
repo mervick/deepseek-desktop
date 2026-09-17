@@ -17,6 +17,7 @@ Primary files and folders:
 
 Changes here must preserve cross-boundary consistency.
 Native tab channels (`TABS_SYNC`, `TABS_SET_BOUNDS`, `TABS_READY`, `TABS_LOAD_ERROR`) connect the React tab bar to sandboxed top-level DeepSeek views. Keep bounds and state validation in the main process.
+`TABS_SET_MENU_OPEN` is separate from `TABS_SET_VISIBLE`: the first uncovers React dropdowns, the second represents network/load visibility.
 If you add, rename, or remove a channel or shared payload, update every consuming boundary in the same change:
 
 - main-process handlers and broadcasts

@@ -85,9 +85,27 @@ describe('TabStateIpcHandler', () => {
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SAVE_STATE, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SYNC, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SET_BOUNDS, expect.any(Function));
+        expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SET_MENU_OPEN, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_UPDATE_TITLE, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_RELOAD, expect.any(Function));
 
+        handler.unregister();
+    });
+
+    it('accepts menu visibility only from the main shell and only as a boolean', () => {
+        handler.register();
+        const shell = {};
+        mockWindowManager.getMainWindow.mockReturnValue({ webContents: shell });
+        const listener = mockIpcMain._listeners.get(IPC_CHANNELS.TABS_SET_MENU_OPEN);
+
+        listener?.({ sender: {} }, true);
+        listener?.({ sender: shell }, 'true');
+        expect(mockWindowManager.setDeepSeekTabMenuOpen).not.toHaveBeenCalled();
+
+        listener?.({ sender: shell }, true);
+        listener?.({ sender: shell }, false);
+        expect(mockWindowManager.setDeepSeekTabMenuOpen).toHaveBeenNthCalledWith(1, true);
+        expect(mockWindowManager.setDeepSeekTabMenuOpen).toHaveBeenNthCalledWith(2, false);
         handler.unregister();
     });
 

@@ -11,6 +11,7 @@ export class DeepSeekTabs {
     private attachedId: string | null = null;
     private bounds: Electron.Rectangle | null = null;
     private visible = true;
+    private menuOpen = false;
 
     constructor(private readonly window: BrowserWindow) {
         window.on('closed', () => this.dispose());
@@ -86,6 +87,11 @@ export class DeepSeekTabs {
         this.showActive();
     }
 
+    setMenuOpen(open: boolean): void {
+        this.menuOpen = open;
+        this.showActive();
+    }
+
     getContents(tabId: string): WebContents | null {
         return this.views.get(tabId)?.webContents ?? null;
     }
@@ -122,13 +128,13 @@ export class DeepSeekTabs {
     }
 
     private showActive(): void {
-        if (this.attachedId && (this.attachedId !== this.activeId || !this.visible)) {
+        if (this.attachedId && (this.attachedId !== this.activeId || !this.visible || this.menuOpen)) {
             const previous = this.views.get(this.attachedId);
             if (previous) this.window.contentView.removeChildView(previous);
             this.attachedId = null;
         }
         const active = this.getActiveView();
-        if (active && this.bounds && this.visible) {
+        if (active && this.bounds && this.visible && !this.menuOpen) {
             active.setBounds(this.bounds);
             if (this.attachedId !== this.activeId) {
                 this.window.contentView.addChildView(active);

@@ -261,6 +261,7 @@ On startup, `TabContext` loads persisted `TabsState` through `window.electronAPI
 ### Native Tab Ownership
 
 `MainWindow` lazily creates `DeepSeekTabs`, which maps each validated tab ID to an isolated `WebContentsView`. The renderer synchronizes IDs through `TABS_SYNC` and measures the placeholder through `TABS_SET_BOUNDS`; only the active view is attached. Chat navigation is limited to DeepSeek HTTPS hosts.
+When a React titlebar dropdown opens, `TABS_SET_MENU_OPEN` temporarily detaches the active native view so the menu remains visible. This state is independent of offline/load-error visibility.
 
 ### Title Synchronization Flow
 

@@ -16,6 +16,7 @@ Preload APIs follow three patterns:
 
 Subscription cleanup return functions are mandatory because renderer hooks call them during `useEffect` teardown.
 The tab bridge in `api/gemini.ts` syncs tab IDs/state, passes measured bounds, and subscribes to native view ready/load-error events. It does not expose `WebContents` or raw Electron objects.
+It also forwards the titlebar's menu-open state so the main process can temporarily detach the active native view.
 
 ## Canonical Example
 
