@@ -74,6 +74,13 @@ export default class ExportManager {
                 return `\n\n\`\`\`${language}\n${code}\n\`\`\`\n\n`;
             },
         });
+        this.turndown.addRule('deepseekCodeBlockBanner', {
+            filter: (node) => {
+                const element = node as HTMLElement;
+                return element.classList.contains('md-code-block-banner-wrap') || element.classList.contains('md-code-block-banner');
+            },
+            replacement: () => '',
+        });
     }
 
     /**
