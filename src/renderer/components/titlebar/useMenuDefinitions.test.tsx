@@ -6,9 +6,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useMenuDefinitions } from './useMenuDefinitions';
 import { mockElectronAPI } from '../../../../tests/unit/renderer/test/setup';
-import { getReleaseNotesUrl } from '../../../shared/utils/releaseNotes';
-
-declare const __APP_VERSION__: string;
 
 describe('useMenuDefinitions', () => {
     beforeEach(() => {
@@ -79,40 +76,16 @@ describe('useMenuDefinitions', () => {
             expect(fileMenu.items[4]).toEqual({ separator: true });
         });
 
-        it('has Sign in to Google item and action works', async () => {
-            const reloadSpy = vi.fn();
-            const originalLocation = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: { ...originalLocation, reload: reloadSpy },
-                writable: true,
-            });
-
+        it('does not include Sign in', () => {
             const { result } = renderHook(() => useMenuDefinitions());
             const fileMenu = result.current[0];
-            const signInItem = fileMenu.items[5];
-
-            expect(signInItem).toHaveProperty('label', 'Sign in to DeepSeek');
-            expect(signInItem).toHaveProperty('action');
-
-            // Call the async action to cover lines 25-27
-            if ('action' in signInItem && signInItem.action) {
-                await signInItem.action();
-                expect(mockElectronAPI.openGoogleSignIn).toHaveBeenCalledTimes(1);
-                expect(reloadSpy).toHaveBeenCalled();
-            }
-
-            // Restore original location
-            Object.defineProperty(window, 'location', {
-                value: originalLocation,
-                writable: true,
-            });
+            expect(fileMenu.items).not.toContainEqual(expect.objectContaining({ label: 'Sign in to DeepSeek' }));
         });
 
         it('has Options item', () => {
             const { result } = renderHook(() => useMenuDefinitions());
             const fileMenu = result.current[0];
-            const optionsItem = fileMenu.items[6];
+            const optionsItem = fileMenu.items[5];
 
             expect(optionsItem).toHaveProperty('label', 'Options');
             expect(optionsItem).toHaveProperty('disabled', false);
@@ -128,13 +101,13 @@ describe('useMenuDefinitions', () => {
             const { result } = renderHook(() => useMenuDefinitions());
             const fileMenu = result.current[0];
 
-            expect(fileMenu.items[7]).toEqual({ separator: true });
+            expect(fileMenu.items[6]).toEqual({ separator: true });
         });
 
         it('Exit action calls electronAPI.quitApp()', () => {
             const { result } = renderHook(() => useMenuDefinitions());
             const fileMenu = result.current[0];
-            const exitItem = fileMenu.items[8];
+            const exitItem = fileMenu.items[7];
 
             expect(exitItem).toHaveProperty('label', 'Exit');
 
@@ -270,66 +243,17 @@ describe('useMenuDefinitions', () => {
     });
 
     describe('Help menu', () => {
-        it('includes Release Notes between Check for Updates and About', () => {
+        it('temporarily hides update and release-notes items', () => {
             const { result } = renderHook(() => useMenuDefinitions());
             const helpMenu = result.current[2];
-
-            const releaseNotesItem = helpMenu.items[1];
-            expect(releaseNotesItem).toHaveProperty('id', 'menu-help-release-notes');
-            expect(releaseNotesItem).toHaveProperty('label', 'Release Notes');
-
-            const separator = helpMenu.items[2];
-            expect(separator).toEqual({ separator: true });
-
-            const aboutItem = helpMenu.items[3];
-            expect(aboutItem).toHaveProperty('id', 'menu-help-about');
-        });
-
-        it('Release Notes action opens release notes URL for current version', () => {
-            const originalOpen = window.open;
-            const openSpy = vi.fn();
-
-            window.open = openSpy;
-
-            const { result } = renderHook(() => useMenuDefinitions());
-            const helpMenu = result.current[2];
-            const releaseNotesItem = helpMenu.items[1];
-
-            if ('action' in releaseNotesItem && releaseNotesItem.action) {
-                releaseNotesItem.action();
-            }
-
-            expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy.mock.calls[0][0]).toBe(getReleaseNotesUrl(__APP_VERSION__));
-
-            window.open = originalOpen;
-        });
-
-        it('Check for Updates action calls electronAPI.checkForUpdates()', () => {
-            const { result } = renderHook(() => useMenuDefinitions());
-            const helpMenu = result.current[2];
-            const checkUpdatesItem = helpMenu.items[0];
-
-            expect(checkUpdatesItem).toHaveProperty('id', 'menu-help-check-updates');
-            expect(checkUpdatesItem).toHaveProperty('label', 'Check for Updates');
-
-            if ('action' in checkUpdatesItem && checkUpdatesItem.action) {
-                checkUpdatesItem.action();
-                expect(mockElectronAPI.checkForUpdates).toHaveBeenCalledTimes(1);
-            }
-        });
-
-        it('has separator after Release Notes', () => {
-            const { result } = renderHook(() => useMenuDefinitions());
-            const helpMenu = result.current[2];
-
-            expect(helpMenu.items[2]).toEqual({ separator: true });
+            expect(helpMenu.items).not.toContainEqual(expect.objectContaining({ label: 'Check for Updates' }));
+            expect(helpMenu.items).not.toContainEqual(expect.objectContaining({ label: 'Release Notes' }));
         });
 
         it('About action opens options window', () => {
             const { result } = renderHook(() => useMenuDefinitions());
             const helpMenu = result.current[2];
-            const aboutItem = helpMenu.items[3];
+            const aboutItem = helpMenu.items[0];
 
             expect(aboutItem).toHaveProperty('label', 'About DeepSeek Desktop');
 

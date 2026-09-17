@@ -1,9 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { MenuDefinition } from './menuTypes';
 import { createRendererLogger } from '../../utils';
-import { getReleaseNotesUrl } from '../../../shared/utils/releaseNotes';
-
-declare const __APP_VERSION__: string;
 
 const logger = createRendererLogger('[useMenuDefinitions]');
 
@@ -141,15 +138,6 @@ export function useMenuDefinitions(): MenuDefinition[] {
                 },
                 { separator: true },
                 {
-                    id: 'menu-file-signin',
-                    label: 'Sign in to DeepSeek',
-                    action: async () => {
-                        await window.electronAPI?.openGoogleSignIn();
-                        // Reload the page to pick up the new auth cookies
-                        window.location.reload();
-                    },
-                },
-                {
                     id: 'menu-file-options',
                     label: 'Options',
                     shortcut: 'Ctrl+,',
@@ -213,21 +201,6 @@ export function useMenuDefinitions(): MenuDefinition[] {
         {
             label: 'Help',
             items: [
-                {
-                    id: 'menu-help-check-updates',
-                    label: 'Check for Updates',
-                    action: () => {
-                        window.electronAPI?.checkForUpdates();
-                    },
-                },
-                {
-                    id: 'menu-help-release-notes',
-                    label: 'Release Notes',
-                    action: () => {
-                        window.open(getReleaseNotesUrl(__APP_VERSION__));
-                    },
-                },
-                { separator: true },
                 {
                     id: 'menu-help-about',
                     label: 'About DeepSeek Desktop',

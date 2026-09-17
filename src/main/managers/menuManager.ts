@@ -1,11 +1,10 @@
 import { Menu, MenuItemConstructorOptions, app, shell, MenuItem } from 'electron';
 import WindowManager from './windowManager';
 import type HotkeyManager from './hotkeyManager';
-import { GOOGLE_SIGNIN_URL, GITHUB_ISSUES_URL } from '../utils/constants';
+import { GITHUB_ISSUES_URL } from '../utils/constants';
 import { isApplicationHotkey, type HotkeyId } from '../types';
 import type { PlatformAdapter } from '../platform/PlatformAdapter';
 import { getPlatformAdapter } from '../platform/platformAdapterFactory';
-import { getReleaseNotesUrl } from '../../shared/utils/releaseNotes';
 import { IPC_CHANNELS } from '../../shared/constants/ipc-channels';
 import type { TabStateIpcHandler } from './ipc';
 
@@ -310,15 +309,6 @@ export default class MenuManager {
                 },
                 { type: 'separator' },
                 {
-                    label: 'Sign in to DeepSeek',
-                    id: 'menu-file-signin',
-                    click: async () => {
-                        await this.windowManager.createAuthWindow(GOOGLE_SIGNIN_URL);
-                        // Reload main window to capture new auth state
-                        this.windowManager.getMainWindow()?.reload();
-                    },
-                },
-                {
                     label: this.adapter.getSettingsMenuLabel(),
                     id: 'menu-file-options',
                     accelerator: 'CmdOrCtrl+,',
@@ -405,11 +395,6 @@ export default class MenuManager {
                     label: 'About DeepSeek Desktop',
                     id: 'menu-help-about',
                     click: () => this.windowManager.createOptionsWindow('about'),
-                },
-                {
-                    label: 'Release Notes',
-                    id: 'menu-help-release-notes',
-                    click: () => shell.openExternal(getReleaseNotesUrl(app.getVersion())),
                 },
                 {
                     label: 'Report an Issue',

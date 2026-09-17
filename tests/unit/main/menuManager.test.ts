@@ -263,19 +263,13 @@ describe('MenuManager', () => {
     });
 
     describe('File Menu', () => {
-        it('Sign in item calls createAuthWindow and reloads', async () => {
+        it('does not include the sign-in item', () => {
             setPlatform('darwin');
             menuManager.buildMenu();
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
             const fileMenu = findMenuItem(template, 'File');
-            const signInItem = findSubmenuItem(fileMenu, 'Sign in to Google');
 
-            expect(signInItem).toBeTruthy();
-            await signInItem.click();
-            expect(mockWindowManager.createAuthWindow).toHaveBeenCalledWith(
-                expect.stringContaining('chat.deepseek.com')
-            );
-            expect(mockWindowManager.getMainWindow().reload).toHaveBeenCalled();
+            expect(findSubmenuItem(fileMenu, 'Sign in to DeepSeek')).toBeUndefined();
         });
 
         it('Export as PDF item calls emit("print-to-pdf-triggered")', () => {
@@ -333,37 +327,30 @@ describe('MenuManager', () => {
     });
 
     describe('Help Menu', () => {
-        it('Release Notes opens GitHub releases', () => {
+        it('temporarily hides Release Notes', () => {
             setPlatform('win32');
             menuManager.buildMenu();
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
             const helpMenu = findMenuItem(template, 'Help');
             const releaseNotesItem = findSubmenuItem(helpMenu, 'Release Notes');
-            const reportItem = findSubmenuItem(helpMenu, 'Report an Issue');
 
-            expect(releaseNotesItem).toBeTruthy();
-            releaseNotesItem.click();
-            expect(shell.openExternal).toHaveBeenCalledWith(expect.stringContaining('/releases/tag/v'));
-
-            if (reportItem) {
-                expect(releaseNotesItem).not.toBe(reportItem);
-            }
+            expect(releaseNotesItem).toBeUndefined();
         });
 
-        it('Release Notes is ordered between About and Report an Issue', () => {
+        it('keeps About and Report an Issue available', () => {
             setPlatform('win32');
             menuManager.buildMenu();
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
             const helpMenu = findMenuItem(template, 'Help');
 
             const submenuItems = helpMenu?.submenu ?? [];
-            const aboutIndex = submenuItems.findIndex((item: any) => item.label === 'About Gemini Desktop');
+            const aboutIndex = submenuItems.findIndex((item: any) => item.label === 'About DeepSeek Desktop');
             const releaseNotesIndex = submenuItems.findIndex((item: any) => item.label === 'Release Notes');
             const reportIndex = submenuItems.findIndex((item: any) => item.label === 'Report an Issue');
 
             expect(aboutIndex).toBeGreaterThanOrEqual(0);
-            expect(releaseNotesIndex).toBeGreaterThan(aboutIndex);
-            expect(reportIndex).toBeGreaterThan(releaseNotesIndex);
+            expect(releaseNotesIndex).toBe(-1);
+            expect(reportIndex).toBeGreaterThan(aboutIndex);
         });
 
         it('Report Issue opens external link', () => {
@@ -383,7 +370,7 @@ describe('MenuManager', () => {
             menuManager.buildMenu();
             const template = (Menu.buildFromTemplate as any).mock.calls[0][0];
             const helpMenu = findMenuItem(template, 'Help');
-            const aboutItem = findSubmenuItem(helpMenu, 'About Gemini Desktop');
+            const aboutItem = findSubmenuItem(helpMenu, 'About DeepSeek Desktop');
 
             expect(aboutItem).toBeTruthy();
             aboutItem.click();
