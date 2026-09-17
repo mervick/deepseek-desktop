@@ -1,123 +1,116 @@
-# DeepSeek Desktop — Native, Private AI Experience
+# DeepSeek Desktop
 
-> [!IMPORTANT]
-> **Project status: on hiatus — not actively maintained** (July 2026). The app continues to work and all [releases](https://github.com/mervick/deepseek-desktop/releases) remain available, but issues and PRs may go unanswered and no new development is planned for now.
+> **Unofficial open-source desktop client for DeepSeek. This project is not affiliated with, endorsed by, or sponsored by DeepSeek.**
 
-<div align="center">
-
-[![Project Status: Inactive](https://www.repostatus.org/badges/latest/inactive.svg)](https://www.repostatus.org/#inactive)
-[![GitHub release](https://img.shields.io/github/v/release/mervick/deepseek-desktop?style=flat-square)](https://github.com/mervick/deepseek-desktop/releases)
-[![GitHub last commit](https://img.shields.io/github/last-commit/mervick/deepseek-desktop?style=flat-square)](https://github.com/mervick/deepseek-desktop/commits/main)
 [![Platform](<https://img.shields.io/badge/platform-Windows%20(x64%2C%20ARM64)%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square>)](https://github.com/mervick/deepseek-desktop/releases)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/mervick/deepseek-desktop/badge)](https://securityscorecards.dev/viewer/?uri=github.com/mervick/deepseek-desktop)
 [![CodeQL](https://img.shields.io/badge/CodeQL-enabled-brightgreen?logo=github)](https://github.com/mervick/deepseek-desktop/security/code-scanning)
 
-</div>
+A privacy-focused desktop client that brings DeepSeek into a dedicated native-style application with global shortcuts, Quick Chat, multi-tab conversations, and desktop integrations — without telemetry.
 
-> **DeepSeek, but better.** A privacy-first desktop client for DeepSeek with native controls, global hotkeys, and zero telemetry.
+DeepSeek Desktop is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop) project originally created by [Ben Wendell](https://github.com/bwendell).
 
-DeepSeek Desktop is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop)
-project originally created by [Ben Wendell](https://github.com/bwendell).
 
-<p align="center">
-  <a href="#-feature-highlights">Feature Highlights</a> •
-  <a href="#-installation">Installation</a> •
-  <a href="#-privacy--security">Privacy</a> •
-  <a href="#-whats-next">What's Next</a> •
-  <a href="#-contributing">Contributing</a>
-</p>
-
----
 
 <div align="center">
 
-![DeepSeek Desktop Main Window Interface](docs/assets/main_window.png)
+![DeepSeek Desktop Main Window](docs/assets/main_window.png)
 
 </div>
 
-## ✨ Why DeepSeek Desktop
+## Why DeepSeek Desktop
 
-- **Desktop-native workflow**: Use DeepSeek in a dedicated app window instead of a browser tab.
-- **Fast keyboard control**: Trigger Quick Chat, hide/restore the app, and stay in flow.
-- **Trust-first defaults**: No telemetry, DeepSeek auth, and clear transparency/security docs.
+DeepSeek Desktop provides a dedicated desktop experience without requiring DeepSeek to stay open in a browser tab.
 
-## 🌟 Feature Highlights
+There is no application telemetry or analytics. Authentication remains handled by DeepSeek.
 
-- **Multi-tab conversations** — keep multiple chat contexts open and switch instantly.
-- **Launch at startup** — optionally start with your system and open minimized.
-- **Quick Chat** — summon a Spotlight-style prompt from anywhere with a global hotkey.
-- **Peek and Hide** — hide to tray and restore instantly when you need it.
-- **Response notifications** — get notified when DeepSeek finishes while the app is unfocused.
-- **Always On Top** — keep DeepSeek visible above other windows when multitasking.
+## Features
 
-## 📥 Installation
+- **Multi-tab conversations** — keep multiple conversations open and switch between them instantly.
+- **Peek and Hide** — instantly show or hide the application without interrupting your workflow.
+- **Always on Top** — keep the DeepSeek window above other applications when needed.
+- **Launch at startup** — optionally start DeepSeek Desktop with your system and open it minimized.
+- **Cross-platform support** — available for Windows, macOS, and Linux.
+- **No telemetry** — the application does not collect usage analytics or application telemetry.
 
-Download the latest release for your platform from [GitHub Releases](https://github.com/mervick/deepseek-desktop/releases).
+## Installation
+
+Download the latest release from:
+
+https://github.com/mervick/deepseek-desktop/releases
 
 ### Windows
 
-- **Windows (x64):** `DeepSeek-Desktop-x.x.x-x64-installer.exe`
-- **Windows (ARM64):** `DeepSeek-Desktop-x.x.x-arm64-installer.exe`
+- **Windows x64:** `DeepSeek-Desktop-x.x.x-x64-installer.exe`
+- **Windows ARM64:** `DeepSeek-Desktop-x.x.x-arm64-installer.exe`
 
 ### macOS
 
-- **Apple Silicon (M1/M2/M3)**: `DeepSeek-Desktop-x.x.x-arm64.dmg`
-- **Intel**: `DeepSeek-Desktop-x.x.x-x64.dmg`
+- **Apple Silicon:** `DeepSeek-Desktop-x.x.x-arm64.dmg`
+- **Intel:** `DeepSeek-Desktop-x.x.x-x64.dmg`
 
-> ⚠️ The app is not code-signed yet. On first launch, remove quarantine:
->
-> ```bash
-> xattr -rd com.apple.quarantine "/Applications/DeepSeek Desktop.app"
-> ```
+The application is currently not code-signed. If macOS prevents the application from launching, remove the quarantine attribute after installing it:
+
+```bash
+xattr -rd com.apple.quarantine "/Applications/DeepSeek Desktop.app"
+```
 
 ### Linux
 
-- **AppImage**: `DeepSeek-Desktop-x.x.x-x64.AppImage`
-- **Debian/Ubuntu**: `DeepSeek-Desktop-x.x.x-x64.deb`
+- **AppImage:** `DeepSeek-Desktop-x.x.x-x64.AppImage`
+- **Debian / Ubuntu:** `DeepSeek-Desktop-x.x.x-x64.deb`
+
+#### AppImage:
 
 ```bash
-# AppImage
 chmod +x "DeepSeek-Desktop-x.x.x-x64.AppImage"
 ./"DeepSeek-Desktop-x.x.x-x64.AppImage"
+```
 
-# Debian/Ubuntu
+#### Debian / Ubuntu:
+```bash
 sudo dpkg -i "DeepSeek-Desktop-x.x.x-x64.deb"
 ```
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
-DeepSeek Desktop has **no telemetry** and only connects to DeepSeek domains for DeepSeek access.
-Authentication is handled by DeepSeek, and sessions are stored using Chromium's standard local mechanisms.
-For full details, read the [Transparency Report](docs/TRANSPARENCY.md), [Privacy Policy](docs/PRIVACY.md), and [Security Policy](docs/SECURITY.md).
+DeepSeek Desktop does not include application telemetry or analytics.
 
-## ⌨️ Keyboard Shortcuts
+The application connects to DeepSeek services to provide access to DeepSeek. Authentication is handled directly by DeepSeek, and session data is stored locally using Chromium's standard storage mechanisms.
 
-- `Ctrl+Shift+Alt+Space` (`Cmd+Shift+Alt+Space` on macOS) — Toggle Quick Chat
-- `Ctrl+Shift+Space` (`Cmd+Shift+Space` on macOS) — Peek and Hide (toggle app visibility)
-- `Ctrl+P` (`Cmd+P` on macOS) — Print current page to PDF
+The project includes automated security checks through CodeQL and OpenSSF Scorecard.
 
-> 💡 You can customize hotkeys in Settings.
+Additional information:
 
-## 🗺️ What's Next
+- [Transparency Report](docs/TRANSPARENCY.md)
+- [Privacy Policy](docs/PRIVACY.md)
+- [Security Policy](docs/SECURITY.md)
 
-- Continue improving desktop-native quality and reliability across Windows, macOS, and Linux.
-- Expand productivity workflows around Quick Chat, startup behavior, and window controls.
-- Keep strengthening test quality and release confidence for faster, safer updates.
 
-See detailed shipped history and planning in [docs/ROADMAP.md](docs/ROADMAP.md).
+## Contributing
 
-## 🤝 Contributing
+Contributions, bug reports, and improvements are welcome.
 
-Contributions are welcome. For setup, standards, and workflow expectations, see [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+Development setup, project conventions, and contribution guidelines are available in:
 
-## ⚖️ Legal
+[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
-This is an unofficial, open-source project and is **not** affiliated with DeepSeek.
-**DeepSeek** is a trademark of its respective owner.
-This project is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop)
-project by [Ben Wendell](https://github.com/bwendell).
-Use this software at your own risk; it is provided "as is" without any warranty. See [docs/DISCLAIMER.md](docs/DISCLAIMER.md) for full terms, including user responsibility and warranty disclaimers.
+## Legal
 
-## 📄 License
+DeepSeek Desktop is an independent, unofficial open-source project.
 
-[MIT](LICENSE) © 2025 Ben Wendell, © 2026 Andrey Izman
+It is **not affiliated with, endorsed by, sponsored by, or officially associated with DeepSeek**.
+
+DeepSeek and related names, trademarks, and logos belong to their respective owners.
+
+This project is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop) project created by [Ben Wendell](https://github.com/bwendell).
+
+The software is provided "as is", without warranty of any kind. See [docs/DISCLAIMER.md](docs/DISCLAIMER.md) for additional terms and disclaimers.
+
+## License
+
+[MIT](LICENSE)
+
+© 2025 Ben Wendell  
+© 2026 Andrey Izman
+
