@@ -353,7 +353,11 @@ export default class MenuManager {
                         this.tabStateIpcHandler?.reloadActiveTabFromMenu();
                     },
                 },
-                { role: 'toggleDevTools', id: 'menu-view-devtools' },
+                {
+                    label: 'Show Developer Tools',
+                    id: 'menu-view-devtools',
+                    click: () => this.windowManager.toggleDeepSeekTabDevTools(),
+                },
                 { type: 'separator' },
                 {
                     label: `Zoom In ${zoomLabel}`,

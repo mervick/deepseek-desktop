@@ -15,6 +15,7 @@ export const geminiAPI: Pick<
     | 'setTabBounds'
     | 'setTabVisible'
     | 'setTabMenuOpen'
+    | 'toggleTabDevTools'
     | 'onTabReady'
     | 'onTabLoadError'
     | 'onTabShortcutTriggered'
@@ -30,6 +31,7 @@ export const geminiAPI: Pick<
     setTabBounds: (bounds) => ipcRenderer.send(IPC_CHANNELS.TABS_SET_BOUNDS, bounds),
     setTabVisible: (visible) => ipcRenderer.send(IPC_CHANNELS.TABS_SET_VISIBLE, visible),
     setTabMenuOpen: (open) => ipcRenderer.send(IPC_CHANNELS.TABS_SET_MENU_OPEN, open),
+    toggleTabDevTools: () => ipcRenderer.send(IPC_CHANNELS.TABS_TOGGLE_DEVTOOLS),
     onTabReady: createSubscription<string>(IPC_CHANNELS.TABS_READY),
     onTabLoadError: createSubscription<{ tabId: string; error: string }>(IPC_CHANNELS.TABS_LOAD_ERROR),
     onTabShortcutTriggered: createSubscription<TabShortcutPayload>(IPC_CHANNELS.TABS_SHORTCUT_TRIGGERED),

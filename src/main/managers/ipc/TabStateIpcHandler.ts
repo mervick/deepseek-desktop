@@ -151,6 +151,12 @@ export class TabStateIpcHandler extends BaseIpcHandler {
                 this.deps.windowManager.setDeepSeekTabMenuOpen(open);
             }
         });
+        ipcMain.on(IPC_CHANNELS.TABS_TOGGLE_DEVTOOLS, (event) => {
+            const mainWindow = this.deps.windowManager.getMainWindow();
+            if (mainWindow && event.sender === mainWindow.webContents) {
+                this.deps.windowManager.toggleDeepSeekTabDevTools();
+            }
+        });
         ipcMain.on(IPC_CHANNELS.TABS_UPDATE_TITLE, (_event, payload: unknown) => {
             this._handleUpdateTitle(payload);
         });
@@ -386,6 +392,7 @@ export class TabStateIpcHandler extends BaseIpcHandler {
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SET_BOUNDS);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SET_VISIBLE);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SET_MENU_OPEN);
+        ipcMain.removeAllListeners(IPC_CHANNELS.TABS_TOGGLE_DEVTOOLS);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_UPDATE_TITLE);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_RELOAD);
 

@@ -65,6 +65,7 @@ export interface MockWindowManager {
     setDeepSeekTabBounds: ReturnType<typeof vi.fn>;
     setDeepSeekTabVisible: ReturnType<typeof vi.fn>;
     setDeepSeekTabMenuOpen: ReturnType<typeof vi.fn>;
+    toggleDeepSeekTabDevTools: ReturnType<typeof vi.fn>;
     getQuickChatWindow: ReturnType<typeof vi.fn>;
     restoreFromTray: ReturnType<typeof vi.fn>;
     hideToTray: ReturnType<typeof vi.fn>;
@@ -208,6 +209,7 @@ export function createMockWindowManager(overrides?: Partial<Omit<MockWindowManag
         setDeepSeekTabBounds: vi.fn(),
         setDeepSeekTabVisible: vi.fn(),
         setDeepSeekTabMenuOpen: vi.fn(),
+        toggleDeepSeekTabDevTools: vi.fn(),
         getQuickChatWindow: vi.fn().mockReturnValue(null),
         restoreFromTray: vi.fn(),
         hideToTray: vi.fn(),

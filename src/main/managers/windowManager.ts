@@ -154,6 +154,10 @@ export default class WindowManager extends EventEmitter {
         this.mainWindow.setDeepSeekTabMenuOpen(open);
     }
 
+    toggleDeepSeekTabDevTools(): void {
+        this.mainWindow.toggleDeepSeekTabDevTools();
+    }
+
     reloadDeepSeekTab(tabId: string): boolean {
         return this.mainWindow.reloadDeepSeekTab(tabId);
     }

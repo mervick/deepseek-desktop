@@ -166,6 +166,11 @@ export function useMenuDefinitions(): MenuDefinition[] {
                     shortcut: 'Ctrl+R',
                     action: () => window.electronAPI?.reloadTabs(),
                 },
+                {
+                    id: 'menu-view-devtools',
+                    label: 'Show Developer Tools',
+                    action: () => window.electronAPI?.toggleTabDevTools(),
+                },
                 { separator: true },
                 {
                     id: 'menu-view-zoom-in',

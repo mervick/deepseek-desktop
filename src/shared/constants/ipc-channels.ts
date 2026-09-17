@@ -53,6 +53,7 @@ export const IPC_CHANNELS = {
     TABS_SET_BOUNDS: 'tabs:set-bounds',
     TABS_SET_VISIBLE: 'tabs:set-visible',
     TABS_SET_MENU_OPEN: 'tabs:set-menu-open',
+    TABS_TOGGLE_DEVTOOLS: 'tabs:toggle-devtools',
     TABS_READY: 'tabs:ready',
     TABS_LOAD_ERROR: 'tabs:load-error',
 

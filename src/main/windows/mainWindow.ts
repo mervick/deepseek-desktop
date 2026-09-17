@@ -179,6 +179,10 @@ export default class MainWindow extends BaseWindow {
         this.deepSeekTabs?.setMenuOpen(open);
     }
 
+    toggleDeepSeekTabDevTools(): void {
+        this.deepSeekTabs?.toggleDevTools();
+    }
+
     getDeepSeekTabContents(tabId: string): WebContents | null {
         return this.deepSeekTabs?.getContents(tabId) ?? null;
     }

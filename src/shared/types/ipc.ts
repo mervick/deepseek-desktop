@@ -126,6 +126,7 @@ export interface ElectronAPI {
 
     /** Temporarily uncover React dropdowns without changing network visibility. */
     setTabMenuOpen: (open: boolean) => void;
+    toggleTabDevTools: () => void;
 
     onTabReady: (callback: (tabId: string) => void) => () => void;
 

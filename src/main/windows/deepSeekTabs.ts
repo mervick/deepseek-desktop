@@ -92,6 +92,17 @@ export class DeepSeekTabs {
         this.showActive();
     }
 
+    toggleDevTools(): void {
+        const contents = this.getActiveContents();
+        if (!contents || contents.isDestroyed()) return;
+
+        if (contents.isDevToolsOpened()) {
+            contents.closeDevTools();
+        } else {
+            contents.openDevTools({ mode: 'detach' });
+        }
+    }
+
     getContents(tabId: string): WebContents | null {
         return this.views.get(tabId)?.webContents ?? null;
     }
