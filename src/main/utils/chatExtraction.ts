@@ -3,11 +3,47 @@ export const CHAT_EXTRACTION_SCRIPT = `
 (() => {
     try {
         const text = (element) => (element?.innerText || element?.textContent || '').trim();
+        const withoutControls = (element) => {
+            const copy = element.cloneNode(true);
+            copy.querySelectorAll('button, [role="button"]').forEach((control) => control.remove());
+            return copy;
+        };
+        const conversationRoot = document.querySelector('[data-conversation-scroll], .ds-virtual-list-visible-items');
         const selectors = '[data-role="user"], [data-role="assistant"], [data-message-role="user"], [data-message-role="assistant"], .ds-message, [data-testid="chat-message"]';
         const nodes = Array.from(document.querySelectorAll(selectors));
         const conversation = [];
 
-        for (const node of nodes) {
+        // Current DeepSeek renders the conversation as virtual-list rows. Use
+        // semantic DS markers rather than hashed CSS-module classes: user text
+        // is in ds-collapsible-text and the final answer is in
+        // ds-assistant-message-main-content.
+        if (conversationRoot) {
+            const currentNodes = Array.from(conversationRoot.querySelectorAll('[data-virtual-list-item-key]'));
+
+            for (const node of currentNodes) {
+                const userContent = node.querySelector('.ds-collapsible-text');
+                const assistantContent = node.querySelector('.ds-assistant-message-main-content');
+                const hasReasoning = node.querySelector('.ds-think-content');
+                const isUser = !!userContent;
+                const isAssistant = !!assistantContent;
+                if ((!isUser && !isAssistant) || (isUser && isAssistant)) continue;
+
+                const content = isUser ? userContent : assistantContent;
+                // An assistant row may contain only the collapsible reasoning
+                // block while the final answer is still streaming.
+                if (!content || (!isAssistant && hasReasoning)) continue;
+                const cleanContent = withoutControls(content);
+                const value = text(cleanContent);
+                if (!value) continue;
+                conversation.push({
+                    role: isUser ? 'user' : 'model',
+                    text: value,
+                    ...(!isUser ? { html: cleanContent.innerHTML } : {}),
+                });
+            }
+        }
+
+        if (conversation.length === 0) for (const node of nodes) {
             // A message container can contain nested role-marked elements; export each turn once.
             if (nodes.some((other) => other !== node && node.contains(other))) continue;
             const roleAttribute = node.getAttribute('data-role') || node.getAttribute('data-message-role');
@@ -16,10 +52,11 @@ export const CHAT_EXTRACTION_SCRIPT = `
             const model = roleAttribute === 'assistant' || roleAttribute === 'model' || !!markdown;
             if (!user && !model) continue;
             const content = markdown || node.querySelector('.ds-message__content, .message-content') || node;
-            const value = text(content);
+            const cleanContent = withoutControls(content);
+            const value = text(cleanContent);
             if (!value) continue;
             conversation.push({ role: user ? 'user' : 'model', text: value,
-                ...(user ? {} : { html: content.innerHTML }) });
+                ...(user ? {} : { html: cleanContent.innerHTML }) });
         }
 
         const titleElement = document.querySelector('[data-testid="conversation-title"], [aria-current="page"]');

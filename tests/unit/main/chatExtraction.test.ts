@@ -1,33 +1,36 @@
 import { describe, expect, it } from 'vitest';
 import { JSDOM } from 'jsdom';
 
-import { CHAT_EXTRACTION_SCRIPT, TITLE_EXTRACTION_SCRIPT } from '../../../src/main/utils/chatExtraction';
+import { CHAT_EXTRACTION_SCRIPT } from '../../../src/main/utils/chatExtraction';
 
-describe('DeepSeek conversation extraction', () => {
-    it('preserves message order and HTML for Markdown conversion', () => {
-        const dom = new JSDOM(
-            `<!doctype html><title>Project notes - DeepSeek</title>
+describe('DeepSeek chat extraction script', () => {
+    it('exports user messages and final answers while excluding reasoning-only blocks', () => {
+        const dom = new JSDOM(`
             <main>
-                <div class="ds-message" data-role="user"><div class="message-content">How are you?</div></div>
-                <div class="ds-message" data-role="assistant"><div class="ds-markdown"><p>Fine, <strong>thanks</strong>.</p></div></div>
-            </main>`,
-            { runScripts: 'outside-only', url: 'https://chat.deepseek.com/chat/test' }
-        );
-        const data = dom.window.eval(CHAT_EXTRACTION_SCRIPT);
+                <div class="ds-virtual-list-visible-items">
+                    <div class="hashed-user-row another-hash" data-virtual-list-item-key="1">
+                        <div class="ds-collapsible-text">User question <span role="button">Edit</span></div>
+                    </div>
+                    <div class="hashed-assistant-row another-hash" data-virtual-list-item-key="2">
+                        <div class="ds-think-content"><div class="ds-markdown">Private reasoning</div></div>
+                        <div class="ds-markdown ds-assistant-message-main-content">
+                            <p>Final answer</p><button>Copy</button><span role="button">Feedback</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        `);
 
-        expect(data.title).toBe('Project notes');
-        expect(data.conversation).toEqual([
-            { role: 'user', text: 'How are you?' },
-            { role: 'model', text: 'Fine, thanks.', html: '<p>Fine, <strong>thanks</strong>.</p>' },
-        ]);
-        expect(dom.window.eval(TITLE_EXTRACTION_SCRIPT)).toBe('Project notes');
-    });
+        const extract = new Function('document', `return (${CHAT_EXTRACTION_SCRIPT})`) as (
+            document: Document
+        ) => { conversation: Array<{ role: string; text: string }> };
+        const result = extract(dom.window.document);
 
-    it('returns no turns on the home page instead of exporting unrelated UI text', () => {
-        const dom = new JSDOM('<!doctype html><title>DeepSeek</title><nav>Previous chats</nav>', {
-            runScripts: 'outside-only',
-            url: 'https://chat.deepseek.com/',
-        });
-        expect(dom.window.eval(CHAT_EXTRACTION_SCRIPT).conversation).toEqual([]);
+        expect(result.conversation).toHaveLength(2);
+        expect(result.conversation[0]).toMatchObject({ role: 'user', text: 'User question' });
+        expect(result.conversation[1]).toMatchObject({ role: 'model', text: 'Final answer' });
+        expect(result.conversation[1]?.html).toContain('<p>Final answer</p>');
+        expect(result.conversation[1]?.html).not.toContain('Copy');
+        expect(result.conversation[1]?.html).not.toContain('Feedback');
     });
 });

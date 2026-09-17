@@ -62,6 +62,18 @@ export default class ExportManager {
             codeBlockStyle: 'fenced',
         });
         this.turndown.use(gfm);
+        this.turndown.addRule('deepseekCodeBlock', {
+            filter: 'pre',
+            replacement: (_content, node) => {
+                const pre = node as HTMLElement;
+                const wrapper = pre.closest('.md-code-block');
+                // Controls were removed by the extraction script, so the
+                // remaining code-banner text is only the language label.
+                const language = wrapper?.querySelector('.md-code-block-banner')?.textContent?.trim() ?? '';
+                const code = pre.textContent?.replace(/\s+$/, '') ?? '';
+                return `\n\n\`\`\`${language}\n${code}\n\`\`\`\n\n`;
+            },
+        });
     }
 
     /**

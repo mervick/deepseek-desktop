@@ -33,6 +33,7 @@ vi.mock('electron', () => ({
 vi.mock('turndown', () => ({
     default: class MockTurndownService {
         use() {}
+        addRule() {}
         turndown() {
             return 'mocked markdown';
         }
