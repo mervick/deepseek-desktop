@@ -63,17 +63,26 @@ Malicious apps often redirect users to phishing sites or load remote payloads fr
 
 ---
 
-## 👨‍💻 About the Developer
+## 👨‍💻 About the Authors
 
-Malware is often distributed by anonymous accounts that disappear quickly. I am a real person with a professional reputation to uphold.
+Malware is often distributed by anonymous accounts that disappear quickly. The project history and current maintainer are documented here so users know who is responsible for which part of the app.
 
-**Ben Wendell**
+### Original Gemini Desktop Author
+
+Ben Wendell created the original Gemini Desktop project that this app is based on: [bwendell/gemini-desktop](https://github.com/bwendell/gemini-desktop).
 
 - **GitHub**: [@bwendell](https://github.com/bwendell) (Active since 2012)
 - **Website**: [benwendell.com](https://benwendell.com)
 - **LinkedIn**: [Benjamin Wendell](https://linkedin.com/in/benjamin-wendell)
 
-I built this tool because I wanted a better way to use Gemini on my desktop. I use it daily myself.
+### Current DeepSeek Desktop Maintainer
+
+Andrey Izman maintains this DeepSeek Desktop project. For questions, bug reports, security reports, release questions, or anything else related to this project, contact Andrey.
+
+- **GitHub**: [@mervick](https://github.com/mervick)
+- **Email**: <izmanw@gmail.com>
+
+This project adapts the desktop wrapper experience for DeepSeek and is maintained separately from the original Gemini Desktop repository.
 
 ---
 

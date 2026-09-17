@@ -101,7 +101,7 @@ export const AboutSection = memo(function AboutSection() {
 
             {/* Copyright */}
             <div className="about-copyright">
-                <p>© 2025 Ben Wendell. Released under the MIT License.</p>
+                <p>© 2025 Ben Wendell, © 2026 Andrey Izman. Released under the MIT License.</p>
             </div>
         </div>
     );

@@ -43,6 +43,6 @@ describe('AboutSection', () => {
 
     it('renders copyright notice', () => {
         render(<AboutSection />);
-        expect(screen.getByText(/© 2025 Ben Wendell/)).toBeInTheDocument();
+        expect(screen.getByText(/© 2025 Ben Wendell, © 2026 Andrey Izman/)).toBeInTheDocument();
     });
 });

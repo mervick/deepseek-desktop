@@ -115,4 +115,4 @@ Use this software at your own risk; it is provided "as is" without any warranty.
 
 ## 📄 License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © 2025 Ben Wendell, © 2026 Andrey Izman

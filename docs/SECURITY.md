@@ -19,7 +19,7 @@ We take security seriously. If you discover a security vulnerability, please rep
 
 **Do NOT open a public issue for security vulnerabilities.**
 
-Instead, please email: **<github@benwendell.com>**
+Instead, please email: **<izmanw@gmail.com>**
 
 Or use GitHub's private vulnerability reporting:
 

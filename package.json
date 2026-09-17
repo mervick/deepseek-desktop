@@ -3,8 +3,11 @@
     "productName": "DeepSeek Desktop",
     "description": "A private desktop wrapper for DeepSeek with enhanced features",
     "author": "Ben Wendell <github@benwendell.com>",
+    "contributors": [
+        "Andrey Izman <izmanw@gmail.com>"
+    ],
     "private": true,
-    "version": "0.12.1",
+    "version": "0.1.0",
     "type": "module",
     "main": "dist-electron/main/main.cjs",
     "keywords": [
