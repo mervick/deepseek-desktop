@@ -40,7 +40,7 @@ describe('Tab Rendering (Integration)', () => {
         await tabPanel.waitForDisplayed({ timeout: 10000 });
 
         const iframeCount = await browser.execute(() => {
-            return document.querySelectorAll('iframe[src*="gemini.google.com"]').length;
+            return document.querySelectorAll('iframe[src*="chat.deepseek.com"]').length;
         });
 
         expect(iframeCount).toBeGreaterThanOrEqual(1);

@@ -246,10 +246,10 @@ export default class MenuManager {
 
     private buildAppMenu(): MenuItemConstructorOptions {
         return {
-            label: 'Gemini Desktop',
+            label: 'DeepSeek Desktop',
             submenu: [
                 {
-                    label: 'About Gemini Desktop',
+                    label: 'About DeepSeek Desktop',
                     id: 'menu-app-about',
                     click: () => this.windowManager.createOptionsWindow('about'),
                 },
@@ -310,7 +310,7 @@ export default class MenuManager {
                 },
                 { type: 'separator' },
                 {
-                    label: 'Sign in to Google',
+                    label: 'Sign in to DeepSeek',
                     id: 'menu-file-signin',
                     click: async () => {
                         await this.windowManager.createAuthWindow(GOOGLE_SIGNIN_URL);
@@ -402,7 +402,7 @@ export default class MenuManager {
             label: 'Help',
             submenu: [
                 {
-                    label: 'About Gemini Desktop',
+                    label: 'About DeepSeek Desktop',
                     id: 'menu-help-about',
                     click: () => this.windowManager.createOptionsWindow('about'),
                 },

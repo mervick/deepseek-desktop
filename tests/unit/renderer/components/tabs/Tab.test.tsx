@@ -14,7 +14,7 @@ describe('Tab', () => {
     const baseTab = {
         id: 'tab-1',
         title: 'My Chat',
-        url: 'https://gemini.google.com/app',
+        url: 'https://chat.deepseek.com/app',
         createdAt: 1,
     };
 

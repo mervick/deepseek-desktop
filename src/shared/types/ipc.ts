@@ -111,7 +111,7 @@ export interface ElectronAPI {
     /** Listen for Gemini navigation requests. Returns unsubscribe function. */
     onGeminiNavigate: (callback: (data: GeminiNavigatePayload) => void) => () => void;
 
-    /** Signal to main process that Gemini iframe is ready for injection */
+    /** Signal to main process that DeepSeek iframe is ready for injection */
     signalGeminiReady: (payload: GeminiReadyPayload) => void;
 
     getTabState: () => Promise<TabsState | null>;

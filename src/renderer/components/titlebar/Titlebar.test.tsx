@@ -43,7 +43,7 @@ describe('Titlebar', () => {
         it('renders with default title', async () => {
             await renderWithAct(<Titlebar />);
 
-            expect(screen.getByText('Gemini Desktop')).toBeInTheDocument();
+            expect(screen.getByText('DeepSeek Desktop')).toBeInTheDocument();
         });
 
         it('renders app icon by default', async () => {
@@ -177,7 +177,7 @@ describe('Titlebar', () => {
             const dragRegion = document.querySelector('.titlebar-drag-region');
             const title = dragRegion?.querySelector('.titlebar-title');
             expect(title).toBeInTheDocument();
-            expect(title).toHaveTextContent('Gemini Desktop');
+            expect(title).toHaveTextContent('DeepSeek Desktop');
         });
     });
 

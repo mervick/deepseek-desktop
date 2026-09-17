@@ -33,7 +33,7 @@ async function blockGeminiRequests(): Promise<void> {
 
             // Enable request interception for Gemini URLs
             await wc.debugger.sendCommand('Fetch.enable', {
-                patterns: [{ urlPattern: '*gemini.google.com*', requestStage: 'Request' }],
+                patterns: [{ urlPattern: '*chat.deepseek.com*', requestStage: 'Request' }],
             });
 
             // Listen for requests and fail them

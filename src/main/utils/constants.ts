@@ -25,13 +25,13 @@ try {
  * Domains that should open inside Electron windows.
  * These URLs open in new Electron windows instead of the system browser.
  */
-export const INTERNAL_DOMAINS = ['gemini.google.com'] as const;
+export const INTERNAL_DOMAINS = ['chat.deepseek.com', 'deepseek.com'] as const;
 
 /**
  * OAuth domains that require special handling.
  * These are intercepted and opened in a BrowserWindow with shared session.
  */
-export const OAUTH_DOMAINS = ['accounts.google.com', 'accounts.youtube.com'] as const;
+export const OAUTH_DOMAINS = ['chat.deepseek.com'] as const;
 
 // =========================================================================
 // Window Configuration
@@ -61,12 +61,12 @@ export function getBaseWebPreferences(): BrowserWindowConstructorOptions['webPre
 /**
  * Default URL for Google sign-in.
  */
-export const GOOGLE_ACCOUNTS_URL = 'https://accounts.google.com' as const;
+export const GOOGLE_ACCOUNTS_URL = 'https://chat.deepseek.com/login' as const;
 
 /**
  * Full URL for Google sign-in page.
  */
-export const GOOGLE_SIGNIN_URL = `${GOOGLE_ACCOUNTS_URL}/signin` as const;
+export const GOOGLE_SIGNIN_URL = GOOGLE_ACCOUNTS_URL;
 
 // =========================================================================
 // External URLs
@@ -95,22 +95,22 @@ export const GITHUB_DISCLAIMER_URL = `${GITHUB_REPO_URL}/blob/main/DISCLAIMER.md
 /**
  * Google Terms of Service URL.
  */
-export const GOOGLE_TOS_URL = 'https://policies.google.com/terms' as const;
+export const GOOGLE_TOS_URL = 'https://cdn.deepseek.com/policies/terms' as const;
 
 /**
  * Google Generative AI Terms URL.
  */
-export const GOOGLE_GENAI_TERMS_URL = 'https://policies.google.com/terms/generative-ai' as const;
+export const GOOGLE_GENAI_TERMS_URL = 'https://cdn.deepseek.com/policies/privacy' as const;
 
 /**
  * Main Gemini application URL.
  */
-export const GEMINI_APP_URL = 'https://gemini.google.com/app' as const;
+export const GEMINI_APP_URL = 'https://chat.deepseek.com/' as const;
 
 /**
  * AI Studio domain (for checking URL).
  */
-export const AI_STUDIO_DOMAIN = 'aistudio.google.com' as const;
+export const AI_STUDIO_DOMAIN = 'chat.deepseek.com' as const;
 
 /**
  * AI Studio URL.
@@ -125,9 +125,9 @@ export const AI_STUDIO_URL = `https://${AI_STUDIO_DOMAIN}` as const;
  * This is more specific than matching all BardChatUi calls, which would also
  * match log, batchexecute, and other non-response API calls.
  *
- * @example "https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate?..."
+ * @example "https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate?..."
  */
-export const GEMINI_RESPONSE_API_PATTERN = '*://gemini.google.com/*StreamGenerate*' as const;
+export const GEMINI_RESPONSE_API_PATTERN = '*://chat.deepseek.com/api/*' as const;
 
 // =========================================================================
 // Gemini DOM Selectors
@@ -168,7 +168,7 @@ export { IPC_CHANNELS } from '../../shared/constants/ipc-channels';
 export const AUTH_WINDOW_CONFIG: BrowserWindowConstructorOptions = {
     width: 500,
     height: 700,
-    title: 'Sign in to Google',
+    title: 'Sign in to DeepSeek',
     autoHideMenuBar: true,
     webPreferences: {
         ...getBaseWebPreferences(),
@@ -323,13 +323,13 @@ export function getWaylandPlatformStatus(): WaylandStatus {
  * Application ID used for Windows notifications, taskbar grouping, and app identification.
  * Must match `appId` in `config/electron-builder.config.cjs` for consistency.
  */
-export const APP_ID = 'com.benwendell.gemini-desktop' as const;
+export const APP_ID = 'com.benwendell.deepseek-desktop' as const;
 
 /**
  * Application display name used in notifications, dialogs, and UI.
  * Must match `productName` in `package.json` for consistency.
  */
-export const APP_NAME = 'Gemini Desktop' as const;
+export const APP_NAME = 'DeepSeek Desktop' as const;
 
 /**
  * Fallback timeout (ms) if ready-to-show event doesn't fire.
@@ -369,7 +369,7 @@ export interface TrayMenuItem {
  * TrayManager iterates over these to build the context menu.
  */
 export const TRAY_MENU_ITEMS: Record<string, TrayMenuItem> = {
-    SHOW: { label: 'Show Gemini Desktop', id: 'show' },
+    SHOW: { label: 'Show DeepSeek Desktop', id: 'show' },
     SEPARATOR: { label: '', id: 'separator', isSeparator: true },
     QUIT: { label: 'Quit', id: 'quit' },
 };
@@ -377,4 +377,4 @@ export const TRAY_MENU_ITEMS: Record<string, TrayMenuItem> = {
 /**
  * Tooltip for the tray icon.
  */
-export const TRAY_TOOLTIP = 'Gemini Desktop' as const;
+export const TRAY_TOOLTIP = 'DeepSeek Desktop' as const;

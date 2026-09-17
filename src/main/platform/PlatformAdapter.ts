@@ -95,7 +95,7 @@ export interface PlatformAdapter {
 
     /**
      * Get additional platform-specific window configuration for the main window.
-     * Linux adapters return `{ wmClass: 'gemini-desktop' }`; others return `{}`.
+     * Linux adapters return `{ wmClass: 'deepseek-desktop' }`; others return `{}`.
      */
     getMainWindowPlatformConfig(): MainWindowPlatformConfig;
 

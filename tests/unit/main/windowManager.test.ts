@@ -74,7 +74,7 @@ describe('WindowManager', () => {
 
     describe('createAuthWindow', () => {
         it('creates auth window with URL', () => {
-            const url = 'https://accounts.google.com/signin';
+            const url = 'https://chat.deepseek.com/signin';
             const win = windowManager.createAuthWindow(url);
             expect((BrowserWindow as any)._instances.length).toBe(1);
             expect(win.loadURL).toHaveBeenCalledWith(url);
@@ -274,14 +274,14 @@ describe('WindowManager', () => {
         it('activates microphone in active tab frame', async () => {
             const win = windowManager.createMainWindow();
             const webContents = createMockWebContents({
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
             });
             const executeJavaScript = vi.fn().mockResolvedValue({ success: true });
             (webContents as any).mainFrame = {
                 frames: [
                     {
                         name: 'gemini-tab-active-tab',
-                        url: 'https://gemini.google.com/app',
+                        url: 'https://chat.deepseek.com/app',
                         executeJavaScript,
                     },
                 ],
@@ -298,7 +298,7 @@ describe('WindowManager', () => {
                     {
                         id: 'active-tab',
                         title: 'New Chat',
-                        url: 'https://gemini.google.com/app',
+                        url: 'https://chat.deepseek.com/app',
                         createdAt: Date.now(),
                     },
                 ],
@@ -313,14 +313,14 @@ describe('WindowManager', () => {
         it('falls back to Gemini frame when active tab frame is missing', async () => {
             const win = windowManager.createMainWindow();
             const webContents = createMockWebContents({
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
             });
             const executeJavaScript = vi.fn().mockResolvedValue({ success: true });
             (webContents as any).mainFrame = {
                 frames: [
                     {
                         name: 'gemini-tab-other',
-                        url: 'https://gemini.google.com/app',
+                        url: 'https://chat.deepseek.com/app',
                         executeJavaScript,
                     },
                 ],
@@ -337,7 +337,7 @@ describe('WindowManager', () => {
                     {
                         id: 'active-tab',
                         title: 'New Chat',
-                        url: 'https://gemini.google.com/app',
+                        url: 'https://chat.deepseek.com/app',
                         createdAt: Date.now(),
                     },
                 ],
@@ -352,14 +352,14 @@ describe('WindowManager', () => {
         it('falls back to Gemini frame when active tab is missing', async () => {
             const win = windowManager.createMainWindow();
             const webContents = createMockWebContents({
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
             });
             const executeJavaScript = vi.fn().mockResolvedValue({ success: true });
             (webContents as any).mainFrame = {
                 frames: [
                     {
                         name: 'gemini-tab-fallback',
-                        url: 'https://gemini.google.com/app',
+                        url: 'https://chat.deepseek.com/app',
                         executeJavaScript,
                     },
                 ],

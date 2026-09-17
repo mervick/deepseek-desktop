@@ -135,7 +135,7 @@ describe('Fatal Error Handling - Window Crash Handlers', () => {
         });
 
         it('should setup did-fail-load handler on webContents', () => {
-            const win = authWindow.create('https://accounts.google.com/test');
+            const win = authWindow.create('https://chat.deepseek.com/test');
 
             const didFailLoadCall = getMockCalls(win.webContents.on).find(
                 (call: [string, MockEventHandler]) => call[0] === 'did-fail-load'
@@ -145,7 +145,7 @@ describe('Fatal Error Handling - Window Crash Handlers', () => {
         });
 
         it('should setup certificate-error handler on webContents', () => {
-            const win = authWindow.create('https://accounts.google.com/test');
+            const win = authWindow.create('https://chat.deepseek.com/test');
 
             const certErrorCall = getMockCalls(win.webContents.on).find(
                 (call: [string, MockEventHandler]) => call[0] === 'certificate-error'
@@ -155,7 +155,7 @@ describe('Fatal Error Handling - Window Crash Handlers', () => {
         });
 
         it('should setup unresponsive handler on window', () => {
-            const win = authWindow.create('https://accounts.google.com/test');
+            const win = authWindow.create('https://chat.deepseek.com/test');
 
             const unresponsiveCall = getMockCalls(win.on).find(
                 (call: [string, MockEventHandler]) => call[0] === 'unresponsive'
@@ -165,7 +165,7 @@ describe('Fatal Error Handling - Window Crash Handlers', () => {
         });
 
         it('should setup responsive handler on window', () => {
-            const win = authWindow.create('https://accounts.google.com/test');
+            const win = authWindow.create('https://chat.deepseek.com/test');
 
             const responsiveCall = getMockCalls(win.on).find(
                 (call: [string, MockEventHandler]) => call[0] === 'responsive'
@@ -175,7 +175,7 @@ describe('Fatal Error Handling - Window Crash Handlers', () => {
         });
 
         it('should deny certificate errors for security', () => {
-            const win = authWindow.create('https://accounts.google.com/test');
+            const win = authWindow.create('https://chat.deepseek.com/test');
 
             const certErrorCall = getMockCalls(win.webContents.on).find(
                 (call: [string, MockEventHandler]) => call[0] === 'certificate-error'

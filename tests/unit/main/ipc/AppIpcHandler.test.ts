@@ -153,7 +153,7 @@ describe('AppIpcHandler', () => {
 
             await ipcHandler!({});
 
-            expect(mockWindowManager.createAuthWindow).toHaveBeenCalledWith('https://accounts.google.com');
+            expect(mockWindowManager.createAuthWindow).toHaveBeenCalledWith('https://chat.deepseek.com');
         });
 
         it('resolves when auth window is closed (3.3.7)', async () => {

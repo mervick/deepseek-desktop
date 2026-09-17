@@ -78,7 +78,7 @@ describe('External Link Sanitization', () => {
         // 2. Attempt to navigate to an external URL using window.location
         // NOTE: This tests the `will-navigate` handler in WindowManager
         await browser.execute(() => {
-            window.location.href = 'https://google.com';
+            window.location.href = 'https://deepseek.com';
         });
 
         // 3. Wait for navigation attempt to be processed

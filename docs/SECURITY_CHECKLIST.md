@@ -11,7 +11,7 @@ Before cutting any release of Gemini Desktop, the release engineer must verify t
 ## 🛡️ Code & Permissions
 
 - [ ] **Network Request Review**: Search for `net.request`, `axios`, `fetch`, or `XMLHttpRequest` in the codebase.
-    - [ ] Confirm no new domains are being contacted (only `google.com` and related).
+    - [ ] Confirm no new domains are being contacted (only `deepseek.com` and related).
 - [ ] **Native Modules**: Confirm no new native Node modules have been added without explicit review.
 - [ ] **IPC Bridges**: Review any changes to `preload.ts` to ensure no sensitive Electron APIs are exposed to the renderer.
 

@@ -52,7 +52,7 @@ describe('useGeminiIframe', () => {
             });
 
             expect(result.current.isLoading).toBe(false);
-            expect(result.current.error).toBe('Unable to reach Gemini');
+            expect(result.current.error).toBe('Unable to reach DeepSeek');
         });
 
         it('sets error state immediately if navigator is offline', async () => {
@@ -90,7 +90,7 @@ describe('useGeminiIframe', () => {
             });
 
             expect(result.current.isLoading).toBe(false);
-            expect(result.current.error).toBe('Failed to load Gemini');
+            expect(result.current.error).toBe('Failed to load DeepSeek');
         });
     });
 

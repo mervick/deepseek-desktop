@@ -78,7 +78,7 @@ describe('Navigation Security Integration', () => {
 
             const handler = webContentsHandlers['will-navigate'];
             const mockEvent = { preventDefault: vi.fn() };
-            handler(mockEvent, 'https://gemini.google.com/app');
+            handler(mockEvent, 'https://chat.deepseek.com/app');
 
             expect(mockEvent.preventDefault).not.toHaveBeenCalled();
             expect(mockLogger.log).toHaveBeenCalledWith(
@@ -95,7 +95,7 @@ describe('Navigation Security Integration', () => {
             const handler = webContentsHandlers['will-navigate'];
             const mockEvent = { preventDefault: vi.fn() };
 
-            handler(mockEvent, 'https://accounts.google.com/signin');
+            handler(mockEvent, 'https://chat.deepseek.com/signin');
 
             expect(mockEvent.preventDefault).not.toHaveBeenCalled();
             expect(mockLogger.log).toHaveBeenCalledWith(
@@ -128,10 +128,10 @@ describe('Navigation Security Integration', () => {
             (mainWindow as any).setupWindowOpenHandler();
 
             const handler = windowOpenHandler;
-            const result = (handler as any)({ url: 'https://accounts.google.com/oauth' });
+            const result = (handler as any)({ url: 'https://chat.deepseek.com/oauth' });
 
             expect(result).toEqual({ action: 'deny' });
-            expect(createAuthWindowMock).toHaveBeenCalledWith('https://accounts.google.com/oauth');
+            expect(createAuthWindowMock).toHaveBeenCalledWith('https://chat.deepseek.com/oauth');
             expect(mockLogger.log).toHaveBeenCalledWith(
                 expect.stringContaining('Intercepting OAuth popup'),
                 expect.any(String)
@@ -157,7 +157,7 @@ describe('Navigation Security Integration', () => {
 
             const handler = windowOpenHandler;
 
-            const result = (handler as any)({ url: 'https://gemini.google.com/some-feature' });
+            const result = (handler as any)({ url: 'https://chat.deepseek.com/some-feature' });
 
             expect(result).toEqual({ action: 'allow' });
         });

@@ -25,14 +25,14 @@ export const GITHUB_DISCLAIMER_URL = `${GITHUB_REPO_URL}/blob/main/DISCLAIMER.md
 /**
  * Google Terms of Service URL.
  */
-export const GOOGLE_TOS_URL = 'https://policies.google.com/terms' as const;
+export const GOOGLE_TOS_URL = 'https://cdn.deepseek.com/policies/terms' as const;
 
 /**
  * Google Generative AI Terms URL.
  */
-export const GOOGLE_GENAI_TERMS_URL = 'https://policies.google.com/terms/generative-ai' as const;
+export const GOOGLE_GENAI_TERMS_URL = 'https://cdn.deepseek.com/policies/privacy' as const;
 
 /**
  * Main Gemini application URL.
  */
-export const GEMINI_APP_URL = 'https://gemini.google.com/app' as const;
+export const GEMINI_APP_URL = 'https://chat.deepseek.com/' as const;

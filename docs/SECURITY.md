@@ -59,7 +59,7 @@ Gemini Desktop follows Electron security best practices:
 | **Node Integration**  | Disabled in renderer                     |
 | **Remote Module**     | Disabled                                 |
 | **Web Security**      | Enabled                                  |
-| **HTTPS Only**        | Only connects to google.com over HTTPS   |
+| **HTTPS Only**        | Only connects to deepseek.com over HTTPS |
 | **IPC Validation**    | All IPC messages are validated           |
 
 ### 🛡️ Automated Checks
@@ -75,15 +75,15 @@ We employ automated security scanning to ensure code quality and safety:
 For detailed information on how we handle data, please see our [**Privacy Policy**](./PRIVACY.md).
 
 - **No telemetry** - Zero data collection or analytics
-- **No remote servers** - Only connects to Google's servers
+- **No remote servers** - Only connects to DeepSeek's servers and the configured GitHub release metadata endpoint
 - **Local storage only** - All data stays on your machine
 - **Encrypted cookies** - Standard Chromium encryption
 
 ### ⚠️ Known Limitations
 
-As a wrapper around `gemini.google.com`, we inherit any vulnerabilities in:
+As a wrapper around `chat.deepseek.com`, we inherit any vulnerabilities in:
 
-- The Gemini web application (Google's responsibility)
+- The DeepSeek web application (DeepSeek's responsibility)
 - Chromium/Electron (we update regularly)
 
 ---
@@ -100,7 +100,7 @@ As a wrapper around `gemini.google.com`, we inherit any vulnerabilities in:
 
 ### Out of Scope
 
-- Vulnerabilities in `gemini.google.com` (report to Google)
+- Vulnerabilities in `chat.deepseek.com` (report to DeepSeek)
 - Vulnerabilities in Electron/Chromium (report upstream)
 - Social engineering attacks
 - Physical access attacks

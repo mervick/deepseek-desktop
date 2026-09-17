@@ -1,7 +1,7 @@
 /**
- * Custom hook for managing Gemini iframe state.
+ * Custom hook for managing the DeepSeek iframe state.
  *
- * Encapsulates loading, error, and network status logic for the Gemini iframe.
+ * Encapsulates loading, error, and network status logic for the DeepSeek iframe.
  * Provides a cleaner interface for App.tsx.
  *
  * @module useGeminiIframe
@@ -16,11 +16,11 @@ const logger = createRendererLogger('[useGeminiIframe]');
 /** Timeout for connectivity check (ms) */
 const CONNECTIVITY_TIMEOUT_MS = 10000;
 
-/** URL to test connectivity - uses Gemini's favicon which should be fast */
-const CONNECTIVITY_TEST_URL = 'https://gemini.google.com/favicon.ico';
+/** URL to test connectivity - uses DeepSeek's favicon which should be fast */
+const CONNECTIVITY_TEST_URL = 'https://chat.deepseek.com/favicon.ico';
 
 /**
- * State and handlers for the Gemini iframe.
+ * State and handlers for the DeepSeek iframe.
  */
 export interface GeminiIframeState {
     /** Whether the iframe is currently loading */
@@ -38,7 +38,7 @@ export interface GeminiIframeState {
 }
 
 /**
- * Check if Gemini is reachable by attempting to fetch its favicon.
+ * Check if DeepSeek is reachable by attempting to fetch its favicon.
  * This detects DNS failures, network issues, etc.
  */
 async function checkGeminiConnectivity(): Promise<boolean> {
@@ -62,7 +62,7 @@ async function checkGeminiConnectivity(): Promise<boolean> {
 }
 
 /**
- * Custom hook for Gemini iframe state management.
+ * Custom hook for DeepSeek iframe state management.
  *
  * @returns {GeminiIframeState} State and handlers for the iframe
  */
@@ -86,29 +86,29 @@ export function useGeminiIframe(): GeminiIframeState {
 
     /**
      * Handle iframe load event.
-     * Performs a connectivity check to verify Gemini is actually reachable.
+     * Performs a connectivity check to verify DeepSeek is actually reachable.
      */
     const handleLoad = useCallback(async () => {
         // Quick check: if navigator says offline, set error immediately
         if (!navigator.onLine) {
             setIsLoading(false);
             setError('Network unavailable');
-            logger.error('Gemini iframe onLoad fired but navigator.onLine is false');
+            logger.error('DeepSeek iframe onLoad fired but navigator.onLine is false');
             return;
         }
 
         // Perform actual connectivity check
-        logger.log('Checking Gemini connectivity...');
+        logger.log('Checking DeepSeek connectivity...');
         const isReachable = await checkGeminiConnectivity();
 
         if (isReachable) {
             setIsLoading(false);
             setError(null);
-            logger.log('Gemini iframe loaded and connectivity verified');
+            logger.log('DeepSeek iframe loaded and connectivity verified');
         } else {
             setIsLoading(false);
-            setError('Unable to reach Gemini');
-            logger.error('Gemini iframe onLoad fired but connectivity check failed');
+            setError('Unable to reach DeepSeek');
+            logger.error('DeepSeek iframe onLoad fired but connectivity check failed');
         }
     }, []);
 
@@ -117,8 +117,8 @@ export function useGeminiIframe(): GeminiIframeState {
      */
     const handleError = useCallback(() => {
         setIsLoading(false);
-        setError('Failed to load Gemini');
-        logger.error('Failed to load Gemini iframe');
+        setError('Failed to load DeepSeek');
+        logger.error('Failed to load DeepSeek iframe');
     }, []);
 
     /**

@@ -586,7 +586,7 @@ describe('IpcManager', () => {
                         frames: [
                             {
                                 name: 'placeholder',
-                                url: 'https://gemini.google.com/app',
+                                url: 'https://chat.deepseek.com/app',
                                 executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
                             },
                         ],
@@ -622,7 +622,7 @@ describe('IpcManager', () => {
                         frames: [
                             {
                                 name: 'non-target-frame',
-                                url: 'https://gemini.google.com/app',
+                                url: 'https://chat.deepseek.com/app',
                                 executeJavaScript: vi.fn(),
                             },
                         ],
@@ -655,7 +655,7 @@ describe('IpcManager', () => {
                         frames: [
                             {
                                 name: 'placeholder',
-                                url: 'https://gemini.google.com/app',
+                                url: 'https://chat.deepseek.com/app',
                                 executeJavaScript: vi.fn().mockResolvedValue({
                                     success: false,
                                     error: 'Input not found',
@@ -699,7 +699,7 @@ describe('IpcManager', () => {
                         frames: [
                             {
                                 name: 'placeholder',
-                                url: 'https://gemini.google.com/app',
+                                url: 'https://chat.deepseek.com/app',
                                 executeJavaScript: vi.fn().mockRejectedValue(new Error('Script error')),
                             },
                         ],
@@ -1403,7 +1403,7 @@ describe('IpcManager', () => {
                             },
                             {
                                 name: 'placeholder',
-                                url: 'https://gemini.google.com/app',
+                                url: 'https://chat.deepseek.com/app',
                                 executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
                             },
                         ],

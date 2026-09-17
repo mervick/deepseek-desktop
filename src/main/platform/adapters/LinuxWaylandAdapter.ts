@@ -39,17 +39,17 @@ export class LinuxWaylandAdapter implements PlatformAdapter {
      */
     applyAppConfiguration(app: Electron.App, logger: Logger): void {
         // Set internal app name to match the executable/id for better WM_CLASS matching
-        app.setName('gemini-desktop');
+        app.setName('deepseek-desktop');
 
         // Set the Wayland app_id / X11 WM_CLASS so KDE and other DEs identify the app
         // correctly in portal dialogs and task managers (instead of "org.chromium.Chromium")
-        app.commandLine.appendSwitch('class', 'gemini-desktop');
+        app.commandLine.appendSwitch('class', 'deepseek-desktop');
 
         // Set desktop name for portal integration
         try {
             const desktopNameCapableApp = app as DesktopNameCapableApp;
             if (typeof desktopNameCapableApp.setDesktopName === 'function') {
-                desktopNameCapableApp.setDesktopName('gemini-desktop');
+                desktopNameCapableApp.setDesktopName('deepseek-desktop');
             }
         } catch (e) {
             logger.error('Error calling setDesktopName:', e);
@@ -157,7 +157,7 @@ export class LinuxWaylandAdapter implements PlatformAdapter {
     // ----- Window methods -----
 
     getMainWindowPlatformConfig(): MainWindowPlatformConfig {
-        return { wmClass: 'gemini-desktop' };
+        return { wmClass: 'deepseek-desktop' };
     }
 
     hideToTray(window: Electron.BrowserWindow): void {

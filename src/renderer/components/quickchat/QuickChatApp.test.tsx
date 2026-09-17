@@ -88,7 +88,7 @@ describe('QuickChatApp', () => {
             await waitForInitialization();
             const input = screen.getByTestId('quick-chat-input');
             expect(input).toBeInTheDocument();
-            expect(input).toHaveAttribute('placeholder', 'Ask Gemini...');
+            expect(input).toHaveAttribute('placeholder', 'Ask DeepSeek...');
         });
 
         it('renders the submit button', async () => {

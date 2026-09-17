@@ -3,7 +3,7 @@
  *
  * This is the entry point for the Electron application.
  * It creates a frameless window with a custom titlebar and
- * strips X-Frame-Options headers to allow embedding Gemini in an iframe.
+ * strips X-Frame-Options headers to allow embedding DeepSeek in an iframe.
  */
 
 // ==========================================================================
@@ -52,7 +52,7 @@ app.setPath('crashDumps', crashDumpsPath);
 const crashReportUrl = process.env.CRASH_REPORT_URL || '';
 
 crashReporter.start({
-    productName: 'Gemini Desktop',
+    productName: 'DeepSeek Desktop',
     submitURL: crashReportUrl,
     uploadToServer: !!crashReportUrl,
     ignoreSystemCrashHandler: true,

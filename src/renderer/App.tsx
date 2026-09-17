@@ -13,7 +13,7 @@ import './App.css';
 /**
  * Root application component.
  *
- * Uses an iframe to embed Gemini. Electron's main process
+ * Uses an iframe to embed DeepSeek. Electron's main process
  * strips security headers that would normally block iframe embedding.
  *
  * Quick Chat Integration:

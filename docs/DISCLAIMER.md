@@ -1,28 +1,27 @@
 # Disclaimer
 
-This application is an **UNOFFICIAL** project and is **NOT** affiliated with, endorsed by, maintained by, or connected to Google LLC.
+This application is an **UNOFFICIAL** project and is **NOT** affiliated with, endorsed by, maintained by, or connected to DeepSeek.
 
 ---
 
 ## Trademark Notice
 
-- **Gemini** is a registered trademark of Google LLC.
-- **Google** is a registered trademark of Google LLC.
+- **DeepSeek** is a trademark of its respective owner.
 
-This software is a third-party desktop client and is not a Google product.
+This software is a third-party desktop client and is not an official DeepSeek product.
 
 ---
 
 ## What This Application Does
 
-This application is a specialized web browser (wrapper) that loads the official `https://gemini.google.com` website. It does NOT:
+This application is a specialized web browser (wrapper) that loads the official `https://chat.deepseek.com` website. It does NOT:
 
 - Store your passwords or authentication credentials
 - Collect any personal data or analytics
-- Modify the Gemini service in any way
+- Modify the DeepSeek service in any way
 - Bypass payment walls or authentication mechanisms
 
-All authentication is handled directly by Google through their official login pages.
+All authentication is handled directly by DeepSeek through its official login pages.
 
 ---
 
@@ -31,8 +30,8 @@ All authentication is handled directly by Google through their official login pa
 By using this software, you acknowledge that:
 
 1. You are solely responsible for your use of this application
-2. You will comply with [Google's Terms of Service](https://policies.google.com/terms)
-3. You will comply with [Google's Generative AI Usage Policies](https://policies.google.com/terms/generative-ai)
+2. You will comply with [DeepSeek's Terms of Use](https://www.deepseek.com/terms-of-use)
+3. You will comply with [DeepSeek's Privacy Policy](https://www.deepseek.com/privacy-policy)
 
 ---
 

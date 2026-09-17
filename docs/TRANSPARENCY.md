@@ -10,13 +10,13 @@ You may have seen warnings on Reddit about a similar-sounding app called "Gemini
 
 Here is a direct comparison of the malicious behaviors found in that clone versus how Gemini Desktop operates:
 
-| Malicious Behavior (GeminiDesk)                                      | Gemini Desktop (This App)                                                                                                                           | Verification                                                          |
-| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| **Credential Theft**<br>Captures email/password fields               | **❌ No Access**<br>Authentication is handled entirely by Google's login page. The app never sees your credentials.                                 | [View Auth Code](../src/main/windows/authWindow.ts#L95-124)           |
-| **Cookie Exfiltration**<br>Zips cookies and sends to external server | **❌ Local Only**<br>Cookies are stored encrypted on your local machine, just like Chrome. They are never transmitted anywhere except `google.com`. | [View Session Code](../src/main/utils/security.ts#L20-57)             |
-| **Hidden Files**<br>Uses `.svchost` and `attrib +H` to hide files    | **❌ Standard Install**<br>Installs to standard OS application folders. No hidden system files.                                                     | [View Installer Config](../config/electron-builder.config.cjs#L47-55) |
-| **External Code**<br>Downloads `MicrosoftEdgeUpdate.exe` from GitHub | **❌ No External Downloads**<br>The app is self-contained. It never downloads executable code from the internet.                                    | [View Security Policy](../src/main/utils/security.ts#L65-71)          |
-| **Persistence**<br>Uses `takeown` to lock files                      | **❌ No Persistence**<br>Uninstalling the app removes it completely.                                                                                |                                                                       |
+| Malicious Behavior (GeminiDesk)                                      | Gemini Desktop (This App)                                                                                                                             | Verification                                                          |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **Credential Theft**<br>Captures email/password fields               | **❌ No Access**<br>Authentication is handled entirely by DeepSeek's login page. The app never sees your credentials.                                 | [View Auth Code](../src/main/windows/authWindow.ts#L95-124)           |
+| **Cookie Exfiltration**<br>Zips cookies and sends to external server | **❌ Local Only**<br>Cookies are stored encrypted on your local machine, just like Chrome. They are never transmitted anywhere except `deepseek.com`. | [View Session Code](../src/main/utils/security.ts#L20-57)             |
+| **Hidden Files**<br>Uses `.svchost` and `attrib +H` to hide files    | **❌ Standard Install**<br>Installs to standard OS application folders. No hidden system files.                                                       | [View Installer Config](../config/electron-builder.config.cjs#L47-55) |
+| **External Code**<br>Downloads `MicrosoftEdgeUpdate.exe` from GitHub | **❌ No External Downloads**<br>The app is self-contained. It never downloads executable code from the internet.                                      | [View Security Policy](../src/main/utils/security.ts#L65-71)          |
+| **Persistence**<br>Uses `takeown` to lock files                      | **❌ No Persistence**<br>Uninstalling the app removes it completely.                                                                                  |                                                                       |
 
 ---
 
@@ -24,12 +24,10 @@ Here is a direct comparison of the malicious behaviors found in that clone versu
 
 We believe you should know exactly who your computer is talking to. Gemini Desktop **ONLY** communicates with these domains:
 
-| Domain             | Purpose                                                      |
-| ------------------ | ------------------------------------------------------------ |
-| `*.google.com`     | Loading the Gemini web interface and authentication.         |
-| `*.gstatic.com`    | Google static assets (images, scripts).                      |
-| `*.googleapis.com` | Google API calls required for the web interface.             |
-| `api.github.com`   | Checking for app updates (metadata only, no user data sent). |
+| Domain           | Purpose                                                      |
+| ---------------- | ------------------------------------------------------------ |
+| `*.deepseek.com` | Loading the DeepSeek web interface and authentication.       |
+| `api.github.com` | Checking for app updates (metadata only, no user data sent). |
 
 **We do not have a backend server.** There is no "Gemini Desktop Cloud." All data flows directly between your machine and Google.
 
@@ -41,9 +39,9 @@ Malicious apps often redirect users to phishing sites or load remote payloads fr
 
 | Protection                   | Description                                                                                              | Verification                                                           |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **URL Allowlist**            | Navigation is restricted to `gemini.google.com` and Google OAuth domains. All other URLs are blocked.    | [View Navigation Handler](../src/main/windows/mainWindow.ts#L196-237)  |
-| **External Links → Browser** | Clicking a non-Google link opens your system browser, not inside the app. The app cannot be hijacked.    | [View Window Open Handler](../src/main/windows/mainWindow.ts#L243-283) |
-| **Permission Lockdown**      | Microphone access is only granted to `*.google.com` domains. All other requests are denied.              | [View Permission Handler](../src/main/utils/security.ts#L84-112)       |
+| **URL Allowlist**            | Navigation is restricted to HTTPS DeepSeek domains. All other URLs are blocked.                          | [View Navigation Handler](../src/main/windows/mainWindow.ts#L196-237)  |
+| **External Links → Browser** | Clicking a non-DeepSeek link opens your system browser, not inside the app. The app cannot be hijacked.  | [View Window Open Handler](../src/main/windows/mainWindow.ts#L243-283) |
+| **Permission Lockdown**      | Microphone access is only granted to `*.deepseek.com` domains. All other requests are denied.            | [View Permission Handler](../src/main/utils/security.ts#L84-112)       |
 | **Domain Constants**         | Allowed domains are defined in a single, auditable file—no hidden allowlists scattered through the code. | [View Domain Config](../src/main/utils/constants.ts#L12-22)            |
 
 ---

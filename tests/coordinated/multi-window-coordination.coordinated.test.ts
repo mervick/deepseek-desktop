@@ -42,7 +42,7 @@ describe('Multi-Window Coordination Integration', () => {
             it('should close Options and Auth windows when Main window is closed', () => {
                 const mainWindow = windowManager.createMainWindow();
                 const optionsWindow = windowManager.createOptionsWindow();
-                const authWindow = windowManager.createAuthWindow('https://auth.google.com');
+                const authWindow = windowManager.createAuthWindow('https://auth.deepseek.com');
 
                 const closedHandler = (mainWindow as any)._listeners.get('closed');
                 expect(closedHandler).toBeDefined();
@@ -58,7 +58,7 @@ describe('Multi-Window Coordination Integration', () => {
             it('should close auxiliary windows when Main window is hidden to tray', () => {
                 windowManager.createMainWindow();
                 const optionsWindow = windowManager.createOptionsWindow();
-                const authWindow = windowManager.createAuthWindow('https://auth.google.com');
+                const authWindow = windowManager.createAuthWindow('https://auth.deepseek.com');
 
                 windowManager.hideToTray();
 

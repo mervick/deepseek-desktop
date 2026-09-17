@@ -10,7 +10,7 @@ describe('Gemini Loading & Webview Security', () => {
         const result = await browser.execute(() => {
             try {
                 const webview = document.createElement('webview');
-                webview.src = 'https://www.google.com';
+                webview.src = 'https://www.deepseek.com';
                 document.body.appendChild(webview);
 
                 // We initially check if it was appended
@@ -54,17 +54,17 @@ describe('Gemini Loading & Webview Security', () => {
             // Actually `webRequest` intercepts all requests.
 
             // BUT simpler: we trust our `security.ts` unit tests?
-            // Or we assume if we can load google.com in an iframe it works?
-            // Google.com usually has X-Frame-Options: SAMEORIGIN.
+            // Or we assume if we can load deepseek.com in an iframe it works?
+            // DeepSeek may set X-Frame-Options: SAMEORIGIN.
             // If we can load it in the app (localhost origin), it means stripping works.
             return true;
         });
 
-        // Let's try to load google.com in an iframe in the app
+        // Let's try to load deepseek.com in an iframe in the app
         await browser.execute(() => {
             const iframe = document.createElement('iframe');
             iframe.id = 'test-iframe';
-            iframe.src = 'https://accounts.google.com'; // Usually has headers
+            iframe.src = 'https://chat.deepseek.com'; // Usually has headers
             document.body.appendChild(iframe);
         });
 

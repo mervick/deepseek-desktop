@@ -47,16 +47,16 @@ export class LinuxX11Adapter implements PlatformAdapter {
      */
     applyAppConfiguration(app: Electron.App, logger: Logger): void {
         // Set internal app name to match the executable/id for better WM_CLASS matching
-        app.setName('gemini-desktop');
+        app.setName('deepseek-desktop');
 
         // Set X11 WM_CLASS so DEs identify the app correctly in task managers
-        app.commandLine.appendSwitch('class', 'gemini-desktop');
+        app.commandLine.appendSwitch('class', 'deepseek-desktop');
 
         // Set desktop name for integration
         try {
             const desktopNameCapableApp = app as DesktopNameCapableApp;
             if (typeof desktopNameCapableApp.setDesktopName === 'function') {
-                desktopNameCapableApp.setDesktopName('gemini-desktop');
+                desktopNameCapableApp.setDesktopName('deepseek-desktop');
             }
         } catch (e) {
             logger.error('Error calling setDesktopName:', e);
@@ -142,7 +142,7 @@ export class LinuxX11Adapter implements PlatformAdapter {
     // ----- Window methods -----
 
     getMainWindowPlatformConfig(): MainWindowPlatformConfig {
-        return { wmClass: 'gemini-desktop' };
+        return { wmClass: 'deepseek-desktop' };
     }
 
     hideToTray(window: Electron.BrowserWindow): void {

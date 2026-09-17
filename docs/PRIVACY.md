@@ -10,13 +10,13 @@ Your privacy is critically important to us. This Privacy Policy explains how Gem
 
 **We do NOT collect, store, or transmit any personal data.**
 
-The Application acts strictly as a web wrapper (browser) for `https://gemini.google.com`. Any interaction you have is directly with Google's services.
+The Application acts strictly as a web wrapper (browser) for `https://chat.deepseek.com`. Any interaction you have is directly with DeepSeek's services.
 
 ### Credentials
 
 **We do NOT see, store, or transmit your passwords.**
 
-- Authentication happens directly on Google's secure login pages (`accounts.google.com`).
+- Authentication happens directly on DeepSeek's secure login pages (`chat.deepseek.com`).
 - The Application uses standard Electron `session` storage to persist your login cookies locally on your device, just like Chrome or Edge.
 - We do NOT have access to your raw credentials.
 
@@ -48,18 +48,17 @@ You can delete this data at any time by clearing your application data or uninst
 
 The Application limits network requests to:
 
-1.  **Google Services:** `*.google.com`, `*.gstatic.com`, `*.googleapis.com` (for the core Gemini functionality).
+1.  **DeepSeek Services:** `*.deepseek.com` (for the core DeepSeek functionality).
 2.  **GitHub Releases:** `api.github.com` (to check for application updates, if enabled).
 
 We do not proxy your traffic through any third-party servers.
 
 ## 4. Third-Party Services
 
-Since this Application loads `gemini.google.com`, you are subject to Google's policies when using their service:
+Since this Application loads `chat.deepseek.com`, you are subject to DeepSeek's policies when using their service:
 
-- [Google Privacy Policy](https://policies.google.com/privacy)
-- [Google Terms of Service](https://policies.google.com/terms)
-- [Generative AI Additional Terms of Service](https://policies.google.com/terms/generative-ai)
+- [DeepSeek Privacy Policy](https://www.deepseek.com/privacy-policy)
+- [DeepSeek Terms of Use](https://www.deepseek.com/terms-of-use)
 
 ## 5. Security
 

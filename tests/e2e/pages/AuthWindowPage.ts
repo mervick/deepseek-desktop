@@ -127,14 +127,14 @@ export class AuthWindowPage extends BasePage {
     }
 
     /**
-     * Check if the current URL is on accounts.google.com.
+     * Check if the current URL is on chat.deepseek.com.
      * Uses proper URL parsing to prevent substring bypass attacks.
      */
     async isOnGoogleAccounts(): Promise<boolean> {
         const url = await this.getUrl();
         try {
             const hostname = new URL(url).hostname;
-            return hostname === 'accounts.google.com' || hostname.endsWith('.accounts.google.com');
+            return hostname === 'chat.deepseek.com' || hostname.endsWith('.chat.deepseek.com');
         } catch {
             return false;
         }
@@ -146,7 +146,7 @@ export class AuthWindowPage extends BasePage {
      */
     async simulateSuccessfulLogin(): Promise<void> {
         this.log('Simulating successful login (navigating to Gemini)');
-        await this.navigateTo('https://gemini.google.com/app');
+        await this.navigateTo('https://chat.deepseek.com/app');
     }
 
     /**
@@ -171,9 +171,9 @@ export class AuthWindowPage extends BasePage {
      * Set a cookie in the auth window session.
      * @param name - Cookie name
      * @param value - Cookie value
-     * @param domain - Cookie domain (default: '.google.com')
+     * @param domain - Cookie domain (default: '.deepseek.com')
      */
-    async setCookie(name: string, value: string, domain = '.google.com'): Promise<void> {
+    async setCookie(name: string, value: string, domain = '.deepseek.com'): Promise<void> {
         this.log(`Setting cookie: ${name}`);
         await browser.setCookies([
             {

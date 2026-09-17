@@ -152,12 +152,12 @@ describe('Tab + Quick Chat coordination', () => {
 
         const wrongFrame = {
             name: getTabFrameName('other-tab'),
-            url: 'https://gemini.google.com/app',
+            url: 'https://chat.deepseek.com/app',
             executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
         };
         const targetFrame = {
             name: getTabFrameName(navigatePayload.targetTabId),
-            url: 'https://gemini.google.com/app',
+            url: 'https://chat.deepseek.com/app',
             executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
         };
         mainWindow.webContents.mainFrame.frames = [wrongFrame, targetFrame];
@@ -199,7 +199,7 @@ describe('Tab + Quick Chat coordination', () => {
 
         const targetFrame = {
             name: getTabFrameName(secondPayload.targetTabId),
-            url: 'https://gemini.google.com/app',
+            url: 'https://chat.deepseek.com/app',
             executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
         };
         mainWindow.webContents.mainFrame.frames = [targetFrame];

@@ -109,7 +109,7 @@ describe('Authentication Flow', () => {
 
         // 4. Verify main window URL hasn't changed to Google accounts
         const mainUrl = await browser.getUrl();
-        expect(mainUrl).not.toContain('accounts.google.com');
+        expect(mainUrl).not.toContain('chat.deepseek.com');
 
         // 5. Cleanup: Close auth window
         await authWindow.switchTo();
@@ -120,7 +120,7 @@ describe('Authentication Flow', () => {
         // Inject a mock OAuth link in the main window
         await browser.execute(() => {
             const link = document.createElement('a');
-            link.href = 'https://accounts.google.com/signin/oauth';
+            link.href = 'https://chat.deepseek.com/signin/oauth';
             link.target = '_blank';
             link.textContent = 'OAuth Link';
             link.id = 'mock-oauth-link';
@@ -177,7 +177,7 @@ describe('Authentication Flow', () => {
             let isGoogleAccounts = false;
             try {
                 const hostname = new URL(testUrl).hostname;
-                isGoogleAccounts = hostname === 'accounts.google.com' || hostname.endsWith('.accounts.google.com');
+                isGoogleAccounts = hostname === 'chat.deepseek.com' || hostname.endsWith('.chat.deepseek.com');
             } catch {
                 isGoogleAccounts = false;
             }
@@ -209,7 +209,7 @@ describe('Authentication Flow', () => {
         await authWindow.openAndSwitchTo();
 
         // Ensure we are on a domain that supports the cookie we want to set
-        await authWindow.navigateTo('https://accounts.google.com');
+        await authWindow.navigateTo('https://chat.deepseek.com');
 
         // 2. Set a cookie in the auth window session
         await authWindow.setCookie('e2e-test-cookie', 'shared-session-verified');
@@ -218,7 +218,7 @@ describe('Authentication Flow', () => {
         await authWindow.switchToMainWindow();
 
         // 4. Navigate Main Window to a URL that can read the cookie
-        await browser.url('https://accounts.google.com');
+        await browser.url('https://chat.deepseek.com');
 
         // 5. Verify cookie is present in Main Window's session
         let testCookie: Awaited<ReturnType<typeof browser.getCookies>>[number] | undefined;

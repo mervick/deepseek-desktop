@@ -4,7 +4,7 @@
  * Tests that the Gemini webview loads and functions correctly.
  *
  * Verifies:
- * 1. Gemini.google.com actually loads in the webview
+ * 1. Gemini.deepseek.com actually loads in the webview
  * 2. Webview responds to navigation
  * 3. Webview content security (sandbox enabled, CSP)
  *
@@ -50,7 +50,7 @@ async function getWebviewInfo(): Promise<{
         const geminiFrame = frames.find((frame) => {
             try {
                 const hostname = new URL(frame.url).hostname;
-                return hostname === 'gemini.google.com' || hostname.endsWith('.gemini.google.com');
+                return hostname === 'chat.deepseek.com' || hostname.endsWith('.chat.deepseek.com');
             } catch {
                 return false;
             }
@@ -136,7 +136,7 @@ describe('Webview Content Verification', () => {
 
             // Log the result regardless of pass/fail for debugging
             if (info.geminiUrl) {
-                expect(info.geminiUrl).toContain('gemini.google.com');
+                expect(info.geminiUrl).toContain('chat.deepseek.com');
             }
 
             // NOTE: This may fail in CI without network access
@@ -161,7 +161,7 @@ describe('Webview Content Verification', () => {
             const info = await getWebviewInfo();
 
             if (info.geminiFrameFound) {
-                expect(info.geminiUrl).toContain('gemini.google.com');
+                expect(info.geminiUrl).toContain('chat.deepseek.com');
             }
         });
     });

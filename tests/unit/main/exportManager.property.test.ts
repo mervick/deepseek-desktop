@@ -126,7 +126,7 @@ describe('ExportManager URL validation property tests', () => {
     // ==========================================================================
 
     describe('bypass prevention', () => {
-        it('substring attacks are rejected (e.g., evil-gemini.google.com.attacker.com)', () => {
+        it('substring attacks are rejected (e.g., evil-chat.deepseek.com.attacker.com)', () => {
             const attackerDomain = fc.stringMatching(/^[a-z][a-z0-9-]{2,10}\.(com|net|org|io)$/);
 
             fc.assert(
@@ -144,9 +144,9 @@ describe('ExportManager URL validation property tests', () => {
 
             fc.assert(
                 fc.property(prefix, (p) => {
-                    // e.g., "evil-gemini.google.com" should fail
+                    // e.g., "evil-chat.deepseek.com" should fail
                     // but only if the prefix makes it NOT a valid subdomain structure
-                    const hostname = `${p}gemini.google.com`;
+                    const hostname = `${p}chat.deepseek.com`;
                     expect(isHostnameAllowed(hostname)).toBe(false);
                 }),
                 { numRuns: 200 }
@@ -158,12 +158,12 @@ describe('ExportManager URL validation property tests', () => {
                 'gemini.google.co',
                 'gemini.googIe.com', // capital I instead of l
                 'gemini.gogle.com',
-                'gemini.google.comm',
-                'gemimi.google.com',
-                'gemnii.google.com',
+                'chat.deepseek.comm',
+                'gemimi.deepseek.com',
+                'gemnii.deepseek.com',
                 'gemini.g00gle.com',
                 'aistudio.googl.com',
-                'aistudi0.google.com',
+                'aistudi0.deepseek.com',
             ];
 
             for (const typo of typos) {
@@ -222,7 +222,7 @@ describe('ExportManager URL validation property tests', () => {
         });
 
         it('URLs with credentials in authority are handled safely', () => {
-            // Test URLs like https://user:pass@gemini.google.com
+            // Test URLs like https://user:pass@chat.deepseek.com
             fc.assert(
                 fc.property(
                     fc.stringMatching(/^[a-z0-9]{1,10}$/),

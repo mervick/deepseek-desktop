@@ -79,7 +79,7 @@ export default class MainWindow extends BaseWindow {
         const platformConfig = this.adapter.getMainWindowPlatformConfig();
         this.windowConfig = {
             ...MAIN_WINDOW_CONFIG,
-            title: 'Gemini Desktop',
+            title: 'DeepSeek Desktop',
             ...(platformConfig.wmClass ? { wmClass: platformConfig.wmClass } : {}),
             titleBarStyle: getTitleBarStyle(),
             icon: getIconPath(),
@@ -233,13 +233,13 @@ export default class MainWindow extends BaseWindow {
                 }
 
                 // Allow navigation to internal domains
-                if (isInternalDomain(hostname)) {
+                if (protocol === 'https:' && isInternalDomain(hostname)) {
                     this.logger.log('Allowing navigation to internal URL:', url);
                     return;
                 }
 
                 // Allow navigation to OAuth domains (for sign-in flows)
-                if (isOAuthDomain(hostname)) {
+                if (urlObj.protocol === 'https:' && isOAuthDomain(hostname)) {
                     this.logger.log('Allowing navigation to OAuth URL:', url);
                     return;
                 }
@@ -284,7 +284,7 @@ export default class MainWindow extends BaseWindow {
                 }
 
                 // Internal domains: allow in new Electron window
-                if (isInternalDomain(hostname)) {
+                if (urlObj.protocol === 'https:' && isInternalDomain(hostname)) {
                     return { action: 'allow' };
                 }
             } catch (error) {
@@ -441,13 +441,13 @@ export default class MainWindow extends BaseWindow {
             }, MainWindow.RESPONSE_DETECTION_STARTUP_DELAY_MS);
         });
 
-        // Monitor Gemini's streaming API endpoints for response completion
+        // Monitor DeepSeek's streaming API endpoints for response completion
         // The BardChatUi endpoint handles chat streaming responses
-        const geminiApiFilter = {
+        const deepSeekApiFilter = {
             urls: [GEMINI_RESPONSE_API_PATTERN],
         };
         // Store filter for cleanup (Task 12.8)
-        this.responseDetectionFilter = geminiApiFilter;
+        this.responseDetectionFilter = deepSeekApiFilter;
 
         // Task 12.8: Store listener reference for potential cleanup
         // Task 12.9: Wrap registration in try/catch for robustness
@@ -483,7 +483,7 @@ export default class MainWindow extends BaseWindow {
                 }
             };
 
-            session.defaultSession.webRequest.onCompleted(geminiApiFilter, this.responseDetectionListener);
+            session.defaultSession.webRequest.onCompleted(deepSeekApiFilter, this.responseDetectionListener);
         } catch (error) {
             this.logger.error('Failed to set up response detection:', error);
         }

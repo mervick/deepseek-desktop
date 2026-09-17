@@ -92,7 +92,7 @@ describe('useMenuDefinitions', () => {
             const fileMenu = result.current[0];
             const signInItem = fileMenu.items[5];
 
-            expect(signInItem).toHaveProperty('label', 'Sign in to Google');
+            expect(signInItem).toHaveProperty('label', 'Sign in to DeepSeek');
             expect(signInItem).toHaveProperty('action');
 
             // Call the async action to cover lines 25-27
@@ -331,7 +331,7 @@ describe('useMenuDefinitions', () => {
             const helpMenu = result.current[2];
             const aboutItem = helpMenu.items[3];
 
-            expect(aboutItem).toHaveProperty('label', 'About Gemini Desktop');
+            expect(aboutItem).toHaveProperty('label', 'About DeepSeek Desktop');
 
             if ('action' in aboutItem && aboutItem.action) {
                 aboutItem.action();

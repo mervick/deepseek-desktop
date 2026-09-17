@@ -78,7 +78,7 @@ describe('Tab Title Sync (Integration)', () => {
                     return {
                         id,
                         title,
-                        url: 'https://gemini.google.com/app',
+                        url: 'https://chat.deepseek.com/app',
                         createdAt: Date.now() + index,
                     };
                 })

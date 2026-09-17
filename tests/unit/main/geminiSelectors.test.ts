@@ -28,8 +28,8 @@ describe('Gemini Selectors Module', () => {
 
     describe('GeminiSelectors structure', () => {
         it('has domain configuration', () => {
-            expect(GeminiSelectors.domain).toBe('gemini.google.com');
-            expect(GeminiSelectors.legacyDomain).toBe('bard.google.com');
+            expect(GeminiSelectors.domain).toBe('chat.deepseek.com');
+            expect(GeminiSelectors.legacyDomain).toBe('deepseek.com');
         });
 
         it('has editor selectors', () => {
@@ -95,7 +95,7 @@ describe('Gemini Selectors Module', () => {
 
     describe('Backwards Compatibility Exports', () => {
         it('exports GEMINI_DOMAIN', () => {
-            expect(GEMINI_DOMAIN).toBe('gemini.google.com');
+            expect(GEMINI_DOMAIN).toBe('chat.deepseek.com');
         });
 
         it('exports GEMINI_EDITOR_SELECTORS', () => {
@@ -116,17 +116,16 @@ describe('Gemini Selectors Module', () => {
     });
 
     describe('isGeminiDomain', () => {
-        it('returns true for gemini.google.com URLs', () => {
-            expect(isGeminiDomain('https://gemini.google.com/app')).toBe(true);
-            expect(isGeminiDomain('https://gemini.google.com/')).toBe(true);
+        it('returns true for chat.deepseek.com URLs', () => {
+            expect(isGeminiDomain('https://chat.deepseek.com/app')).toBe(true);
+            expect(isGeminiDomain('https://chat.deepseek.com/')).toBe(true);
         });
 
-        it('returns true for legacy bard.google.com URLs', () => {
-            expect(isGeminiDomain('https://bard.google.com/app')).toBe(true);
+        it('returns true for the DeepSeek root domain', () => {
+            expect(isGeminiDomain('https://deepseek.com/app')).toBe(true);
         });
 
         it('returns false for other URLs', () => {
-            expect(isGeminiDomain('https://google.com')).toBe(false);
             expect(isGeminiDomain('https://example.com')).toBe(false);
         });
     });
@@ -136,7 +135,7 @@ describe('Gemini Selectors Module', () => {
             const { JSDOM } = require('jsdom');
             const dom = new JSDOM(`
                 <html><body>
-                    <div class="ql-editor" contenteditable="true"></div>
+                    <textarea placeholder="Message"></textarea>
                 </body></html>
             `);
 

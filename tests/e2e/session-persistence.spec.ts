@@ -52,7 +52,7 @@ describe('Session Persistence', () => {
 
         // 1. Set a cookie via Electron session API
         await setCookieViaSession({
-            url: 'https://gemini.google.com',
+            url: 'https://chat.deepseek.com',
             name: cookieName,
             value: cookieValue,
         });
@@ -70,7 +70,7 @@ describe('Session Persistence', () => {
     it('should share cookies between different windows (Main and Options)', async () => {
         // This verifies that both windows share the same persistent session
         const testCookie = {
-            url: 'https://gemini.google.com',
+            url: 'https://chat.deepseek.com',
             name: 'shared-session-test',
             value: 'shared-' + Date.now(),
         };

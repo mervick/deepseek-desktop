@@ -41,7 +41,7 @@ export class WindowsAdapter implements PlatformAdapter {
      * Sets the display name shown in the taskbar and window titles.
      */
     applyAppConfiguration(app: Electron.App, _logger: Logger): void {
-        app.setName('Gemini Desktop');
+        app.setName('DeepSeek Desktop');
     }
 
     /**

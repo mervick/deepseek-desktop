@@ -2,7 +2,7 @@
  * App IPC Handler.
  *
  * Handles application-level IPC channels for opening options windows
- * and Google sign-in authentication.
+ * and DeepSeek sign-in authentication.
  *
  * @module ipc/AppIpcHandler
  */
@@ -16,7 +16,7 @@ import { IPC_CHANNELS, GOOGLE_ACCOUNTS_URL } from '../../utils/constants';
  *
  * Currently handles:
  * - `open-options` - Opens the options window, optionally to a specific tab
- * - `open-google-signin` - Opens Google sign-in authentication window
+ * - `open-google-signin` - Opens DeepSeek sign-in authentication window
  */
 export class AppIpcHandler extends BaseIpcHandler {
     /**
@@ -32,7 +32,7 @@ export class AppIpcHandler extends BaseIpcHandler {
             }
         });
 
-        // Open Google sign-in using WindowManager's createAuthWindow
+        // Open DeepSeek sign-in using WindowManager's createAuthWindow
         ipcMain.handle(IPC_CHANNELS.OPEN_GOOGLE_SIGNIN, async (): Promise<void> => {
             try {
                 const authWindow = this.deps.windowManager.createAuthWindow(GOOGLE_ACCOUNTS_URL);
@@ -42,7 +42,7 @@ export class AppIpcHandler extends BaseIpcHandler {
                     authWindow.on('closed', () => resolve());
                 });
             } catch (error) {
-                this.logger.error('Error opening Google sign-in:', error);
+                this.logger.error('Error opening DeepSeek sign-in:', error);
                 throw error;
             }
         });

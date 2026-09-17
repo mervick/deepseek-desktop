@@ -56,12 +56,12 @@ describe('ExportManager URL Validation Security', () => {
 
     /**
      * These tests verify the fix for CodeQL alert:
-     * "Incomplete URL substring sanitization - 'gemini.google.com' can be anywhere in the URL"
+     * "Incomplete URL substring sanitization - 'chat.deepseek.com' can be anywhere in the URL"
      *
-     * The vulnerability was that using `.includes('gemini.google.com')` allowed bypass attacks like:
-     * - attacker.com/gemini.google.com (path injection)
-     * - gemini.google.com.attacker.com (subdomain prefix)
-     * - evilgemini.google.com (no dot separation)
+     * The vulnerability was that using `.includes('chat.deepseek.com')` allowed bypass attacks like:
+     * - attacker.com/chat.deepseek.com (path injection)
+     * - chat.deepseek.com.attacker.com (subdomain prefix)
+     * - evilchat.deepseek.com (no dot separation)
      */
     describe('isAllowedGeminiUrl (security)', () => {
         // Access private method for testing
@@ -70,70 +70,70 @@ describe('ExportManager URL Validation Security', () => {
         };
 
         describe('should ALLOW legitimate Gemini URLs', () => {
-            it('allows exact gemini.google.com domain', () => {
-                expect(isAllowedUrl('https://gemini.google.com/')).toBe(true);
-                expect(isAllowedUrl('https://gemini.google.com/app')).toBe(true);
-                expect(isAllowedUrl('https://gemini.google.com/chat/abc123')).toBe(true);
+            it('allows exact chat.deepseek.com domain', () => {
+                expect(isAllowedUrl('https://chat.deepseek.com/')).toBe(true);
+                expect(isAllowedUrl('https://chat.deepseek.com/app')).toBe(true);
+                expect(isAllowedUrl('https://chat.deepseek.com/chat/abc123')).toBe(true);
             });
 
-            it('allows gemini.google.com subdomains', () => {
-                expect(isAllowedUrl('https://api.gemini.google.com/')).toBe(true);
-                expect(isAllowedUrl('https://staging.gemini.google.com/')).toBe(true);
-                expect(isAllowedUrl('https://deep.sub.gemini.google.com/')).toBe(true);
+            it('allows chat.deepseek.com subdomains', () => {
+                expect(isAllowedUrl('https://api.chat.deepseek.com/')).toBe(true);
+                expect(isAllowedUrl('https://staging.chat.deepseek.com/')).toBe(true);
+                expect(isAllowedUrl('https://deep.sub.chat.deepseek.com/')).toBe(true);
             });
 
-            it('allows exact aistudio.google.com domain', () => {
-                expect(isAllowedUrl('https://aistudio.google.com/')).toBe(true);
-                expect(isAllowedUrl('https://aistudio.google.com/prompts')).toBe(true);
+            it('allows exact chat.deepseek.com domain', () => {
+                expect(isAllowedUrl('https://chat.deepseek.com/')).toBe(true);
+                expect(isAllowedUrl('https://chat.deepseek.com/prompts')).toBe(true);
             });
 
-            it('allows aistudio.google.com subdomains', () => {
-                expect(isAllowedUrl('https://api.aistudio.google.com/')).toBe(true);
+            it('allows chat.deepseek.com subdomains', () => {
+                expect(isAllowedUrl('https://api.chat.deepseek.com/')).toBe(true);
             });
 
             it('handles case insensitivity', () => {
-                expect(isAllowedUrl('https://GEMINI.GOOGLE.COM/')).toBe(true);
-                expect(isAllowedUrl('https://Gemini.Google.Com/app')).toBe(true);
+                expect(isAllowedUrl('https://CHAT.DEEPSEEK.COM/')).toBe(true);
+                expect(isAllowedUrl('https://Chat.DeepSeek.Com/app')).toBe(true);
             });
         });
 
         describe('should REJECT bypass attempts (security critical)', () => {
             it('rejects domain in URL path (path injection)', () => {
-                // attacker.com/gemini.google.com should NOT be allowed
-                expect(isAllowedUrl('https://attacker.com/gemini.google.com')).toBe(false);
-                expect(isAllowedUrl('https://evil.com/fake/gemini.google.com/app')).toBe(false);
+                // attacker.com/chat.deepseek.com should NOT be allowed
+                expect(isAllowedUrl('https://attacker.com/chat.deepseek.com')).toBe(false);
+                expect(isAllowedUrl('https://evil.com/fake/chat.deepseek.com/app')).toBe(false);
             });
 
             it('rejects domain as subdomain prefix (subdomain injection)', () => {
-                // gemini.google.com.attacker.com should NOT be allowed
-                expect(isAllowedUrl('https://gemini.google.com.attacker.com/')).toBe(false);
-                expect(isAllowedUrl('https://aistudio.google.com.evil.org/')).toBe(false);
+                // chat.deepseek.com.attacker.com should NOT be allowed
+                expect(isAllowedUrl('https://chat.deepseek.com.attacker.com/')).toBe(false);
+                expect(isAllowedUrl('https://chat.deepseek.com.evil.org/')).toBe(false);
             });
 
             it('rejects domains without dot separation (suffix attack)', () => {
-                // evilgemini.google.com should NOT be allowed
-                expect(isAllowedUrl('https://evilgemini.google.com/')).toBe(false);
-                expect(isAllowedUrl('https://fakeaistudio.google.com/')).toBe(false);
-                expect(isAllowedUrl('https://notgemini.google.com/')).toBe(false);
+                // evilchat.deepseek.com should NOT be allowed
+                expect(isAllowedUrl('https://deepseek.com.evil.example/')).toBe(false);
+                expect(isAllowedUrl('https://deepseek.com.attacker.test/')).toBe(false);
+                expect(isAllowedUrl('https://notdeepseek.com/')).toBe(false);
             });
 
             it('rejects similar-looking but different domains', () => {
-                expect(isAllowedUrl('https://gemini-google.com/')).toBe(false);
+                expect(isAllowedUrl('https://gemini-deepseek.com/')).toBe(false);
                 expect(isAllowedUrl('https://gemini.google.org/')).toBe(false);
-                expect(isAllowedUrl('https://google.com/')).toBe(false);
+                expect(isAllowedUrl('https://deepseek.org/')).toBe(false);
                 expect(isAllowedUrl('https://gemini.com/')).toBe(false);
             });
 
             it('rejects domain in query string', () => {
-                expect(isAllowedUrl('https://attacker.com/?redirect=gemini.google.com')).toBe(false);
+                expect(isAllowedUrl('https://attacker.com/?redirect=chat.deepseek.com')).toBe(false);
             });
 
             it('rejects domain in fragment', () => {
-                expect(isAllowedUrl('https://attacker.com/#gemini.google.com')).toBe(false);
+                expect(isAllowedUrl('https://attacker.com/#chat.deepseek.com')).toBe(false);
             });
 
             it('rejects domain in username/password', () => {
-                expect(isAllowedUrl('https://gemini.google.com@attacker.com/')).toBe(false);
+                expect(isAllowedUrl('https://chat.deepseek.com@attacker.com/')).toBe(false);
             });
         });
 
@@ -145,12 +145,12 @@ describe('ExportManager URL Validation Security', () => {
             });
 
             it('rejects file:// protocol', () => {
-                expect(isAllowedUrl('file:///C:/gemini.google.com')).toBe(false);
+                expect(isAllowedUrl('file:///C:/chat.deepseek.com')).toBe(false);
             });
 
             it('handles URLs with ports', () => {
-                expect(isAllowedUrl('https://gemini.google.com:443/')).toBe(true);
-                expect(isAllowedUrl('https://gemini.google.com:8080/')).toBe(true);
+                expect(isAllowedUrl('https://chat.deepseek.com:443/')).toBe(true);
+                expect(isAllowedUrl('https://chat.deepseek.com:8080/')).toBe(true);
             });
         });
     });

@@ -44,25 +44,25 @@ describe('Auth Session Coordination', () => {
         describe('Auth Window Creation', () => {
             it('should create auth window successfully', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 expect(window).toBeDefined();
-                expect(window.loadURL).toHaveBeenCalledWith('https://accounts.google.com/signin');
+                expect(window.loadURL).toHaveBeenCalledWith('https://chat.deepseek.com/signin');
             });
 
             it('should create WindowManager auth window successfully', () => {
                 const windowManager = new WindowManager(false);
-                const authWindow = windowManager.createAuthWindow('https://accounts.google.com/signin');
+                const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com/signin');
 
                 expect(authWindow).toBeDefined();
-                expect(authWindow.loadURL).toHaveBeenCalledWith('https://accounts.google.com/signin');
+                expect(authWindow.loadURL).toHaveBeenCalledWith('https://chat.deepseek.com/signin');
             });
         });
 
         describe('OAuth Navigation Flow', () => {
             it('should load OAuth URL when auth window is created', () => {
                 const authWindow = new AuthWindow(false);
-                const oauthUrl = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=xxx';
+                const oauthUrl = 'https://chat.deepseek.com/o/oauth2/v2/auth?client_id=xxx';
                 const window = authWindow.create(oauthUrl);
 
                 expect(window.loadURL).toHaveBeenCalledWith(oauthUrl);
@@ -70,14 +70,14 @@ describe('Auth Session Coordination', () => {
 
             it('should set up navigation handler for detecting sign-in completion', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 expect(window.webContents.on).toHaveBeenCalledWith('did-navigate', expect.any(Function));
             });
 
             it('should close auth window when navigating to internal domain', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.webContents.on as any).mock.calls;
                 const navigateCall = onCalls.find((call: any[]) => call[0] === 'did-navigate');
@@ -85,7 +85,7 @@ describe('Auth Session Coordination', () => {
 
                 expect(navigateHandler).toBeDefined();
 
-                navigateHandler({}, 'https://gemini.google.com/app');
+                navigateHandler({}, 'https://chat.deepseek.com/app');
 
                 expect(window.close).toHaveBeenCalled();
                 expect(mockLogger.log).toHaveBeenCalledWith(expect.stringContaining('Login successful'));
@@ -93,13 +93,13 @@ describe('Auth Session Coordination', () => {
 
             it('should not close auth window when navigating within external domains', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.webContents.on as any).mock.calls;
                 const navigateCall = onCalls.find((call: any[]) => call[0] === 'did-navigate');
                 const navigateHandler = navigateCall?.[1];
 
-                navigateHandler({}, 'https://accounts.google.com/signin/v2/challenge/pwd');
+                navigateHandler({}, 'https://chat.deepseek.com/signin/v2/challenge/pwd');
 
                 expect(window.close).not.toHaveBeenCalled();
             });
@@ -108,7 +108,7 @@ describe('Auth Session Coordination', () => {
         describe('Error Handling', () => {
             it('should handle did-fail-load event without crashing', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.webContents.on as any).mock.calls;
                 const failLoadCall = onCalls.find((call: any[]) => call[0] === 'did-fail-load');
@@ -128,7 +128,7 @@ describe('Auth Session Coordination', () => {
 
             it('should handle certificate errors securely', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.webContents.on as any).mock.calls;
                 const certErrorCall = onCalls.find((call: any[]) => call[0] === 'certificate-error');
@@ -146,7 +146,7 @@ describe('Auth Session Coordination', () => {
 
             it('should handle invalid URL in navigation gracefully', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.webContents.on as any).mock.calls;
                 const navigateCall = onCalls.find((call: any[]) => call[0] === 'did-navigate');
@@ -167,10 +167,10 @@ describe('Auth Session Coordination', () => {
             it('should close existing auth window before creating new one', () => {
                 const authWindow = new AuthWindow(false);
 
-                const window1 = authWindow.create('https://accounts.google.com/signin');
+                const window1 = authWindow.create('https://chat.deepseek.com/signin');
                 (window1 as any).isDestroyed = vi.fn().mockReturnValue(false);
 
-                authWindow.create('https://accounts.google.com/signin');
+                authWindow.create('https://chat.deepseek.com/signin');
 
                 expect(window1.close).toHaveBeenCalled();
             });
@@ -180,7 +180,7 @@ describe('Auth Session Coordination', () => {
                 const closedSpy = vi.fn();
                 authWindow.on('closed', closedSpy);
 
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.on as any).mock.calls;
                 const closedCall = onCalls.find((call: any[]) => call[0] === 'closed');
@@ -195,7 +195,7 @@ describe('Auth Session Coordination', () => {
 
             it('should register unresponsive and responsive event handlers', () => {
                 const authWindow = new AuthWindow(false);
-                const window = authWindow.create('https://accounts.google.com/signin');
+                const window = authWindow.create('https://chat.deepseek.com/signin');
 
                 const onCalls = (window.on as any).mock.calls;
                 const unresponsiveCall = onCalls.find((call: any[]) => call[0] === 'unresponsive');
@@ -212,7 +212,7 @@ describe('Auth Session Coordination', () => {
         describe('WindowManager Auth Integration', () => {
             it('should provide auth window through WindowManager.createAuthWindow', () => {
                 const windowManager = new WindowManager(false);
-                const authWindow = windowManager.createAuthWindow('https://accounts.google.com/signin');
+                const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com/signin');
 
                 expect(authWindow).toBeDefined();
             });
@@ -222,7 +222,7 @@ describe('Auth Session Coordination', () => {
 
                 windowManager.createMainWindow();
 
-                const authWindow = windowManager.createAuthWindow('https://accounts.google.com/signin');
+                const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com/signin');
 
                 const internalAuthWindow = (windowManager as any).authWindow;
                 expect(internalAuthWindow).toBeDefined();
@@ -234,8 +234,8 @@ describe('Auth Session Coordination', () => {
             it('should handle multiple auth window creations', () => {
                 const windowManager = new WindowManager(false);
 
-                const _authWindow1 = windowManager.createAuthWindow('https://accounts.google.com/signin');
-                const authWindow2 = windowManager.createAuthWindow('https://accounts.google.com/o/oauth2');
+                const _authWindow1 = windowManager.createAuthWindow('https://chat.deepseek.com/signin');
+                const authWindow2 = windowManager.createAuthWindow('https://chat.deepseek.com/o/oauth2');
 
                 expect(authWindow2).toBeDefined();
             });

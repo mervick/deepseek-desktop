@@ -6,7 +6,7 @@
  * 2. Quick chat window opens
  * 3. User types text
  * 4. User hits enter or clicks submit button
- * 5. Main window refreshes to gemini.google.com
+ * 5. Main window refreshes to chat.deepseek.com
  * 6. User's text is automatically pasted in text box
  * 7. Submit button is visible and clickable (NOT clicked - E2E flag prevents)
  *
@@ -120,7 +120,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                         return {
                             id,
                             title,
-                            url: 'https://gemini.google.com/app',
+                            url: 'https://chat.deepseek.com/app',
                             createdAt: Date.now() + index,
                         };
                     })
@@ -191,7 +191,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                             if (!targetFrame) {
                                 const fallbackFrame = {
                                     name: targetFrameName,
-                                    url: 'https://gemini.google.com/app',
+                                    url: 'https://chat.deepseek.com/app',
                                     executeJavaScript: async (script: string) =>
                                         script.includes('conversation-title') ? title : '',
                                 };
@@ -213,7 +213,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                             }
                             try {
                                 Object.defineProperty(targetFrame, 'url', {
-                                    get: () => 'https://gemini.google.com/app',
+                                    get: () => 'https://chat.deepseek.com/app',
                                     configurable: true,
                                 });
                             } catch (error) {
@@ -491,7 +491,7 @@ describe('Quick Chat Full Workflow (E2E)', () => {
                     }
                     try {
                         Object.defineProperty(targetFrame, 'url', {
-                            get: () => 'https://gemini.google.com/app',
+                            get: () => 'https://chat.deepseek.com/app',
                             configurable: true,
                         });
                     } catch (error) {

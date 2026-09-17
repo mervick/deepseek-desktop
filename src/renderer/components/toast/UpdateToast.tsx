@@ -22,12 +22,7 @@ import './UpdateToast.css';
  * Update notification types
  */
 export type UpdateNotificationType =
-    | 'available'
-    | 'downloaded'
-    | 'error'
-    | 'not-available'
-    | 'progress'
-    | 'manual-available';
+    'available' | 'downloaded' | 'error' | 'not-available' | 'progress' | 'manual-available';
 
 /**
  * Update information from electron-updater
@@ -175,7 +170,7 @@ export function UpdateToast({
             case 'error':
                 return errorMessage || 'An error occurred while updating.';
             case 'not-available':
-                return `Gemini Desktop is up to date (v${version}).`;
+                return `DeepSeek Desktop is up to date (v${version}).`;
             case 'progress':
                 return typeof downloadProgress === 'number'
                     ? `Downloading... ${Math.round(downloadProgress)}%`

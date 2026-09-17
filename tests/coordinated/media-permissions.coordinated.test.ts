@@ -62,7 +62,7 @@ describe('Media Permissions Integration', () => {
                     (result) => {
                         granted = result;
                     },
-                    { requestingUrl: 'https://gemini.google.com/app' }
+                    { requestingUrl: 'https://chat.deepseek.com/app' }
                 );
 
                 expect(granted).toBe(true);
@@ -91,12 +91,12 @@ describe('Media Permissions Integration', () => {
 
     describe('Cross-platform permission consistency', () => {
         const testCases = [
-            { url: 'https://gemini.google.com/app', permission: 'media', expected: true },
-            { url: 'https://gemini.google.com/chat', permission: 'media', expected: true },
-            { url: 'https://accounts.google.com/signin', permission: 'media', expected: true },
-            { url: 'https://google.com', permission: 'media', expected: true },
+            { url: 'https://chat.deepseek.com/app', permission: 'media', expected: true },
+            { url: 'https://chat.deepseek.com/chat', permission: 'media', expected: true },
+            { url: 'https://chat.deepseek.com/signin', permission: 'media', expected: true },
+            { url: 'https://deepseek.com', permission: 'media', expected: true },
             { url: 'https://example.com', permission: 'media', expected: false },
-            { url: 'https://gemini.google.com', permission: 'notifications', expected: false },
+            { url: 'https://chat.deepseek.com', permission: 'notifications', expected: false },
             { url: '', permission: 'media', expected: false },
         ];
 

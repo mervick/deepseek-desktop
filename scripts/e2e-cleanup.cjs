@@ -3,8 +3,8 @@ const { execFileSync } = require('child_process');
 function killOrphanElectronProcesses(options = {}) {
     const {
         windowsName = 'electron.exe',
-        windowsCommandSubstring = 'gemini-desktop',
-        posixPattern = 'electron.*gemini-desktop',
+        windowsCommandSubstring = 'deepseek-desktop',
+        posixPattern = 'electron.*deepseek-desktop',
     } = options;
 
     try {

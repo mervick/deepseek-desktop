@@ -61,7 +61,7 @@ describe('useGeminiIframe', () => {
         });
 
         expect(result.current.isLoading).toBe(false);
-        expect(result.current.error).toBe('Failed to load Gemini');
+        expect(result.current.error).toBe('Failed to load DeepSeek');
     });
 
     it('retry clears error state, sets loading, and calls reloadTabs', () => {
@@ -73,7 +73,7 @@ describe('useGeminiIframe', () => {
         });
 
         expect(result.current.isLoading).toBe(false);
-        expect(result.current.error).toBe('Failed to load Gemini');
+        expect(result.current.error).toBe('Failed to load DeepSeek');
 
         // Then retry
         act(() => {
@@ -93,7 +93,7 @@ describe('useGeminiIframe', () => {
             result.current.handleError();
         });
 
-        expect(result.current.error).toBe('Failed to load Gemini');
+        expect(result.current.error).toBe('Failed to load DeepSeek');
 
         // Then load successfully
         await act(async () => {

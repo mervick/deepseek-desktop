@@ -40,7 +40,7 @@ export class MacAdapter implements PlatformAdapter {
      * Sets the display name shown in the menu bar and Dock.
      */
     applyAppConfiguration(app: Electron.App, _logger: Logger): void {
-        app.setName('Gemini Desktop');
+        app.setName('DeepSeek Desktop');
     }
 
     /**
@@ -158,7 +158,7 @@ export class MacAdapter implements PlatformAdapter {
     getDockMenuTemplate(callbacks: DockMenuCallbacks): MenuItemConstructorOptions[] | null {
         return [
             {
-                label: 'Show Gemini',
+                label: 'Show DeepSeek',
                 click: () => callbacks.restoreFromTray(),
             },
             { type: 'separator' },

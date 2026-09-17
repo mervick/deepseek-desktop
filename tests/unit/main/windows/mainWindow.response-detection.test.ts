@@ -47,7 +47,7 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
             mainWindow.create();
 
             expect(session.defaultSession.webRequest.onCompleted).toHaveBeenCalledWith(
-                { urls: ['*://gemini.google.com/*StreamGenerate*'] },
+                { urls: ['*://chat.deepseek.com/api/*'] },
                 expect.any(Function)
             );
         });
@@ -76,7 +76,7 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
 
             callback({
                 statusCode: 200,
-                url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate',
+                url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate',
             });
 
             expect(emitSpy).toHaveBeenCalledWith('response-complete');
@@ -93,7 +93,7 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
                 emitSpy.mockClear();
                 callback({
                     statusCode,
-                    url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate',
+                    url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate',
                 });
 
                 const calls = emitSpy.mock.calls.filter((c) => c[0] === 'response-complete');
@@ -108,12 +108,12 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
             const callback = onCompletedCall[1];
 
             // First call should emit
-            callback({ statusCode: 200, url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate' });
+            callback({ statusCode: 200, url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate' });
             const firstEmitCalls = emitSpy.mock.calls.filter((c) => c[0] === 'response-complete');
             expect(firstEmitCalls.length).toBe(1);
 
             // Immediate second call should be debounced
-            callback({ statusCode: 200, url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate' });
+            callback({ statusCode: 200, url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate' });
             const secondEmitCalls = emitSpy.mock.calls.filter((c) => c[0] === 'response-complete');
             expect(secondEmitCalls.length).toBe(1); // Still 1, not 2
         });
@@ -126,14 +126,14 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
             const callback = onCompletedCall[1];
 
             // First call
-            callback({ statusCode: 200, url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate' });
+            callback({ statusCode: 200, url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate' });
             expect(emitSpy.mock.calls.filter((c) => c[0] === 'response-complete').length).toBe(1);
 
             // Advance time past debounce period (1000ms)
             vi.advanceTimersByTime(1001);
 
             // Second call after cooldown should emit
-            callback({ statusCode: 200, url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate' });
+            callback({ statusCode: 200, url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate' });
             expect(emitSpy.mock.calls.filter((c) => c[0] === 'response-complete').length).toBe(2);
 
             vi.useRealTimers();
@@ -149,7 +149,7 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
             const onCompletedCall = (session.defaultSession.webRequest.onCompleted as any).mock.calls[0];
             const callback = onCompletedCall[1];
 
-            callback({ statusCode: 200, url: 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate' });
+            callback({ statusCode: 200, url: 'https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate' });
 
             const calls = emitSpy.mock.calls.filter((c) => c[0] === 'response-complete');
             expect(calls.length).toBe(0);
@@ -172,34 +172,34 @@ describe('MainWindow Response Detection (Task 6.6)', () => {
             return new RegExp(`^${regexPattern}$`).test(url);
         };
 
-        const PATTERN = '*://gemini.google.com/*StreamGenerate*';
+        const PATTERN = '*://chat.deepseek.com/api/*';
 
         it('pattern matches StreamGenerate URLs with query params', () => {
-            const url = 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate?bl=boq_assistant';
+            const url = 'https://chat.deepseek.com/api/v0/chat/completion?session_id=test';
             expect(urlMatchesPattern(url, PATTERN)).toBe(true);
         });
 
         it('pattern matches StreamGenerate URLs without query params', () => {
-            const url = 'https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate';
+            const url = 'https://chat.deepseek.com/api/v0/chat/completion';
             expect(urlMatchesPattern(url, PATTERN)).toBe(true);
         });
 
         it('pattern does NOT match log API requests', () => {
-            const url = 'https://gemini.google.com/u/0/_/BardChatUi/data/log?format=json';
+            const url = 'https://chat.deepseek.com/u/0/_/BardChatUi/data/log?format=json';
             expect(urlMatchesPattern(url, PATTERN)).toBe(false);
         });
 
         it('pattern does NOT match batchexecute API requests', () => {
-            const url = 'https://gemini.google.com/u/0/_/BardChatUi/data/batchexecute?rpcids=PCk7e';
+            const url = 'https://chat.deepseek.com/u/0/_/BardChatUi/data/batchexecute?rpcids=PCk7e';
             expect(urlMatchesPattern(url, PATTERN)).toBe(false);
         });
 
         it('pattern does NOT match other BardChatUi endpoints', () => {
             const nonMatchingUrls = [
-                'https://gemini.google.com/u/0/_/BardChatUi/data/log?format=json&hasfast=true',
-                'https://gemini.google.com/u/0/_/BardChatUi/data/batchexecute?rpcids=L5adhe',
-                'https://gemini.google.com/u/0/_/BardChatUi/script.js',
-                'https://gemini.google.com/u/0/_/BardChatUi/RotateCookies',
+                'https://chat.deepseek.com/u/0/_/BardChatUi/data/log?format=json&hasfast=true',
+                'https://chat.deepseek.com/u/0/_/BardChatUi/data/batchexecute?rpcids=L5adhe',
+                'https://chat.deepseek.com/u/0/_/BardChatUi/script.js',
+                'https://chat.deepseek.com/u/0/_/BardChatUi/RotateCookies',
             ];
 
             for (const url of nonMatchingUrls) {

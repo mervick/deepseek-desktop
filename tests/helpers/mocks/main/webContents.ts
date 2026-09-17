@@ -65,7 +65,7 @@ export interface MockWebContentsOptions {
 
     /**
      * Custom URL to return from getURL().
-     * @default 'https://gemini.google.com/app'
+     * @default 'https://chat.deepseek.com/app'
      */
     url?: string;
 }
@@ -132,7 +132,7 @@ export function createMockWebContents(options: MockWebContentsOptions = {}): Moc
         scrollHeight = 800,
         clientHeight = 1000,
         isDestroyed,
-        url = 'https://gemini.google.com/app',
+        url = 'https://chat.deepseek.com/app',
     } = options;
 
     // Base mock with common methods
@@ -173,7 +173,7 @@ export function createMockWebContents(options: MockWebContentsOptions = {}): Moc
         // Create mock frame for iframe scroll info
         const mockGeminiFrame = {
             name: 'gemini-tab-0',
-            url: 'https://gemini.google.com/app',
+            url: 'https://chat.deepseek.com/app',
             executeJavaScript: vi.fn().mockResolvedValue({
                 scrollHeight,
                 scrollTop: 0,

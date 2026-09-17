@@ -180,7 +180,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
 
         const targetFrame = {
             name: getTabFrameName(navigatePayload.targetTabId),
-            url: 'https://gemini.google.com/app',
+            url: 'https://chat.deepseek.com/app',
             executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
         };
         mainWindow.webContents.mainFrame.frames = [targetFrame];
@@ -238,7 +238,7 @@ describe('Quick Chat Injection Flow (coordinated)', () => {
                     frames: [
                         {
                             name: 'gemini-tab-other',
-                            url: 'https://gemini.google.com/app',
+                            url: 'https://chat.deepseek.com/app',
                             executeJavaScript: vi.fn(),
                         },
                     ],

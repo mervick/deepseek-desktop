@@ -12,7 +12,7 @@ import './titlebar.css';
  * Default titlebar configuration
  */
 const defaultConfig: TitlebarConfig = {
-    title: 'Gemini Desktop',
+    title: 'DeepSeek Desktop',
     showIcon: true,
 };
 

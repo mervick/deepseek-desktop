@@ -36,16 +36,15 @@ describe('setupHeaderStripping', () => {
         expect(mockSession.defaultSession.webRequest.onHeadersReceived).toHaveBeenCalled();
     });
 
-    it('filters for Gemini domains', async () => {
+    it('filters for DeepSeek domains only', async () => {
         const { setupHeaderStripping } = await import('../../../src/main/utils/security');
         setupHeaderStripping(mockSession.defaultSession);
 
         const call = mockSession.defaultSession.webRequest.onHeadersReceived.mock.calls[0];
         const filter = call[0] as { urls: string[] };
 
-        expect(filter.urls).toContain('*://gemini.google.com/*');
-        expect(filter.urls).toContain('*://*.gemini.google.com/*');
-        expect(filter.urls).toContain('*://aistudio.google.com/*');
+        expect(filter.urls).toContain('https://chat.deepseek.com/*');
+        expect(filter.urls).toContain('https://*.deepseek.com/*');
     });
 
     describe('header stripping', () => {
@@ -179,7 +178,7 @@ describe('setupMediaPermissions', () => {
         expect(mockSession.defaultSession.setPermissionRequestHandler).toHaveBeenCalled();
     });
 
-    it('grants media permission to gemini.google.com', async () => {
+    it('grants media permission to chat.deepseek.com', async () => {
         const { setupMediaPermissions } = await import('../../../src/main/utils/security');
         vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
         setupMediaPermissions(mockSession.defaultSession);
@@ -191,13 +190,13 @@ describe('setupMediaPermissions', () => {
             (result) => {
                 granted = result;
             },
-            { requestingUrl: 'https://gemini.google.com/app' }
+            { requestingUrl: 'https://chat.deepseek.com/' }
         );
 
         expect(granted).toBe(true);
     });
 
-    it('grants media permission to google.com subdomains', async () => {
+    it('grants media permission to DeepSeek subdomains', async () => {
         const { setupMediaPermissions } = await import('../../../src/main/utils/security');
         vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
         setupMediaPermissions(mockSession.defaultSession);
@@ -209,13 +208,13 @@ describe('setupMediaPermissions', () => {
             (result) => {
                 granted = result;
             },
-            { requestingUrl: 'https://accounts.google.com/signin' }
+            { requestingUrl: 'https://static.deepseek.com/app.js' }
         );
 
         expect(granted).toBe(true);
     });
 
-    it('denies media permission to non-Google domains', async () => {
+    it('denies media permission to non-DeepSeek domains', async () => {
         const { setupMediaPermissions } = await import('../../../src/main/utils/security');
         vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
         setupMediaPermissions(mockSession.defaultSession);
@@ -233,7 +232,33 @@ describe('setupMediaPermissions', () => {
         expect(granted).toBe(false);
     });
 
-    it('grants clipboard-sanitized-write permission to Google domains', async () => {
+    it('denies lookalike domains outside the DeepSeek boundary', async () => {
+        const { setupMediaPermissions } = await import('../../../src/main/utils/security');
+        vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
+        setupMediaPermissions(mockSession.defaultSession);
+
+        let granted: boolean | undefined;
+        permissionHandler({} as any, 'media', (result) => (granted = result), {
+            requestingUrl: 'https://deepseek.com.evil.example/',
+        });
+
+        expect(granted).toBe(false);
+    });
+
+    it('denies insecure HTTP DeepSeek URLs', async () => {
+        const { setupMediaPermissions } = await import('../../../src/main/utils/security');
+        vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
+        setupMediaPermissions(mockSession.defaultSession);
+
+        let granted: boolean | undefined;
+        permissionHandler({} as any, 'media', (result) => (granted = result), {
+            requestingUrl: 'http://chat.deepseek.com/',
+        });
+
+        expect(granted).toBe(false);
+    });
+
+    it('grants clipboard-sanitized-write permission to DeepSeek domains', async () => {
         const { setupMediaPermissions } = await import('../../../src/main/utils/security');
         vi.mocked(getPlatformAdapter).mockReturnValue({ requestMediaPermissions: vi.fn() } as any);
         setupMediaPermissions(mockSession.defaultSession);
@@ -245,7 +270,7 @@ describe('setupMediaPermissions', () => {
             (result) => {
                 granted = result;
             },
-            { requestingUrl: 'https://gemini.google.com/app' }
+            { requestingUrl: 'https://chat.deepseek.com/' }
         );
 
         expect(granted).toBe(true);
@@ -281,7 +306,7 @@ describe('setupMediaPermissions', () => {
             (result) => {
                 granted = result;
             },
-            { requestingUrl: 'https://gemini.google.com/app' }
+            { requestingUrl: 'https://chat.deepseek.com/app' }
         );
 
         expect(granted).toBe(false);

@@ -8,7 +8,7 @@ declare const __APP_VERSION__: string;
 describe('AboutSection', () => {
     it('renders the title and version', () => {
         render(<AboutSection />);
-        expect(screen.getByText('Gemini Desktop')).toBeInTheDocument();
+        expect(screen.getByText('DeepSeek Desktop')).toBeInTheDocument();
         expect(screen.getByTestId('about-version')).toHaveTextContent(`Version ${__APP_VERSION__}`);
     });
 
@@ -20,7 +20,7 @@ describe('AboutSection', () => {
 
     it('renders trademark notices', () => {
         render(<AboutSection />);
-        expect(screen.getByText(/"Gemini" and "Google" are registered trademarks/i)).toBeInTheDocument();
+        expect(screen.getByText(/DeepSeek is a trademark/i)).toBeInTheDocument();
     });
 
     it('renders all required links with correct attributes', () => {
@@ -35,10 +35,10 @@ describe('AboutSection', () => {
         expect(disclaimerLink).toHaveAttribute('href', expect.stringContaining('DISCLAIMER.md'));
 
         const tosLink = screen.getByTestId('about-google-tos-link');
-        expect(tosLink).toHaveAttribute('href', 'https://policies.google.com/terms');
+        expect(tosLink).toHaveAttribute('href', 'https://cdn.deepseek.com/policies/terms');
 
         const aiLink = screen.getByTestId('about-google-ai-link');
-        expect(aiLink).toHaveAttribute('href', 'https://policies.google.com/terms/generative-ai');
+        expect(aiLink).toHaveAttribute('href', 'https://cdn.deepseek.com/policies/privacy');
     });
 
     it('renders copyright notice', () => {

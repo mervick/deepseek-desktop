@@ -353,6 +353,20 @@ export class InjectionScriptBuilder {
         logger.debug('Inserting text using Selection API');
         
         try {
+            // DeepSeek currently uses a native textarea in some layouts. Use
+            // the native setter so React/Vue state and browser input events
+            // observe the same change as a real user edit.
+            if (editor instanceof HTMLTextAreaElement || editor instanceof HTMLInputElement) {
+                const prototype = Object.getPrototypeOf(editor);
+                const valueSetter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
+                if (valueSetter) {
+                    valueSetter.call(editor, text);
+                } else {
+                    editor.value = text;
+                }
+                return true;
+            }
+
             // Clear using textContent (Trusted Types safe)
             editor.textContent = '';
             

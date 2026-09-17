@@ -33,8 +33,8 @@ function getWindowsBinaryExclusions() {
 const windowsBinaryExclusions = getWindowsBinaryExclusions();
 
 module.exports = {
-    appId: 'com.benwendell.gemini-desktop',
-    productName: 'Gemini Desktop',
+    appId: 'com.benwendell.deepseek-desktop',
+    productName: 'DeepSeek Desktop',
     // Windows builds do not need native module rebuild for this app.
     // Rebuild can fail on Linux-only transitive deps (e.g. dbus-next/usocket).
     npmRebuild: !isWindowsBuild,
@@ -72,7 +72,7 @@ module.exports = {
     win: {
         target: 'nsis',
         icon: 'build/icon.png',
-        artifactName: 'Gemini-Desktop-${version}-${arch}.${ext}',
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}.${ext}',
         ...(process.env.AZURE_SIGN_ENDPOINT &&
         process.env.AZURE_CODE_SIGNING_ACCOUNT_NAME &&
         process.env.AZURE_CERT_PROFILE_NAME &&
@@ -94,15 +94,15 @@ module.exports = {
         createDesktopShortcut: true,
         createStartMenuShortcut: true,
         perMachine: false,
-        artifactName: 'Gemini-Desktop-${version}-${arch}-installer.${ext}',
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}-installer.${ext}',
     },
     mac: {
         target: ['dmg', 'zip'],
         icon: 'build/icon.png',
         identity: null,
-        artifactName: 'Gemini-Desktop-${version}-${arch}.${ext}',
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}.${ext}',
         extendInfo: {
-            NSMicrophoneUsageDescription: 'Gemini Desktop needs microphone access for voice input features.',
+            NSMicrophoneUsageDescription: 'DeepSeek Desktop needs microphone access for voice input features.',
         },
         entitlements: 'build/entitlements.mac.plist',
         entitlementsInherit: 'build/entitlements.mac.plist',
@@ -132,8 +132,8 @@ module.exports = {
         ],
         icon: 'build/icon.png',
         category: 'Utility',
-        artifactName: 'Gemini-Desktop-${version}-${arch}.${ext}',
-        executableName: 'gemini-desktop',
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}.${ext}',
+        executableName: 'deepseek-desktop',
     },
     deb: {
         depends: ['libnotify4', 'libxtst6', 'libnss3', 'libasound2'],

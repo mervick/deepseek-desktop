@@ -50,7 +50,7 @@ describe('Session Sharing', () => {
             expect(mainWindow).toBeTruthy();
 
             // Create auth window
-            const authWindow = windowManager.createAuthWindow('https://accounts.google.com');
+            const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com');
             expect(authWindow).toBeTruthy();
 
             // Both should have webContents (in real Electron, they'd share session)
@@ -68,7 +68,7 @@ describe('Session Sharing', () => {
             windowManager.createMainWindow();
 
             // Create auth window
-            const authWindow = windowManager.createAuthWindow('https://accounts.google.com');
+            const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com');
 
             // Get the did-navigate handler
             const navigateCall = authWindow.webContents.on.mock.calls.find((c: any) => c[0] === 'did-navigate');
@@ -76,7 +76,7 @@ describe('Session Sharing', () => {
             const navigateHandler = navigateCall![1];
 
             // Simulate successful login - navigation to Gemini
-            navigateHandler({}, 'https://gemini.google.com/app');
+            navigateHandler({}, 'https://chat.deepseek.com/app');
 
             // Auth window should close
             expect(authWindow.close).toHaveBeenCalled();
@@ -176,9 +176,9 @@ describe('Session cookie flow integration', () => {
 
         // 2. Simulate user clicking "Sign in to Google" menu item
         // This creates auth window that shares session with main window
-        const authWindow = windowManager.createAuthWindow('https://accounts.google.com');
+        const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com');
         expect(authWindow).toBeTruthy();
-        expect(authWindow.loadURL).toHaveBeenCalledWith('https://accounts.google.com');
+        expect(authWindow.loadURL).toHaveBeenCalledWith('https://chat.deepseek.com');
 
         // 3. User logs in (Google sets auth cookies in shared session)
         // We can't actually set cookies in unit tests, but we verify:
@@ -186,10 +186,10 @@ describe('Session cookie flow integration', () => {
         expect(AUTH_WINDOW_CONFIG.webPreferences?.partition).toBeUndefined();
         expect(MAIN_WINDOW_CONFIG.webPreferences?.partition).toBeUndefined();
 
-        // 4. After login, Google redirects to gemini.google.com
+        // 4. After login, Google redirects to chat.deepseek.com
         const navigateHandler = authWindow.webContents.on.mock.calls.find((c: any) => c[0] === 'did-navigate')![1];
 
-        navigateHandler({}, 'https://gemini.google.com/app');
+        navigateHandler({}, 'https://chat.deepseek.com/app');
 
         // 5. Auth window auto-closes
         expect(authWindow.close).toHaveBeenCalled();
@@ -204,7 +204,7 @@ describe('Session cookie flow integration', () => {
 
     it('cookies survive auth window closure', () => {
         // Create auth window
-        const authWindow = windowManager.createAuthWindow('https://accounts.google.com');
+        const authWindow = windowManager.createAuthWindow('https://chat.deepseek.com');
 
         // Get the closed handler
         const closedCall = authWindow.on.mock.calls.find((c: any) => c[0] === 'closed');

@@ -65,7 +65,7 @@ describe('QuickChatIpcHandler Coordinated Tests', () => {
             // Create mock main window with webContents
             const mockGeminiFrame = {
                 name: 'placeholder',
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
                 executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
             };
             const mockMainWindow = {

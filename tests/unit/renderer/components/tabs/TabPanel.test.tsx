@@ -12,8 +12,8 @@ vi.mock('../../../../../src/renderer/hooks', () => ({
 
 describe('TabPanel', () => {
     const tabs = [
-        { id: 'tab-1', title: 'First', url: 'https://gemini.google.com/app', createdAt: 1 },
-        { id: 'tab-2', title: 'Second', url: 'https://gemini.google.com/app', createdAt: 2 },
+        { id: 'tab-1', title: 'First', url: 'https://chat.deepseek.com/app', createdAt: 1 },
+        { id: 'tab-2', title: 'Second', url: 'https://chat.deepseek.com/app', createdAt: 2 },
     ];
 
     beforeEach(() => {
@@ -47,8 +47,8 @@ describe('TabPanel', () => {
         expect((inactiveIframe as HTMLIFrameElement).style.display).toBe('none');
 
         expect(activeIframe.getAttribute('allow')).toBe('microphone; clipboard-write');
-        expect(activeIframe.getAttribute('src')).toBe('https://gemini.google.com/app');
-        expect(inactiveIframe.getAttribute('src')).toBe('https://gemini.google.com/app');
+        expect(activeIframe.getAttribute('src')).toBe('https://chat.deepseek.com/app');
+        expect(inactiveIframe.getAttribute('src')).toBe('https://chat.deepseek.com/app');
     });
 
     it('calls onTabReady when active iframe load fires', () => {

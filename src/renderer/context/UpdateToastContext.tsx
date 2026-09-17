@@ -78,7 +78,7 @@ function getMessage(
         case 'error':
             return errorMessage || 'An error occurred while updating.';
         case 'not-available':
-            return `Gemini Desktop is up to date (v${version}).`;
+            return `DeepSeek Desktop is up to date (v${version}).`;
         case 'progress':
             return typeof downloadProgress === 'number'
                 ? `Downloading... ${Math.round(downloadProgress)}%`

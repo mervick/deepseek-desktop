@@ -98,13 +98,13 @@ describe('MainWindow', () => {
 
         it('allows navigation to internal domains', () => {
             const event = { preventDefault: vi.fn() };
-            navigateHandler!(event as any, 'https://gemini.google.com/app');
+            navigateHandler!(event as any, 'https://chat.deepseek.com/app');
             expect(event.preventDefault).not.toHaveBeenCalled();
         });
 
         it('allows navigation to OAuth domains', () => {
             const event = { preventDefault: vi.fn() };
-            navigateHandler!(event as any, 'https://accounts.google.com/signin');
+            navigateHandler!(event as any, 'https://chat.deepseek.com/signin');
             expect(event.preventDefault).not.toHaveBeenCalled();
         });
 
@@ -149,7 +149,7 @@ describe('MainWindow', () => {
             const win = instances[0];
             const handler = win.webContents.setWindowOpenHandler.mock.calls[0][0];
 
-            const url = 'https://accounts.google.com/o/oauth2/auth';
+            const url = 'https://chat.deepseek.com/o/oauth2/auth';
             const result = handler({ url });
 
             expect(authCallback).toHaveBeenCalledWith(url);
@@ -162,7 +162,7 @@ describe('MainWindow', () => {
             const win = instances[0];
             const handler = win.webContents.setWindowOpenHandler.mock.calls[0][0];
 
-            const result = handler({ url: 'https://gemini.google.com/chat' });
+            const result = handler({ url: 'https://chat.deepseek.com/chat' });
             expect(result).toEqual({ action: 'allow' });
         });
 

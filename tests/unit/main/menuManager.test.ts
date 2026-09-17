@@ -273,7 +273,7 @@ describe('MenuManager', () => {
             expect(signInItem).toBeTruthy();
             await signInItem.click();
             expect(mockWindowManager.createAuthWindow).toHaveBeenCalledWith(
-                expect.stringContaining('accounts.google.com')
+                expect.stringContaining('chat.deepseek.com')
             );
             expect(mockWindowManager.getMainWindow().reload).toHaveBeenCalled();
         });

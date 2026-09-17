@@ -12,9 +12,9 @@ vi.mock('../../../../src/renderer/utils/platform', () => ({
 
 describe('useTabKeyboardShortcuts', () => {
     const tabs: TabState[] = [
-        { id: 'tab-1', title: 'Tab 1', url: 'https://gemini.google.com/app', createdAt: 1 },
-        { id: 'tab-2', title: 'Tab 2', url: 'https://gemini.google.com/app', createdAt: 2 },
-        { id: 'tab-3', title: 'Tab 3', url: 'https://gemini.google.com/app', createdAt: 3 },
+        { id: 'tab-1', title: 'Tab 1', url: 'https://chat.deepseek.com/app', createdAt: 1 },
+        { id: 'tab-2', title: 'Tab 2', url: 'https://chat.deepseek.com/app', createdAt: 2 },
+        { id: 'tab-3', title: 'Tab 3', url: 'https://chat.deepseek.com/app', createdAt: 3 },
     ];
 
     let createTabAndActivate: ReturnType<typeof vi.fn>;

@@ -521,7 +521,7 @@ describe('Response Notifications', () => {
             });
 
             // 2. Trigger via Network
-            await mainWindow.triggerNetworkRequest('https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate');
+            await mainWindow.triggerNetworkRequest('https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate');
 
             // 3. Wait briefly to verify NO notification occurs (negative test)
             await waitForDuration(500, 'Verify no spurious notification when focused');
@@ -580,7 +580,7 @@ describe('Response Notifications', () => {
             });
 
             // 3. Trigger via Network
-            await mainWindow.triggerNetworkRequest('https://gemini.google.com/u/0/_/BardChatUi/data/StreamGenerate');
+            await mainWindow.triggerNetworkRequest('https://chat.deepseek.com/u/0/_/BardChatUi/data/StreamGenerate');
 
             // 4. Wait briefly to verify NO notification occurs (negative test)
             await waitForDuration(500, 'Verify no spurious notification when disabled');
@@ -613,7 +613,7 @@ describe('Response Notifications', () => {
 
             // 2. Trigger a non-matching URL (previously triggered spurious notifications)
             await mainWindow.triggerNetworkRequest(
-                'https://gemini.google.com/u/0/_/BardChatUi/data/log?bl=boq_assistant'
+                'https://chat.deepseek.com/u/0/_/BardChatUi/data/log?bl=boq_assistant'
             );
 
             // 3. Wait briefly to verify NO notification occurs for non-matching URL (negative test)

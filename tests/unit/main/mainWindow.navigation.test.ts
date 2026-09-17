@@ -96,14 +96,19 @@ describe('MainWindow Navigation', () => {
         expect(event.preventDefault).not.toHaveBeenCalled();
     });
 
-    it('allows navigation to internal google domains', () => {
-        const event = simulateNavigation('https://gemini.google.com/app');
+    it('allows navigation to internal DeepSeek domains', () => {
+        const event = simulateNavigation('https://chat.deepseek.com/');
         expect(event.preventDefault).not.toHaveBeenCalled();
     });
 
-    it('allows navigation to accounts.google.com', () => {
-        const event = simulateNavigation('https://accounts.google.com/signin');
+    it('allows navigation to the DeepSeek login route', () => {
+        const event = simulateNavigation('https://chat.deepseek.com/login');
         expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+
+    it('blocks insecure HTTP navigation to DeepSeek', () => {
+        const event = simulateNavigation('http://chat.deepseek.com/');
+        expect(event.preventDefault).toHaveBeenCalled();
     });
 
     it('blocks navigation to external domains', () => {

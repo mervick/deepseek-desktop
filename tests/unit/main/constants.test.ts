@@ -31,8 +31,8 @@ import {
 
 describe('Constants', () => {
     describe('INTERNAL_DOMAINS', () => {
-        it('includes gemini.google.com', () => {
-            expect(INTERNAL_DOMAINS).toContain('gemini.google.com');
+        it('includes chat.deepseek.com', () => {
+            expect(INTERNAL_DOMAINS).toContain('chat.deepseek.com');
         });
 
         it('is an array', () => {
@@ -41,12 +41,12 @@ describe('Constants', () => {
     });
 
     describe('OAUTH_DOMAINS', () => {
-        it('includes accounts.google.com', () => {
-            expect(OAUTH_DOMAINS).toContain('accounts.google.com');
+        it('includes chat.deepseek.com', () => {
+            expect(OAUTH_DOMAINS).toContain('chat.deepseek.com');
         });
 
-        it('includes accounts.youtube.com', () => {
-            expect(OAUTH_DOMAINS).toContain('accounts.youtube.com');
+        it('does not include unrelated OAuth domains', () => {
+            expect(OAUTH_DOMAINS).not.toContain('chat.deepseek.com/login');
         });
 
         it('is an array', () => {
@@ -56,7 +56,7 @@ describe('Constants', () => {
 
     describe('GOOGLE_ACCOUNTS_URL', () => {
         it('is the correct URL', () => {
-            expect(GOOGLE_ACCOUNTS_URL).toBe('https://accounts.google.com');
+            expect(GOOGLE_ACCOUNTS_URL).toBe('https://chat.deepseek.com/login');
         });
     });
 
@@ -69,7 +69,7 @@ describe('Constants', () => {
         });
 
         it('has correct title', () => {
-            expect(config.title).toBe('Sign in to Google');
+            expect(config.title).toBe('Sign in to DeepSeek');
         });
 
         it('has autoHideMenuBar enabled', () => {
@@ -112,11 +112,11 @@ describe('Constants', () => {
         });
 
         it('has correct GOOGLE_TOS_URL', () => {
-            expect(GOOGLE_TOS_URL).toBe('https://policies.google.com/terms');
+            expect(GOOGLE_TOS_URL).toBe('https://cdn.deepseek.com/policies/terms');
         });
 
         it('has correct GOOGLE_GENAI_TERMS_URL', () => {
-            expect(GOOGLE_GENAI_TERMS_URL).toBe('https://policies.google.com/terms/generative-ai');
+            expect(GOOGLE_GENAI_TERMS_URL).toBe('https://cdn.deepseek.com/policies/privacy');
         });
 
         it('has correct GOOGLE_SIGNIN_URL', () => {
@@ -124,7 +124,7 @@ describe('Constants', () => {
         });
 
         it('has correct GEMINI_APP_URL', () => {
-            expect(GEMINI_APP_URL).toBe('https://gemini.google.com/app');
+            expect(GEMINI_APP_URL).toBe('https://chat.deepseek.com/');
         });
     });
 
@@ -180,52 +180,43 @@ describe('Constants', () => {
 });
 
 describe('isInternalDomain', () => {
-    it('returns true for gemini.google.com', () => {
-        expect(isInternalDomain('gemini.google.com')).toBe(true);
+    it('returns true for chat.deepseek.com', () => {
+        expect(isInternalDomain('chat.deepseek.com')).toBe(true);
     });
 
-    it('returns true for subdomain of gemini.google.com', () => {
-        expect(isInternalDomain('share.gemini.google.com')).toBe(true);
+    it('returns true for subdomain of chat.deepseek.com', () => {
+        expect(isInternalDomain('share.chat.deepseek.com')).toBe(true);
     });
 
-    it('returns false for accounts.google.com', () => {
-        expect(isInternalDomain('accounts.google.com')).toBe(false);
+    it('returns true for the DeepSeek root domain', () => {
+        expect(isInternalDomain('deepseek.com')).toBe(true);
     });
 
     it('returns false for external domains', () => {
-        expect(isInternalDomain('google.com')).toBe(false);
         expect(isInternalDomain('example.com')).toBe(false);
     });
 
     it('returns false for partial matches', () => {
-        expect(isInternalDomain('notgemini.google.com')).toBe(false);
+        expect(isInternalDomain('notdeepseek.com')).toBe(false);
     });
 });
 
 describe('isOAuthDomain', () => {
-    it('returns true for accounts.google.com', () => {
-        expect(isOAuthDomain('accounts.google.com')).toBe(true);
-    });
-
-    it('returns true for accounts.youtube.com', () => {
-        expect(isOAuthDomain('accounts.youtube.com')).toBe(true);
-    });
-
     it('returns true for subdomain of OAuth domain', () => {
-        expect(isOAuthDomain('sub.accounts.google.com')).toBe(true);
+        expect(isOAuthDomain('sub.chat.deepseek.com')).toBe(true);
     });
 
-    it('returns false for gemini.google.com', () => {
-        expect(isOAuthDomain('gemini.google.com')).toBe(false);
+    it('returns true for chat.deepseek.com', () => {
+        expect(isOAuthDomain('chat.deepseek.com')).toBe(true);
     });
 
     it('returns false for external domains', () => {
-        expect(isOAuthDomain('google.com')).toBe(false);
+        expect(isOAuthDomain('deepseek.com')).toBe(false);
         expect(isOAuthDomain('example.com')).toBe(false);
     });
 
     it('returns false for partial matches', () => {
-        expect(isOAuthDomain('fakeaccounts.google.com')).toBe(false);
+        expect(isOAuthDomain('fakechat.deepseek.com')).toBe(false);
     });
 });
 

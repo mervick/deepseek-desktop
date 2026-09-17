@@ -198,7 +198,7 @@ function QuickChatApp(): React.ReactElement {
                     ref={inputRef}
                     type="text"
                     className="quick-chat-input"
-                    placeholder="Ask Gemini..."
+                    placeholder="Ask DeepSeek..."
                     value={inputValue}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}

@@ -68,7 +68,7 @@ export default class ExportManager {
      * Allowed domains for Gemini content extraction.
      * The hostname must match exactly or be a subdomain of these.
      */
-    private static readonly ALLOWED_DOMAINS = ['gemini.google.com', 'aistudio.google.com'] as const;
+    private static readonly ALLOWED_DOMAINS = ['chat.deepseek.com', 'deepseek.com'] as const;
 
     /**
      * Checks if a hostname matches an allowed domain exactly or is a subdomain.

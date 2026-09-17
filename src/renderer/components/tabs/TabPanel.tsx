@@ -65,7 +65,7 @@ function TabIframe({ tab, isActive, onTabReady, onActiveStatusChange }: TabIfram
                     data-testid={`${TAB_TEST_IDS.tabIframe(tab.id)}-loading`}
                 >
                     <div className="webview-loading-spinner" />
-                    <span>Loading Gemini...</span>
+                    <span>Loading DeepSeek...</span>
                 </div>
             )}
             {showError && (

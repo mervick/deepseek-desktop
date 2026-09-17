@@ -305,7 +305,7 @@ export async function ensureArmChromedriver() {
 /**
  * Kill any orphaned Electron processes left behind by test runs.
  *
- * On Linux/macOS, uses `pkill -f` to match the "electron.*gemini-desktop" pattern.
+ * On Linux/macOS, uses `pkill -f` to match the "electron.*deepseek-desktop" pattern.
  * On Windows, uses PowerShell CIM queries to find and terminate matching processes.
  *
  * This should be called in `afterSession` hooks to prevent Electron zombie processes
@@ -316,11 +316,11 @@ export async function killOrphanElectronProcesses() {
     try {
         if (process.platform === 'win32') {
             execSync(
-                "powershell -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'electron.exe' -and $_.CommandLine -like '*gemini-desktop*' } | ForEach-Object { taskkill /F /PID $_.ProcessId }\"",
+                "powershell -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'electron.exe' -and $_.CommandLine -like '*deepseek-desktop*' } | ForEach-Object { taskkill /F /PID $_.ProcessId }\"",
                 { stdio: 'ignore' }
             );
         } else {
-            execSync('pkill -f "electron.*gemini-desktop"', { stdio: 'ignore' });
+            execSync('pkill -f "electron.*deepseek-desktop"', { stdio: 'ignore' });
         }
     } catch (_) {
         // Process might already be gone, or no matching processes found (exit code 1)

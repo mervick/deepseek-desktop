@@ -21,39 +21,39 @@ function getReleaseBinaryPath() {
         case 'win32':
             binaryPath =
                 process.arch === 'arm64'
-                    ? path.join(releaseDir, 'win-arm64-unpacked', 'Gemini Desktop.exe')
-                    : path.join(releaseDir, 'win-unpacked', 'Gemini Desktop.exe');
+                    ? path.join(releaseDir, 'win-arm64-unpacked', 'DeepSeek Desktop.exe')
+                    : path.join(releaseDir, 'win-unpacked', 'DeepSeek Desktop.exe');
             if (!fs.existsSync(binaryPath)) {
                 binaryPath = path.join(
                     releaseDir,
                     process.arch === 'arm64' ? 'win-unpacked' : 'win-arm64-unpacked',
-                    'Gemini Desktop.exe'
+                    'DeepSeek Desktop.exe'
                 );
             }
             break;
         case 'darwin':
-            binaryPath = path.join(releaseDir, 'mac', 'Gemini Desktop.app', 'Contents', 'MacOS', 'Gemini Desktop');
+            binaryPath = path.join(releaseDir, 'mac', 'DeepSeek Desktop.app', 'Contents', 'MacOS', 'DeepSeek Desktop');
             if (!fs.existsSync(binaryPath)) {
                 binaryPath = path.join(
                     releaseDir,
                     'mac-arm64',
-                    'Gemini Desktop.app',
+                    'DeepSeek Desktop.app',
                     'Contents',
                     'MacOS',
-                    'Gemini Desktop'
+                    'DeepSeek Desktop'
                 );
             }
             break;
         case 'linux':
             binaryPath =
                 process.arch === 'arm64'
-                    ? path.join(releaseDir, 'linux-arm64-unpacked', 'gemini-desktop')
-                    : path.join(releaseDir, 'linux-unpacked', 'gemini-desktop');
+                    ? path.join(releaseDir, 'linux-arm64-unpacked', 'deepseek-desktop')
+                    : path.join(releaseDir, 'linux-unpacked', 'deepseek-desktop');
             if (!fs.existsSync(binaryPath)) {
                 binaryPath = path.join(
                     releaseDir,
                     process.arch === 'arm64' ? 'linux-unpacked' : 'linux-arm64-unpacked',
-                    'gemini-desktop'
+                    'deepseek-desktop'
                 );
             }
             break;

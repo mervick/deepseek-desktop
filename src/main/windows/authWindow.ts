@@ -1,10 +1,10 @@
 /**
- * Auth Window class for Google sign-in.
+ * Auth Window class for DeepSeek sign-in.
  *
  * Handles:
  * - OAuth window creation with shared session
  * - Navigation detection for successful sign-in
- * - Auto-close when navigation returns to Gemini
+ * - Auto-close when navigation returns to the DeepSeek app
  * - Error handling for network/certificate issues
  *
  * @module AuthWindow
@@ -16,7 +16,7 @@ import { AUTH_WINDOW_CONFIG, isInternalDomain } from '../utils/constants';
 import { getIconPath } from '../utils/paths';
 
 /**
- * Authentication window for Google sign-in.
+ * Authentication window for DeepSeek sign-in.
  * Uses shared session to persist cookies with main window.
  */
 export default class AuthWindow extends BaseWindow {
@@ -91,7 +91,7 @@ export default class AuthWindow extends BaseWindow {
             callback(false);
         });
 
-        // Auto-close when user successfully signs in and navigates to Gemini
+        // Auto-close after the login route returns to the DeepSeek app.
         authWindow.webContents.on('did-navigate', (_event, navigationUrl) => {
             // Guard: Check if window/webContents still exists
             if (authWindow.isDestroyed()) {
@@ -106,7 +106,7 @@ export default class AuthWindow extends BaseWindow {
                 // Log navigation for debugging OAuth flows
                 this.logger.log('Auth window navigated to:', hostname);
 
-                if (isInternalDomain(hostname)) {
+                if (isInternalDomain(hostname) && urlObj.pathname !== '/login') {
                     this.logger.log('Login successful, closing auth window');
 
                     // Guard: Double-check before closing

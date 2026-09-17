@@ -7,9 +7,9 @@ describe('Authentication Flow Integration', () => {
 
     it('should open a dedicated Auth Window for Google OAuth URLs', async () => {
         // Trigger window.open in renderer with a Google Accounts URL
-        // explicit accounts.google.com URL which MainWindow matches as OAuth
+        // explicit chat.deepseek.com URL which MainWindow matches as OAuth
         const oauthUrl =
-            'https://accounts.google.com/o/oauth2/v2/auth?client_id=123&response_type=code&redirect_uri=http://localhost&scope=email';
+            'https://chat.deepseek.com/o/oauth2/v2/auth?client_id=123&response_type=code&redirect_uri=http://localhost&scope=email';
 
         await browser.execute((url) => {
             window.open(url, '_blank');
@@ -32,7 +32,7 @@ describe('Authentication Flow Integration', () => {
         // but mostly we check it exists.
         await browser.switchToWindow(handles[1]);
         const url = await browser.getUrl();
-        expect(url).toContain('accounts.google.com');
+        expect(url).toContain('chat.deepseek.com');
     });
 
     it('should cleanup Auth Window when closed', async () => {

@@ -142,7 +142,7 @@ export function useMenuDefinitions(): MenuDefinition[] {
                 { separator: true },
                 {
                     id: 'menu-file-signin',
-                    label: 'Sign in to Google',
+                    label: 'Sign in to DeepSeek',
                     action: async () => {
                         await window.electronAPI?.openGoogleSignIn();
                         // Reload the page to pick up the new auth cookies
@@ -230,7 +230,7 @@ export function useMenuDefinitions(): MenuDefinition[] {
                 { separator: true },
                 {
                     id: 'menu-help-about',
-                    label: 'About Gemini Desktop',
+                    label: 'About DeepSeek Desktop',
                     action: () => {
                         window.electronAPI?.openOptions('about');
                     },

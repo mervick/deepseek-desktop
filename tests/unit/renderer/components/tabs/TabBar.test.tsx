@@ -11,9 +11,9 @@ describe('TabBar', () => {
     });
 
     const tabs = [
-        { id: 'tab-1', title: 'First', url: 'https://gemini.google.com/app', createdAt: 1 },
-        { id: 'tab-2', title: 'Second', url: 'https://gemini.google.com/app', createdAt: 2 },
-        { id: 'tab-3', title: 'Third', url: 'https://gemini.google.com/app', createdAt: 3 },
+        { id: 'tab-1', title: 'First', url: 'https://chat.deepseek.com/app', createdAt: 1 },
+        { id: 'tab-2', title: 'Second', url: 'https://chat.deepseek.com/app', createdAt: 2 },
+        { id: 'tab-3', title: 'Third', url: 'https://chat.deepseek.com/app', createdAt: 3 },
     ];
 
     it('renders tab bar, tabs, and new tab button', () => {

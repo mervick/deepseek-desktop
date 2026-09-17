@@ -34,7 +34,7 @@ import { GEMINI_DOMAIN as _GEMINI_DOMAIN } from '../../../src/main/utils/geminiS
  */
 export const GEMINI_DOMAIN_PATTERNS = [
     _GEMINI_DOMAIN,
-    'bard.google.com', // Legacy domain fallback
+    'bard.deepseek.com', // Legacy domain fallback
 ] as const;
 
 /**

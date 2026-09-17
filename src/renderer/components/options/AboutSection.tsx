@@ -2,7 +2,7 @@
  * About section component for the Options window.
  *
  * Displays legal disclaimers, version information, and links to relevant
- * documentation and Google's Terms of Service.
+ * documentation and DeepSeek's Terms of Service.
  *
  * @module AboutSection
  */
@@ -30,14 +30,14 @@ const APP_VERSION = __APP_VERSION__;
  * - Version number display
  * - Legal disclaimer (unofficial project notice)
  * - Trademark acknowledgements
- * - Links to LICENSE and Google's ToS
+ * - Links to LICENSE and DeepSeek's terms
  */
 export const AboutSection = memo(function AboutSection() {
     return (
         <div className="about-section" data-testid="about-section">
             {/* App Title and Version */}
             <div className="about-header">
-                <h1 className="about-title">Gemini Desktop</h1>
+                <h1 className="about-title">DeepSeek Desktop</h1>
                 <span className="about-version" data-testid="about-version">
                     Version {APP_VERSION}
                 </span>
@@ -47,16 +47,14 @@ export const AboutSection = memo(function AboutSection() {
             <div className="about-disclaimer" data-testid="about-disclaimer">
                 <p className="about-disclaimer-text">
                     This application is an <strong>unofficial</strong> open-source project. It is <strong>NOT</strong>{' '}
-                    affiliated with, endorsed by, maintained by, or associated with Google LLC or the Gemini team in any
-                    way.
+                    affiliated with, endorsed by, maintained by, or associated with DeepSeek in any way.
                 </p>
             </div>
 
             {/* Trademark Notice */}
             <div className="about-trademarks">
                 <p className="about-trademark-text">
-                    &quot;Gemini&quot; and &quot;Google&quot; are registered trademarks of Google LLC. This software is
-                    a third-party client and is not a Google product.
+                    DeepSeek is a trademark of its respective owner. This software is an unofficial third-party client.
                 </p>
             </div>
 
@@ -88,7 +86,7 @@ export const AboutSection = memo(function AboutSection() {
                     className="about-link"
                     data-testid="about-google-tos-link"
                 >
-                    Google Terms of Service
+                    DeepSeek Terms of Service
                 </a>
                 <a
                     href={GOOGLE_GENAI_TERMS_URL}

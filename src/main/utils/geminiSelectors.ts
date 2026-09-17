@@ -1,8 +1,8 @@
 /**
  * Gemini DOM Selectors Module
  *
- * Centralizes all CSS selectors for interacting with the Gemini website.
- * Designed for easy updates when gemini.google.com changes its DOM structure.
+ * Centralizes all CSS selectors for interacting with the DeepSeek website.
+ * Designed for easy updates when chat.deepseek.com changes its DOM structure.
  *
  * MAINTENANCE GUIDE:
  * - When Gemini changes, update selectors here
@@ -19,7 +19,7 @@
 export const GEMINI_SELECTORS_VERSION = '1.0.0';
 
 /**
- * Date when selectors were last manually verified against gemini.google.com.
+ * Date when selectors were last manually verified against chat.deepseek.com.
  * Update this after confirming selectors work on the live site.
  */
 export const GEMINI_SELECTORS_LAST_VERIFIED = '2025-12-23';
@@ -35,12 +35,12 @@ export const GeminiSelectors = {
     /**
      * Domain for matching Gemini iframe URLs.
      */
-    domain: 'gemini.google.com',
+    domain: 'chat.deepseek.com',
 
     /**
      * Legacy domain that may still appear in some URLs.
      */
-    legacyDomain: 'bard.google.com',
+    legacyDomain: 'deepseek.com',
 
     /**
      * Chat input editor configuration.
@@ -52,8 +52,8 @@ export const GeminiSelectors = {
          * Ordered by specificity - first match wins.
          */
         selectors: [
-            '.ql-editor[contenteditable="true"]',
-            '.ql-editor',
+            'textarea[placeholder*="message" i]',
+            'textarea',
             '[contenteditable="true"][role="textbox"]',
         ] as const,
 
@@ -77,11 +77,7 @@ export const GeminiSelectors = {
          * CSS selectors for finding the send message button.
          * Ordered by specificity - first match wins.
          */
-        selectors: [
-            'button.send-button[aria-label="Send message"]',
-            'button.send-button',
-            'button[aria-label="Send message"]',
-        ] as const,
+        selectors: ['button[aria-label="Send"]', 'button[type="submit"]', 'button.send-button'] as const,
 
         /**
          * Description for logging/debugging.
@@ -98,11 +94,7 @@ export const GeminiSelectors = {
          * CSS selectors for finding the microphone button.
          * Ordered by specificity - first match wins.
          */
-        selectors: [
-            'button[data-node-type="speech_dictation_mic_button"]',
-            'button[aria-label="Microphone"]',
-            'speech-dictation-mic-button button',
-        ] as const,
+        selectors: ['button[aria-label*="microphone" i]', 'button[aria-label*="voice" i]'] as const,
 
         /**
          * Description for logging/debugging.
@@ -224,9 +216,7 @@ export function isGeminiDomain(url: string): boolean {
             hostname === GeminiSelectors.domain ||
             hostname.endsWith(`.${GeminiSelectors.domain}`) ||
             hostname === GeminiSelectors.legacyDomain ||
-            hostname.endsWith(`.${GeminiSelectors.legacyDomain}`) ||
-            hostname === 'aistudio.google.com' ||
-            hostname.endsWith('.aistudio.google.com')
+            hostname.endsWith(`.${GeminiSelectors.legacyDomain}`)
         );
     } catch {
         // Invalid URL

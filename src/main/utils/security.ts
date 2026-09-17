@@ -14,19 +14,15 @@ const logger = createLogger('[SecurityManager]');
  * Strip security headers that prevent iframe embedding.
  * This is the key to making custom HTML menus work over external content.
  *
- * SECURITY: Only strips headers for Gemini domains to minimize attack surface.
+ * SECURITY: Only strips headers for DeepSeek domains to minimize attack surface.
  *
  * @param session - The default session
  */
 export function setupHeaderStripping(session: Session): void {
-    // Only modify headers for Gemini-related domains
+    // Only modify headers for the DeepSeek web app and local integration tests.
     const allowedUrls = [
-        '*://gemini.google.com/*',
-        '*://*.gemini.google.com/*',
-        '*://aistudio.google.com/*',
-        '*://*.google.com/gemini/*',
-        '*://accounts.google.com/*',
-        '*://ogs.google.com/*',
+        'https://chat.deepseek.com/*',
+        'https://*.deepseek.com/*',
         // Allow localhost for integration testing
         '*://localhost:*/*',
         '*://127.0.0.1:*/*',
@@ -54,7 +50,7 @@ export function setupHeaderStripping(session: Session): void {
         callback({ responseHeaders });
     });
 
-    logger.log('Header stripping enabled for Gemini domains only');
+    logger.log('Header stripping enabled for DeepSeek domains only');
 }
 
 /**
@@ -75,9 +71,9 @@ export function setupWebviewSecurity(app: App): void {
 
 /**
  * Setup media permission handler for microphone access.
- * Allows media requests from trusted Gemini/Google domains.
+ * Allows media requests from trusted DeepSeek domains.
  *
- * SECURITY: Only approves media permissions for Google domains.
+ * SECURITY: Only approves media permissions for DeepSeek domains.
  * All other permission requests are denied.
  *
  * @param session - The default session
@@ -86,8 +82,8 @@ export function setupMediaPermissions(session: Session): void {
     session.setPermissionRequestHandler((_webContents, permission, callback, details) => {
         const url = details.requestingUrl || '';
 
-        // Allowed permissions for Gemini/Google domains:
-        // - media: Required for microphone access (voice input/Gemini Live)
+        // Allowed permissions for DeepSeek domains:
+        // - media: Required for microphone access
         // - clipboard-sanitized-write: Required for "Copy" buttons in the UI
         const allowedPermissions = ['media', 'clipboard-sanitized-write'];
 
@@ -103,8 +99,9 @@ export function setupMediaPermissions(session: Session): void {
                 return;
             }
 
-            // Allow only trusted Google domains
-            if (hostname.endsWith('.google.com') || hostname === 'google.com') {
+            // Allow only trusted DeepSeek domains, with an exact subdomain boundary.
+            const protocol = new URL(url).protocol;
+            if (protocol === 'https:' && (hostname === 'deepseek.com' || hostname.endsWith('.deepseek.com'))) {
                 logger.log(`Granting ${permission} permission to: ${url}`);
                 callback(true);
                 return;
@@ -120,5 +117,5 @@ export function setupMediaPermissions(session: Session): void {
     const adapter = getPlatformAdapter();
     adapter.requestMediaPermissions?.(logger);
 
-    logger.log('Media permission handler configured for Gemini domains');
+    logger.log('Media permission handler configured for DeepSeek domains');
 }

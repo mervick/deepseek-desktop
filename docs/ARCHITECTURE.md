@@ -47,7 +47,7 @@ Gemini Desktop is an Electron application with three primary runtime boundaries:
 +--------------------------------------------------------------------------+
                                  |
                                  v
-                      Google Gemini web app (`gemini.google.com`)
+                      Google Gemini web app (`chat.deepseek.com`)
 ```
 
 ## Runtime Boundaries

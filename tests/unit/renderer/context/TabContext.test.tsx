@@ -169,7 +169,7 @@ describe('TabContext', () => {
     it('closes active tab and keeps one tab by recreating when last tab closes', async () => {
         (window as unknown as { electronAPI: ElectronApiSubset }).electronAPI = {
             getTabState: vi.fn().mockResolvedValue({
-                tabs: [{ id: 'only', title: 'Only', url: 'https://gemini.google.com/app', createdAt: 1 }],
+                tabs: [{ id: 'only', title: 'Only', url: 'https://chat.deepseek.com/app', createdAt: 1 }],
                 activeTabId: 'only',
             } satisfies TabsState),
             saveTabState: vi.fn(),
@@ -241,7 +241,7 @@ describe('TabContext', () => {
 
         (window as unknown as { electronAPI: ElectronApiSubset }).electronAPI = {
             getTabState: vi.fn().mockResolvedValue({
-                tabs: [{ id: 'tab-a', title: 'New Chat', url: 'https://gemini.google.com/app', createdAt: 1 }],
+                tabs: [{ id: 'tab-a', title: 'New Chat', url: 'https://chat.deepseek.com/app', createdAt: 1 }],
                 activeTabId: 'tab-a',
             } satisfies TabsState),
             saveTabState,
@@ -277,7 +277,7 @@ describe('TabContext', () => {
         (window as unknown as { electronAPI: ElectronApiSubset }).electronAPI = {
             getTabState: vi.fn().mockResolvedValue({
                 tabs: [
-                    { id: 'tab-a', title: 'Stale Previous Title', url: 'https://gemini.google.com/app', createdAt: 1 },
+                    { id: 'tab-a', title: 'Stale Previous Title', url: 'https://chat.deepseek.com/app', createdAt: 1 },
                 ],
                 activeTabId: 'tab-a',
             } satisfies TabsState),

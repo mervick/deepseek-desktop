@@ -251,7 +251,7 @@ For each step, identify what to verify:
 | 3    | Text appears in input field                |
 | 4    | IPC message sent                           |
 | 5    | Window hidden                              |
-| 6    | Main window URL includes gemini.google.com |
+| 6    | Main window URL includes chat.deepseek.com |
 | 7    | Gemini input contains expected text        |
 | 8    | Submit button was clicked                  |
 | 9    | Response appeared (if possible)            |

@@ -57,7 +57,7 @@ vi.mock('../../../../src/main/utils/injectionScript', () => ({
 }));
 
 // Note: We don't mock isGeminiDomain - it uses real implementation
-// The test uses URLs like 'https://gemini.google.com/app' which match the real function
+// The test uses URLs like 'https://chat.deepseek.com/app' which match the real function
 
 describe('QuickChatIpcHandler', () => {
     let handler: QuickChatIpcHandler;
@@ -255,7 +255,7 @@ describe('QuickChatIpcHandler', () => {
 
             const mockGeminiFrame = {
                 name: getTabFrameName(navigatePayload.targetTabId),
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
                 executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
             };
             mockMainWindow.webContents.mainFrame.frames = [mockGeminiFrame];
@@ -278,7 +278,7 @@ describe('QuickChatIpcHandler', () => {
             };
 
             mockMainWindow.webContents.mainFrame.frames = [
-                { name: 'gemini-tab-some-other-id', url: 'https://gemini.google.com/app', executeJavaScript: vi.fn() },
+                { name: 'gemini-tab-some-other-id', url: 'https://chat.deepseek.com/app', executeJavaScript: vi.fn() },
             ];
 
             const listener = mockIpcMain._listeners.get(IPC_CHANNELS.GEMINI_READY);
@@ -315,7 +315,7 @@ describe('QuickChatIpcHandler', () => {
 
             const mockGeminiFrame = {
                 name: getTabFrameName(navigatePayload.targetTabId),
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
                 executeJavaScript: vi.fn().mockResolvedValue({ success: false, error: 'Editor not found' }),
             };
             mockMainWindow.webContents.mainFrame.frames = [mockGeminiFrame];
@@ -343,7 +343,7 @@ describe('QuickChatIpcHandler', () => {
 
             const mockGeminiFrame = {
                 name: getTabFrameName(navigatePayload.targetTabId),
-                url: 'https://gemini.google.com/app',
+                url: 'https://chat.deepseek.com/app',
                 executeJavaScript: vi.fn().mockRejectedValue(new Error('JS execution failed')),
             };
             mockMainWindow.webContents.mainFrame.frames = [mockGeminiFrame];
@@ -376,7 +376,7 @@ describe('QuickChatIpcHandler', () => {
 
                 const mockGeminiFrame = {
                     name: getTabFrameName(navigatePayload.targetTabId),
-                    url: 'https://gemini.google.com/app',
+                    url: 'https://chat.deepseek.com/app',
                     executeJavaScript: vi.fn().mockResolvedValue({ success: true }),
                 };
                 mockMainWindow.webContents.mainFrame.frames = [mockGeminiFrame];

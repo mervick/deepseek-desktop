@@ -64,7 +64,7 @@ describe('Link Handling', () => {
         // Inject a mock Gemini subdomain link
         await browser.execute(() => {
             const link = document.createElement('a');
-            link.href = 'https://gemini.google.com/share/abc123';
+            link.href = 'https://chat.deepseek.com/share/abc123';
             link.target = '_blank';
             link.textContent = 'Share Gemini Chat';
             link.id = 'mock-gemini-link';

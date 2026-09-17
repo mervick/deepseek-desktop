@@ -35,7 +35,7 @@ describe('Security Integration', () => {
 
             expect(mockSession.webRequest.onHeadersReceived).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    urls: expect.arrayContaining(['*://gemini.google.com/*', '*://*.google.com/gemini/*']),
+                    urls: expect.arrayContaining(['*://chat.deepseek.com/*', '*://*.deepseek.com/gemini/*']),
                 }),
                 expect.any(Function)
             );

@@ -72,9 +72,9 @@ describe('Auth Coordination Integration', () => {
             const callback = (mainWindow as any).createAuthWindowCallback;
             expect(callback).toBeDefined();
 
-            callback('https://accounts.google.com/o/oauth2/v2/auth');
+            callback('https://chat.deepseek.com/o/oauth2/v2/auth');
 
-            expect(windowManager.createAuthWindow).toHaveBeenCalledWith('https://accounts.google.com/o/oauth2/v2/auth');
+            expect(windowManager.createAuthWindow).toHaveBeenCalledWith('https://chat.deepseek.com/o/oauth2/v2/auth');
         });
 
         it('should close auth window when main window closes', () => {
