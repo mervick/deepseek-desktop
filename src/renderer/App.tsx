@@ -5,7 +5,6 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider, useToast } from './context/ToastContext';
 import { UpdateToastProvider } from './context/UpdateToastContext';
 import { TabProvider, useTabContext } from './context/TabContext';
-import { LinuxHotkeyNotice } from './components/toast';
 import { useTabKeyboardShortcuts } from './hooks';
 import type { GeminiNavigatePayload, GeminiReadyPayload } from '../shared/types/tabs';
 import './App.css';
@@ -156,7 +155,6 @@ function App() {
                     <TabProvider>
                         <AppContent />
                     </TabProvider>
-                    <LinuxHotkeyNotice />
                 </UpdateToastProvider>
             </ToastProvider>
         </ThemeProvider>

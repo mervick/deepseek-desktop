@@ -30,6 +30,8 @@ Use only `window.electronAPI.*` APIs exposed by preload.
 Subscription APIs return cleanup functions — always call them in `useEffect` cleanup.
 For async initialization and subscriptions, use `AbortController` to prevent stale updates after unmount.
 
+Update notifications are reserved for actionable update states; successful checks with no available update and platform hotkey status remain silent in the main UI.
+
 ## Canonical Example
 
 - `src/renderer/context/ThemeContext.tsx` — `ThemeProvider` and `useTheme`

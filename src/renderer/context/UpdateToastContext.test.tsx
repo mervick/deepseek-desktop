@@ -193,14 +193,12 @@ describe('UpdateToastContext', () => {
             });
         });
 
-        it('adds View Release Notes for not-available updates', async () => {
+        it('does not show a toast for not-available updates', async () => {
             let capturedCallback: ((info: { version: string }) => void) | undefined;
             mockElectronAPI.onUpdateNotAvailable.mockImplementation((cb) => {
                 capturedCallback = cb;
                 return () => {};
             });
-
-            const openSpy = createWindowOpenSpy();
 
             render(
                 <TestWrapper>
@@ -211,13 +209,8 @@ describe('UpdateToastContext', () => {
             capturedCallback?.({ version: '3.0.0' });
 
             await waitFor(() => {
-                expect(screen.getByTestId('toast-action-0')).toHaveTextContent('View Release Notes');
+                expect(screen.queryByTestId('toast')).not.toBeInTheDocument();
             });
-
-            fireEvent.click(screen.getByTestId('toast-action-0'));
-            expect(openSpy).toHaveBeenCalledWith(getReleaseNotesUrl('3.0.0'));
-
-            openSpy.mockRestore();
         });
 
         it('shows Download button for manual-available updates without release notes', async () => {

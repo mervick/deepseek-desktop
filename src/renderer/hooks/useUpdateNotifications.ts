@@ -50,6 +50,8 @@ const initialState: UpdateNotificationState = {
  * - onUpdateDownloaded: Update ready to install
  * - onUpdateError: Error during update process
  *
+ * Successful checks with no available update remain silent in the UI.
+ *
  * @returns Update notification state and actions
  */
 export function useUpdateNotifications() {

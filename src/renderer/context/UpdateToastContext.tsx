@@ -167,7 +167,9 @@ export function UpdateToastProvider({ children }: UpdateToastProviderProps) {
      * Show or update toast when update state changes
      */
     useEffect(() => {
-        if (!visible || !type) {
+        // A successful update check is intentionally silent. Keep the state
+        // value for IPC compatibility, but never render an "Up to Date" toast.
+        if (!visible || !type || type === 'not-available') {
             dismissToast(UPDATE_TOAST_ID);
             pendingToastRef.current = false;
             return;
@@ -197,7 +199,7 @@ export function UpdateToastProvider({ children }: UpdateToastProviderProps) {
 
         const message = getMessage(type, version, errorMessage, downloadProgress);
 
-        if (type === 'available' || type === 'downloaded' || type === 'not-available') {
+        if (type === 'available' || type === 'downloaded') {
             const releaseNotesAction: ToastAction = {
                 label: 'View Release Notes',
                 onClick: () => window.open(getReleaseNotesUrl(version)),
