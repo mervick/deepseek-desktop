@@ -33,6 +33,7 @@
         "dist:win-x64": "node scripts/release/run-windows-dist.cjs x64",
         "dist:win-arm64": "node scripts/release/run-windows-dist.cjs arm64",
         "dist:linux": "npm run build && npm run build:electron && electron-builder --linux --publish never --config config/electron-builder.config.cjs",
+        "dist:linux-app": "npm run build && npm run build:electron && electron-builder --linux --publish never --config config/electron-builder-dev.config.cjs",
         "test": "vitest run --config config/vitest/vitest.config.ts",
         "test:watch": "vitest --config config/vitest/vitest.config.ts",
         "test:coverage": "vitest run --config config/vitest/vitest.config.ts --coverage",

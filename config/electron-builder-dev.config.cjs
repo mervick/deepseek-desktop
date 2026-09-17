@@ -1,0 +1,138 @@
+/**
+ * @type {import('electron-builder').Configuration}
+ * @see https://www.electron.build/configuration/configuration
+ */
+const explicitBuildArch = process.env.npm_config_arch || process.env.BUILD_ARCH;
+const buildArch = explicitBuildArch || process.arch;
+const buildPlatform = process.env.BUILD_PLATFORM || process.platform;
+const isWindowsBuild = buildPlatform === 'win32';
+
+function getWindowsBinaryExclusions() {
+    if (!isWindowsBuild) {
+        return [
+            '!node_modules/@node-llama-cpp/win-arm64',
+            '!node_modules/@node-llama-cpp/win-x64',
+            '!node_modules/@node-llama-cpp/win-x64-cuda',
+            '!node_modules/@node-llama-cpp/win-x64-cuda-ext',
+            '!node_modules/@node-llama-cpp/win-x64-vulkan',
+        ];
+    }
+
+    if (buildArch === 'arm64') {
+        return [
+            '!node_modules/@node-llama-cpp/win-x64',
+            '!node_modules/@node-llama-cpp/win-x64-cuda',
+            '!node_modules/@node-llama-cpp/win-x64-cuda-ext',
+            '!node_modules/@node-llama-cpp/win-x64-vulkan',
+        ];
+    }
+
+    return ['!node_modules/@node-llama-cpp/win-arm64'];
+}
+
+const windowsBinaryExclusions = getWindowsBinaryExclusions();
+
+module.exports = {
+    appId: 'com.benwendell.deepseek-desktop',
+    productName: 'DeepSeek Desktop',
+    // Windows builds do not need native module rebuild for this app.
+    // Rebuild can fail on Linux-only transitive deps (e.g. dbus-next/usocket).
+    npmRebuild: !isWindowsBuild,
+
+    directories: {
+        output: 'release',
+        buildResources: 'build',
+    },
+    files: [
+        'dist-electron',
+        'dist',
+        'package.json',
+        // Exclude non-current-platform node-llama-cpp native binaries to prevent
+        // bundling ~677MB of unused platform-specific .node files.
+        // electron-builder resolves the correct platform binary automatically.
+        '!node_modules/@node-llama-cpp/linux-x64-cuda',
+        '!node_modules/@node-llama-cpp/linux-x64-cuda-ext',
+        '!node_modules/@node-llama-cpp/linux-x64-vulkan',
+        '!node_modules/@node-llama-cpp/linux-armv7l',
+        '!node_modules/@node-llama-cpp/linux-arm64',
+        '!node_modules/@node-llama-cpp/linux-x64',
+        '!node_modules/@node-llama-cpp/mac-arm64-metal',
+        '!node_modules/@node-llama-cpp/mac-x64',
+        ...windowsBinaryExclusions,
+    ],
+    // Native .node binaries must be unpacked from asar for node-llama-cpp to load them
+    asarUnpack: ['node_modules/@node-llama-cpp/**/*.node', 'node_modules/node-llama-cpp/**/*'],
+    extraFiles: [
+        {
+            from: 'build',
+            to: 'resources',
+            filter: ['*.png', '*.ico'],
+        },
+    ],
+    win: {
+        target: 'nsis',
+        icon: 'build/icon.png',
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}.${ext}',
+        ...(process.env.AZURE_SIGN_ENDPOINT &&
+        process.env.AZURE_CODE_SIGNING_ACCOUNT_NAME &&
+        process.env.AZURE_CERT_PROFILE_NAME &&
+        process.env.AZURE_PUBLISHER_NAME
+            ? {
+                  azureSignOptions: {
+                      endpoint: process.env.AZURE_SIGN_ENDPOINT,
+                      codeSigningAccountName: process.env.AZURE_CODE_SIGNING_ACCOUNT_NAME,
+                      certificateProfileName: process.env.AZURE_CERT_PROFILE_NAME,
+                      publisherName: process.env.AZURE_PUBLISHER_NAME,
+                  },
+              }
+            : {}),
+    },
+    nsis: {
+        oneClick: false,
+        allowToChangeInstallationDirectory: true,
+        deleteAppDataOnUninstall: true,
+        createDesktopShortcut: true,
+        createStartMenuShortcut: true,
+        perMachine: false,
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}-installer.${ext}',
+    },
+    mac: {
+        target: ['dmg', 'zip'],
+        icon: 'build/icon.png',
+        identity: null,
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}.${ext}',
+        extendInfo: {
+            NSMicrophoneUsageDescription: 'DeepSeek Desktop needs microphone access for voice input features.',
+        },
+        entitlements: 'build/entitlements.mac.plist',
+        entitlementsInherit: 'build/entitlements.mac.plist',
+    },
+    dmg: {
+        sign: false,
+        writeUpdateInfo: false,
+    },
+    linux: {
+        target: [
+            {
+                target: 'AppImage',
+                arch: ['x64'],
+            },
+        ],
+        icon: 'build/icon.png',
+        category: 'Utility',
+        artifactName: 'DeepSeek-Desktop-${version}-${arch}.${ext}',
+        executableName: 'deepseek-desktop',
+    },
+    deb: {
+        depends: ['libnotify4', 'libxtst6', 'libnss3', 'libasound2'],
+        recommends: ['libayatana-appindicator3-1'],
+    },
+    rpm: {
+        depends: ['libnotify', 'libappindicator', 'libXtst', 'nss', 'alsa-lib'],
+    },
+    publish: {
+        provider: 'github',
+        releaseType: 'release',
+        timeout: 600000,
+    },
+};
