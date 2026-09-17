@@ -19,6 +19,8 @@ Primary files and folders:
 All managers are injected via `ApplicationContext`. Do not use global mutable manager singletons.
 For architecture details, see `docs/ARCHITECTURE.md` (Manager Architecture section).
 
+`MainWindow` lazily owns `DeepSeekTabs`, a map of sandboxed `WebContentsView` tabs. `TabStateIpcHandler` validates renderer tab state and bounds before syncing native views. Export and Quick Chat use `WindowManager.getActiveDeepSeekContents()` / `getDeepSeekTabContents(id)` rather than searching iframe subframes. Do not re-enable header stripping.
+
 ## IPC Handler Pattern
 
 Handlers extend `BaseIpcHandler` and follow lifecycle: `register()` → optional `initialize()` → `unregister()`.

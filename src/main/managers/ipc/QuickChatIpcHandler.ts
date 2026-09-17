@@ -5,7 +5,6 @@ import { ipcMain } from 'electron';
 import { BaseIpcHandler } from './BaseIpcHandler';
 import { IPC_CHANNELS, isGeminiDomain } from '../../utils/constants';
 import type { GeminiReadyPayload } from '../../../shared/types/tabs';
-import { getTabFrameName } from '../../../shared/types/tabs';
 import { InjectionScriptBuilder, InjectionResult } from '../../utils/injectionScript';
 
 interface PendingQuickChatRequest {
@@ -218,16 +217,12 @@ export class QuickChatIpcHandler extends BaseIpcHandler {
             return;
         }
 
-        const frameName = getTabFrameName(request.targetTabId);
-        const frames = mainWindow.webContents.mainFrame.frames;
-        const targetFrame = frames.find((frame) => frame.name === frameName);
+        const targetFrame = this.deps.windowManager.getDeepSeekTabContents(request.targetTabId)?.mainFrame;
 
         this.logger.log('Quick Chat injection lookup:', {
             requestId: request.requestId,
             targetTabId: request.targetTabId,
-            frameName,
-            framesCount: frames.length,
-            frameNames: frames.map((frame) => frame.name),
+            found: !!targetFrame,
         });
 
         if (!targetFrame) {

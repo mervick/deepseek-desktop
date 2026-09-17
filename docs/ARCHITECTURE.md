@@ -1,16 +1,16 @@
 # Architecture Reference
 
-This document is the durable architecture map for Gemini Desktop. It is written for contributors and AI agents who need a trustworthy view of the live runtime boundaries, data flows, and source-of-truth files.
+This document is the durable architecture map for DeepSeek Desktop. It is written for contributors and AI agents who need a trustworthy view of the live runtime boundaries, data flows, and source-of-truth files.
 
 Use this document to understand how the application is organized. Use the code paths linked in each section when you need implementation detail.
 
 ## System Overview
 
-Gemini Desktop is an Electron application with three primary runtime boundaries:
+DeepSeek Desktop is an Electron application with three primary runtime boundaries:
 
 - The main process composes managers, owns native integrations, and coordinates application lifecycle.
 - The preload bridge exposes a typed `window.electronAPI` surface to renderer code.
-- The renderer hosts a React shell that manages tabs and embeds Gemini inside iframe-based tab panels.
+- The renderer hosts a React shell for tabs and controls; main-process `WebContentsView` instances load DeepSeek as top-level pages.
 
 ```text
 +----------------------------- Gemini Desktop ------------------------------+
@@ -41,13 +41,13 @@ Gemini Desktop is an Electron application with three primary runtime boundaries:
 |  Renderer                                                                 |
 |  - App.tsx composes Theme/Toast/Update/Tab providers                     |
 |  - TabContext owns in-memory tab UI state                                |
-|  - TabBar and TabPanel render iframe-based Gemini tabs                   |
+|  - TabBar and TabPanel manage native DeepSeek tab geometry               |
 |  - Quick Chat and options UI use the preload bridge                      |
 |                                                                          |
 +--------------------------------------------------------------------------+
                                  |
                                  v
-                      Google Gemini web app (`chat.deepseek.com`)
+                      DeepSeek web app (`chat.deepseek.com`)
 ```
 
 ## Runtime Boundaries
@@ -62,7 +62,7 @@ The preload layer is the only sanctioned bridge between the sandboxed renderer a
 
 ### Renderer
 
-The renderer is a React application. It owns visual state, tab interactions, option panels, toast UI, and iframe embedding, while deferring native effects to the preload bridge and main process.
+The renderer is a React application. It owns visual state, tab interactions, option panels, toast UI, and native-tab bounds, while deferring native effects to the preload bridge and main process.
 
 ### Shared Contracts
 
@@ -70,7 +70,7 @@ The renderer is a React application. It owns visual state, tab interactions, opt
 
 ### External Dependency
 
-The application embeds the Gemini web app in iframes and keeps authentication in Chromium session storage. There is no separate Gemini Desktop backend service.
+The application loads the DeepSeek web app directly in sandboxed native tab views and keeps authentication in Chromium session storage. It does not strip DeepSeek frame/CSP headers. There is no separate DeepSeek Desktop backend service.
 
 ## Main-Process Composition
 
@@ -212,7 +212,7 @@ The bridge follows three stable patterns:
 - `UpdateToastProvider`
 - `TabProvider`
 
-Inside that shell, `MainLayout` renders the tab bar and the active tab panel. `TabPanel` mounts one iframe per tab and shows the active iframe while keeping the tab shell in React. Quick Chat integration also lives at this boundary: the renderer listens for Gemini navigation requests from the main process and signals readiness back through the preload bridge.
+Inside that shell, `MainLayout` renders the tab bar and a `TabPanel` geometry placeholder. `TabPanel` sends its bounds and tab IDs to the main process; `DeepSeekTabs` attaches the active `WebContentsView` over that area. Quick Chat listens for navigation requests and signals readiness when the native tab reports a completed load.
 
 Global UI state is handled with React contexts rather than a single global store. Current high-value contexts include theme, toast/update notifications, individual hotkeys, and tabs.
 
@@ -231,11 +231,11 @@ Quick Chat is a cross-boundary workflow rather than a standalone renderer featur
 
 1. The floating quick chat window collects prompt text.
 2. `QuickChatIpcHandler` hides the quick chat window, focuses the main window, creates a correlated request ID and target tab ID, and sends `gemini:navigate` to the renderer.
-3. The renderer creates or activates the requested tab and waits for the iframe in that tab to load.
-4. Once the target iframe is ready, the renderer sends `gemini:ready` back to the main process.
-5. `QuickChatIpcHandler` finds the target iframe frame by `getTabFrameName(tabId)` and injects the prompt into Gemini, optionally auto-submitting outside of E2E buffering modes.
+3. The renderer creates or activates the requested tab; the main process loads DeepSeek directly in a native view.
+4. Once the target view loads, the renderer sends `gemini:ready` back to the main process.
+5. `QuickChatIpcHandler` looks up the target tab webContents and injects the prompt, optionally auto-submitting outside of E2E buffering modes.
 
-This flow is why Quick Chat, tab identity, iframe naming, and preload IPC need to stay aligned.
+This flow is why Quick Chat, tab identity, native view lifecycle, and preload IPC need to stay aligned.
 
 ### Where to Look in Code
 
@@ -258,17 +258,17 @@ Tabs are a first-class system, not just a visual affordance.
 
 On startup, `TabContext` loads persisted `TabsState` through `window.electronAPI.getTabState()`. After hydration, it saves tab changes back to the main process with a debounced `saveTabState()` call.
 
-### Frame Naming and Iframe Ownership
+### Native Tab Ownership
 
-Each tab iframe is named with `getTabFrameName(tabId)` from `src/shared/types/tabs.ts`. The main process relies on that naming convention to find the correct iframe frame for title extraction and reload requests.
+`MainWindow` lazily creates `DeepSeekTabs`, which maps each validated tab ID to an isolated `WebContentsView`. The renderer synchronizes IDs through `TABS_SYNC` and measures the placeholder through `TABS_SET_BOUNDS`; only the active view is attached. Chat navigation is limited to DeepSeek HTTPS hosts.
 
 ### Title Synchronization Flow
 
-`TabStateIpcHandler` polls the active Gemini iframe, extracts the current conversation title, persists it, and broadcasts `TABS_TITLE_UPDATED` to renderer windows. The renderer also exposes `updateTabTitle()` for explicit title updates when needed.
+`TabStateIpcHandler` polls the active DeepSeek view, extracts the current conversation title, persists it, and broadcasts `TABS_TITLE_UPDATED` to renderer windows. The renderer also exposes `updateTabTitle()` for explicit title updates when needed.
 
 ### Active-Tab Reload Flow
 
-Renderer code can request a reload through `window.electronAPI.reloadTabs()`. `TabStateIpcHandler` resolves the active tab, finds the matching iframe frame in the main window, reloads it, enforces a cooldown, and schedules a delayed title sync pass.
+Renderer code can request a reload through `window.electronAPI.reloadTabs()`. `TabStateIpcHandler` resolves the active tab, reloads its native view, enforces a cooldown, and schedules a delayed title sync pass.
 
 ### Shortcut Integration
 
@@ -287,9 +287,9 @@ Renderer code can request a reload through `window.electronAPI.reloadTabs()`. `T
 
 Export is owned by the main process.
 
-- `ExportManager` extracts chat content from a Gemini frame, converts it into Markdown or rendered HTML, and writes the chosen output file.
+- `ExportManager` extracts chat content from the active DeepSeek tab's main frame, converts it into Markdown or rendered HTML, and writes the chosen output file. An empty extraction does not create a file.
 - `ExportIpcHandler` exposes renderer-driven export triggers and also listens for window-level export events such as print-to-PDF.
-- The extraction path is intentionally constrained to allowed Gemini domains.
+- The extraction path is intentionally constrained to allowed HTTPS DeepSeek domains. Export status is sent to the React shell.
 
 The current shipped export formats are:
 
@@ -348,7 +348,7 @@ Gemini Desktop uses local persistence only.
 
 ### Chromium Session Persistence
 
-Authentication and Gemini session state are separate from `SettingsStore`. They live in Chromium's session/cookie storage, including the `persist:gemini` partition used by the embedded Gemini experience.
+Authentication and DeepSeek session state are separate from `SettingsStore`. Native chat views use Chromium's default persistent session/cookie storage, shared with the app's auth window.
 
 ### Boundaries to Remember
 

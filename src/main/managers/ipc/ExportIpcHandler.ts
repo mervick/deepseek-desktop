@@ -22,7 +22,9 @@ export class ExportIpcHandler extends BaseIpcHandler {
             }
             const win = this.deps.windowManager.getMainWindow();
             if (win && !win.isDestroyed()) {
-                this.deps.exportManager.exportToPdf(win.webContents).catch((err) => {
+                const target = this.deps.windowManager.getActiveDeepSeekContents();
+                if (!target) return;
+                this.deps.exportManager.exportToPdf(target, win.webContents).catch((err) => {
                     this.handleError('exportToPdf (local)', err);
                 });
             } else {
@@ -38,7 +40,9 @@ export class ExportIpcHandler extends BaseIpcHandler {
             }
             const win = this.deps.windowManager.getMainWindow();
             if (win && !win.isDestroyed()) {
-                this.deps.exportManager.exportToMarkdown(win.webContents).catch((err) => {
+                const target = this.deps.windowManager.getActiveDeepSeekContents();
+                if (!target) return;
+                this.deps.exportManager.exportToMarkdown(target, win.webContents).catch((err) => {
                     this.handleError('exportToMarkdown (local)', err);
                 });
             } else {
@@ -60,7 +64,9 @@ export class ExportIpcHandler extends BaseIpcHandler {
             this.logger.error('ExportManager not initialized');
             return;
         }
-        this.deps.exportManager.exportToPdf(event.sender).catch((err) => {
+        const target = this.deps.windowManager.getActiveDeepSeekContents();
+        if (!target) return;
+        this.deps.exportManager.exportToPdf(target, event.sender).catch((err) => {
             this.handleError('exportToPdf', err);
         });
     }
@@ -71,7 +77,9 @@ export class ExportIpcHandler extends BaseIpcHandler {
             this.logger.error('ExportManager not initialized');
             return;
         }
-        this.deps.exportManager.exportToMarkdown(event.sender).catch((err) => {
+        const target = this.deps.windowManager.getActiveDeepSeekContents();
+        if (!target) return;
+        this.deps.exportManager.exportToMarkdown(target, event.sender).catch((err) => {
             this.handleError('exportToMarkdown', err);
         });
     }

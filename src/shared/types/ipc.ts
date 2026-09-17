@@ -118,6 +118,16 @@ export interface ElectronAPI {
 
     saveTabState: (state: TabsState) => void;
 
+    /** Synchronize native DeepSeek views with the React tab bar. */
+    syncTabs: (state: TabsState) => void;
+
+    setTabBounds: (bounds: { x: number; y: number; width: number; height: number }) => void;
+    setTabVisible: (visible: boolean) => void;
+
+    onTabReady: (callback: (tabId: string) => void) => () => void;
+
+    onTabLoadError: (callback: (payload: { tabId: string; error: string }) => void) => () => void;
+
     onTabShortcutTriggered: (callback: (payload: TabShortcutPayload) => void) => () => void;
 
     onTabTitleUpdated: (callback: (payload: { tabId: string; title: string }) => void) => () => void;

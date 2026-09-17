@@ -15,6 +15,7 @@ Preload APIs follow three patterns:
 - `on*` subscriptions via `ipcRenderer.on()` that return cleanup functions
 
 Subscription cleanup return functions are mandatory because renderer hooks call them during `useEffect` teardown.
+The tab bridge in `api/gemini.ts` syncs tab IDs/state, passes measured bounds, and subscribes to native view ready/load-error events. It does not expose `WebContents` or raw Electron objects.
 
 ## Canonical Example
 

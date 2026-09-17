@@ -3,7 +3,7 @@
  *
  * This is the entry point for the Electron application.
  * It creates a frameless window with a custom titlebar and
- * strips X-Frame-Options headers to allow embedding DeepSeek in an iframe.
+ * hosts DeepSeek in isolated top-level WebContentsViews beside the React shell.
  */
 
 // ==========================================================================
@@ -18,7 +18,7 @@ import './utils/sandboxInit';
 import { app, BrowserWindow, crashReporter, session } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
-import { setupHeaderStripping, setupWebviewSecurity, setupMediaPermissions } from './utils/security';
+import { setupWebviewSecurity, setupMediaPermissions } from './utils/security';
 import { getDistHtmlPath } from './utils/paths';
 import { getPlatformAdapter } from './platform/platformAdapterFactory';
 
@@ -333,7 +333,6 @@ if (!gotTheLock) {
         logger.log('App ready - starting initialization');
 
         // Apply security settings to default session (used by all windows)
-        setupHeaderStripping(session.defaultSession);
         setupMediaPermissions(session.defaultSession);
 
         appContext?.ipcManager.setupIpcHandlers();

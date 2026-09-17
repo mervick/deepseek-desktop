@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import type { TabState } from '../../../shared/types/tabs';
-import { getTabFrameName } from '../../../shared/types/tabs';
-import { useGeminiIframe } from '../../hooks';
-import { TAB_TEST_IDS, APP_TEST_IDS } from '../../utils/testIds';
+import { TAB_TEST_IDS } from '../../utils/testIds';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
 
 interface ActiveTabStatus {
     isOnline: boolean;
@@ -18,95 +17,70 @@ interface TabPanelProps {
     onActiveStatusChange?: (status: ActiveTabStatus) => void;
 }
 
-interface TabIframeProps {
-    tab: TabState;
-    isActive: boolean;
-    onTabReady?: (tabId: string) => void;
-    onActiveStatusChange?: (status: ActiveTabStatus) => void;
-}
-
-function TabIframe({ tab, isActive, onTabReady, onActiveStatusChange }: TabIframeProps) {
-    const { isLoading, error, isOnline, handleLoad, handleError, retry } = useGeminiIframe();
-    const showError = !!error || !isOnline;
-    const hasLoadedRef = useRef(false);
-
-    useEffect(() => {
-        if (isActive) {
-            onActiveStatusChange?.({
-                isOnline,
-                error,
-                retry,
-            });
-        }
-    }, [error, isActive, isOnline, onActiveStatusChange, retry]);
-
-    useEffect(() => {
-        if (isActive && hasLoadedRef.current) {
-            void handleLoad();
-        }
-    }, [handleLoad, isActive]);
-
-    const onIframeLoad = useCallback(() => {
-        hasLoadedRef.current = true;
-
-        if (isActive) {
-            void handleLoad();
-        }
-
-        onTabReady?.(tab.id);
-    }, [handleLoad, isActive, onTabReady, tab.id]);
-
-    return (
-        <>
-            {isLoading && !showError && (
-                <div
-                    className="webview-loading"
-                    style={{ display: isActive ? 'flex' : 'none' }}
-                    data-testid={`${TAB_TEST_IDS.tabIframe(tab.id)}-loading`}
-                >
-                    <div className="webview-loading-spinner" />
-                    <span>Loading DeepSeek...</span>
-                </div>
-            )}
-            {showError && (
-                <div
-                    className="webview-error"
-                    style={{ display: isActive ? 'flex' : 'none' }}
-                    data-testid={`${TAB_TEST_IDS.tabIframe(tab.id)}-error`}
-                >
-                    <span>{error ?? 'Network unavailable'}</span>
-                </div>
-            )}
-            <iframe
-                key={tab.id}
-                id={TAB_TEST_IDS.tabIframe(tab.id)}
-                name={getTabFrameName(tab.id)}
-                src={tab.url}
-                title={tab.title}
-                className="gemini-iframe"
-                style={{ display: isActive ? 'block' : 'none' }}
-                onLoad={onIframeLoad}
-                onError={handleError}
-                data-testid={isActive ? APP_TEST_IDS.GEMINI_IFRAME : TAB_TEST_IDS.tabIframe(tab.id)}
-                data-tab-id={tab.id}
-                allow="microphone; clipboard-write"
-            />
-        </>
-    );
-}
-
+/** The native WebContentsView is positioned over this placeholder by the main process. */
 export function TabPanel({ tabs, activeTabId, onTabReady, onActiveStatusChange }: TabPanelProps) {
-    return (
-        <div className="webview-container" data-testid={TAB_TEST_IDS.TAB_PANEL}>
-            {tabs.map((tab) => (
-                <TabIframe
-                    key={tab.id}
-                    tab={tab}
-                    isActive={tab.id === activeTabId}
-                    onTabReady={onTabReady}
-                    onActiveStatusChange={onActiveStatusChange}
-                />
-            ))}
-        </div>
-    );
+    const containerRef = useRef<HTMLDivElement>(null);
+    const activeTabIdRef = useRef(activeTabId);
+    const isOnline = useNetworkStatus();
+
+    useEffect(() => {
+        activeTabIdRef.current = activeTabId;
+    }, [activeTabId]);
+
+    const retry = useCallback(() => {
+        window.electronAPI?.setTabVisible?.(true);
+        window.electronAPI?.reloadTabs(activeTabIdRef.current);
+    }, []);
+
+    useEffect(() => {
+        window.electronAPI?.syncTabs?.({ tabs, activeTabId });
+        window.electronAPI?.setTabVisible?.(isOnline);
+        onActiveStatusChange?.({ isOnline, error: null, retry });
+    }, [tabs, activeTabId, isOnline, onActiveStatusChange, retry]);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+        const updateBounds = () => {
+            const rect = container.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                window.electronAPI?.setTabBounds?.({
+                    x: rect.x,
+                    y: rect.y,
+                    width: rect.width,
+                    height: rect.height,
+                });
+            }
+        };
+        const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateBounds) : null;
+        observer?.observe(container);
+        window.addEventListener('resize', updateBounds);
+        updateBounds();
+        return () => {
+            observer?.disconnect();
+            window.removeEventListener('resize', updateBounds);
+        };
+    }, []);
+
+    useEffect(() => {
+        const unsubscribeReady = window.electronAPI?.onTabReady?.((tabId) => {
+            onTabReady?.(tabId);
+            if (tabId === activeTabIdRef.current) {
+                window.electronAPI?.setTabVisible?.(true);
+                onActiveStatusChange?.({ isOnline: true, error: null, retry });
+            }
+        });
+        const unsubscribeError = window.electronAPI?.onTabLoadError?.(({ tabId, error }) => {
+            if (tabId === activeTabIdRef.current) {
+                window.electronAPI?.setTabVisible?.(false);
+                onActiveStatusChange?.({ isOnline, error, retry });
+            }
+        });
+        return () => {
+            unsubscribeReady?.();
+            unsubscribeError?.();
+        };
+    }, [onTabReady, onActiveStatusChange, retry, isOnline]);
+
+    return <div ref={containerRef} className="webview-container" data-testid={TAB_TEST_IDS.TAB_PANEL} />;
 }

@@ -49,6 +49,11 @@ export const IPC_CHANNELS = {
     TABS_TITLE_UPDATED: 'tabs:title-updated',
     TABS_SHORTCUT_TRIGGERED: 'tabs:shortcut-triggered',
     TABS_RELOAD: 'tabs:reload',
+    TABS_SYNC: 'tabs:sync',
+    TABS_SET_BOUNDS: 'tabs:set-bounds',
+    TABS_SET_VISIBLE: 'tabs:set-visible',
+    TABS_READY: 'tabs:ready',
+    TABS_LOAD_ERROR: 'tabs:load-error',
 
     // Always On Top
     ALWAYS_ON_TOP_GET: 'always-on-top:get',

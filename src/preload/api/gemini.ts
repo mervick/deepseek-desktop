@@ -11,6 +11,11 @@ export const geminiAPI: Pick<
     | 'signalGeminiReady'
     | 'getTabState'
     | 'saveTabState'
+    | 'syncTabs'
+    | 'setTabBounds'
+    | 'setTabVisible'
+    | 'onTabReady'
+    | 'onTabLoadError'
     | 'onTabShortcutTriggered'
     | 'onTabTitleUpdated'
     | 'updateTabTitle'
@@ -20,6 +25,11 @@ export const geminiAPI: Pick<
     signalGeminiReady: (payload) => ipcRenderer.send(IPC_CHANNELS.GEMINI_READY, payload),
     getTabState: () => ipcRenderer.invoke(IPC_CHANNELS.TABS_GET_STATE),
     saveTabState: (state) => ipcRenderer.send(IPC_CHANNELS.TABS_SAVE_STATE, state),
+    syncTabs: (state) => ipcRenderer.send(IPC_CHANNELS.TABS_SYNC, state),
+    setTabBounds: (bounds) => ipcRenderer.send(IPC_CHANNELS.TABS_SET_BOUNDS, bounds),
+    setTabVisible: (visible) => ipcRenderer.send(IPC_CHANNELS.TABS_SET_VISIBLE, visible),
+    onTabReady: createSubscription<string>(IPC_CHANNELS.TABS_READY),
+    onTabLoadError: createSubscription<{ tabId: string; error: string }>(IPC_CHANNELS.TABS_LOAD_ERROR),
     onTabShortcutTriggered: createSubscription<TabShortcutPayload>(IPC_CHANNELS.TABS_SHORTCUT_TRIGGERED),
     onTabTitleUpdated: createSubscription<{ tabId: string; title: string }>(IPC_CHANNELS.TABS_TITLE_UPDATED),
     updateTabTitle: (tabId, title) => ipcRenderer.send(IPC_CHANNELS.TABS_UPDATE_TITLE, { tabId, title }),

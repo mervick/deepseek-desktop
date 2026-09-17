@@ -1,6 +1,6 @@
-# Agent Instructions: Gemini Desktop
+# Agent Instructions: DeepSeek Desktop
 
-This guide is for agentic coding agents working in the Gemini Desktop repository. It details project-specific commands, conventions, and workflows.
+This guide is for agentic coding agents working in the DeepSeek Desktop repository. It details project-specific commands, conventions, and workflows.
 
 ## 🛠 Build, Lint, and Test Commands
 
@@ -208,7 +208,7 @@ If you are an AI assistant (like GitHub Copilot, Cursor, Windsurf, or a custom a
 
 ## 🌐 Domain Context
 
-- **Gemini Web App:** The app embeds `https://chat.deepseek.com/app` in an iframe after stripping `X-Frame-Options` headers.
+- **DeepSeek Web App:** Each tab loads `https://chat.deepseek.com/` as a top-level `WebContentsView` over the React shell. The main process owns tab views and the renderer supplies their bounds.
 - **Quick Chat:** Spotlight-style floating window activated by global hotkey (`Ctrl+Shift+Alt+Space`) for quick prompts.
 - **Peek and Hide:** Instantly hide app to system tray via hotkey (`Ctrl+Shift+Space`).
 - **Session Persistence:** Google auth sessions stored in Chromium's encrypted cookie storage via `persist:gemini` partition.
@@ -218,7 +218,8 @@ If you are an AI assistant (like GitHub Copilot, Cursor, Windsurf, or a custom a
 ## 🔒 Important Constraints
 
 - **No telemetry:** The app collects zero analytics or usage data.
-- **Google-only connections:** Only connects to `*.deepseek.com` domains.
+- **DeepSeek navigation:** Native chat views allow HTTPS navigation to the DeepSeek chat/login hosts only; external HTTPS links open in the system browser.
 - **No Node.js in renderer:** All Node.js access goes through the preload bridge.
-- **Header stripping scope:** `X-Frame-Options` stripping applies only to `chat.deepseek.com`.
+- **Header integrity:** Do not strip DeepSeek `X-Frame-Options` or CSP headers. Chat views keep Node integration disabled, context isolation enabled, and the sandbox enabled.
+- **Markdown export:** Export from the active native tab's main frame, notify the React shell, and reject empty extractions rather than saving an empty file.
 - **Cross-platform:** Must work on Windows (x64 and ARM64), macOS (Intel + ARM64), and Linux.

@@ -13,13 +13,13 @@ import './App.css';
 /**
  * Root application component.
  *
- * Uses an iframe to embed DeepSeek. Electron's main process
- * strips security headers that would normally block iframe embedding.
+ * Uses isolated native WebContentsViews for DeepSeek tabs. The React shell
+ * never embeds the site in an iframe or modifies its frame security headers.
  *
  * Quick Chat Integration:
  * - Listens for gemini:navigate IPC events from main process
- * - Forces iframe reload by changing the key prop
- * - Signals gemini:ready when iframe loads after navigation
+ * - Creates a native tab for the prompt
+ * - Signals gemini:ready when that tab reports a completed load
  *
  * Print Progress:
  * - Shows progress overlay during PDF generation

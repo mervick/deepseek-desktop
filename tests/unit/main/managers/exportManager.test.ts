@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { dialog, type WebContents } from 'electron';
+import * as fs from 'fs/promises';
 import ExportManager from '../../../../src/main/managers/exportManager';
 
 // Mock electron-log
@@ -46,6 +48,63 @@ vi.mock('marked', () => ({
         parse: vi.fn().mockReturnValue('<p>mocked html</p>'),
     },
 }));
+
+vi.mock('fs/promises', () => ({ writeFile: vi.fn().mockResolvedValue(undefined) }));
+
+describe('Markdown export from a top-level DeepSeek tab', () => {
+    beforeEach(() => vi.clearAllMocks());
+
+    it('saves the active conversation and notifies the React shell', async () => {
+        vi.mocked(dialog.showSaveDialog).mockResolvedValue({ canceled: false, filePath: '/tmp/deepseek-test.md' });
+        const target = {
+            getURL: () => 'https://chat.deepseek.com/chat/123',
+            mainFrame: {
+                executeJavaScript: vi.fn().mockResolvedValue({
+                    title: 'Test chat',
+                    timestamp: '2026-09-17T00:00:00.000Z',
+                    conversation: [
+                        { role: 'user', text: 'Question' },
+                        { role: 'model', text: 'Answer', html: '<p>Answer</p>' },
+                    ],
+                }),
+            },
+        } as unknown as WebContents;
+        const shell = { send: vi.fn() } as unknown as WebContents;
+
+        await new ExportManager().exportToMarkdown(target, shell);
+
+        expect(target.mainFrame.executeJavaScript).toHaveBeenCalledOnce();
+        expect(fs.writeFile).toHaveBeenCalledWith('/tmp/deepseek-test.md', expect.stringContaining('## DeepSeek'));
+        expect(vi.mocked(fs.writeFile).mock.calls[0]?.[1]).toContain('## You\n\nQuestion');
+        expect(shell.send).toHaveBeenCalledWith('toast:show', {
+            message: 'Chat exported to Markdown',
+            type: 'success',
+        });
+    });
+
+    it('does not save an empty or unrecognized conversation', async () => {
+        const target = {
+            getURL: () => 'https://chat.deepseek.com/',
+            mainFrame: {
+                executeJavaScript: vi.fn().mockResolvedValue({
+                    title: 'DeepSeek',
+                    timestamp: '2026-09-17T00:00:00.000Z',
+                    conversation: [],
+                }),
+            },
+        } as unknown as WebContents;
+        const shell = { send: vi.fn() } as unknown as WebContents;
+
+        await new ExportManager().exportToMarkdown(target, shell);
+
+        expect(dialog.showSaveDialog).not.toHaveBeenCalled();
+        expect(fs.writeFile).not.toHaveBeenCalled();
+        expect(shell.send).toHaveBeenCalledWith('toast:show', {
+            message: 'No DeepSeek messages found to export',
+            type: 'error',
+        });
+    });
+});
 
 describe('ExportManager URL Validation Security', () => {
     let exportManager: ExportManager;

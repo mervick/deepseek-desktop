@@ -96,7 +96,7 @@ export default class ExportManager {
     private isAllowedGeminiUrl(url: string): boolean {
         try {
             const parsedUrl = new URL(url);
-            return this.isHostnameAllowed(parsedUrl.hostname);
+            return parsedUrl.protocol === 'https:' && this.isHostnameAllowed(parsedUrl.hostname);
         } catch {
             return false;
         }
@@ -129,7 +129,7 @@ export default class ExportManager {
             }
 
             const data = (await targetFrame.executeJavaScript(CHAT_EXTRACTION_SCRIPT)) as unknown;
-            logger.debug('Extracted data:', JSON.stringify(data, null, 2));
+            // Never write conversation contents to application logs.
 
             if (data && typeof data === 'object' && 'error' in data) {
                 logger.error('Extraction script returned error:', (data as { error: unknown }).error);
@@ -159,17 +159,20 @@ export default class ExportManager {
     /**
      * Exports chat to Markdown.
      */
-    async exportToMarkdown(webContents: WebContents): Promise<void> {
+    async exportToMarkdown(webContents: WebContents, notificationContents: WebContents = webContents): Promise<void> {
         const data = await this.extractChatData(webContents);
-        if (!data) {
-            webContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Failed to extract chat data', type: 'error' });
+        if (!data || data.conversation.length === 0) {
+            notificationContents.send(IPC_CHANNELS.TOAST_SHOW, {
+                message: 'No DeepSeek messages found to export',
+                type: 'error',
+            });
             return;
         }
 
         let markdown = `# ${data.title}\n\n*Exported on ${new Date(data.timestamp).toLocaleString()}*\n\n---\n\n`;
 
         for (const turn of data.conversation) {
-            const role = turn.role === 'user' ? '## You' : '## Gemini';
+            const role = turn.role === 'user' ? '## You' : '## DeepSeek';
             const content = turn.html ? this.turndown.turndown(turn.html) : turn.text;
             markdown += `${role}\n\n${content}\n\n---\n\n`;
         }
@@ -186,16 +189,19 @@ export default class ExportManager {
         if (canceled || !filePath) return;
 
         await fs.writeFile(filePath, markdown);
-        webContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Chat exported to Markdown', type: 'success' });
+        notificationContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Chat exported to Markdown', type: 'success' });
     }
 
     /**
      * Exports chat to PDF (High-fidelity rendered HTML).
      */
-    async exportToPdf(webContents: WebContents): Promise<void> {
+    async exportToPdf(webContents: WebContents, notificationContents: WebContents = webContents): Promise<void> {
         const data = await this.extractChatData(webContents);
-        if (!data) {
-            webContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Failed to extract chat data', type: 'error' });
+        if (!data || data.conversation.length === 0) {
+            notificationContents.send(IPC_CHANNELS.TOAST_SHOW, {
+                message: 'No DeepSeek messages found to export',
+                type: 'error',
+            });
             return;
         }
 
@@ -214,10 +220,10 @@ export default class ExportManager {
             const htmlContent = this.generatePdfHtml(data);
             const pdfBuffer = await this.renderHtmlToPdf(htmlContent);
             await fs.writeFile(filePath, pdfBuffer);
-            webContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Chat exported to PDF', type: 'success' });
+            notificationContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Chat exported to PDF', type: 'success' });
         } catch (error) {
             logger.error('Failed to generate PDF:', error);
-            webContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Failed to generate PDF', type: 'error' });
+            notificationContents.send(IPC_CHANNELS.TOAST_SHOW, { message: 'Failed to generate PDF', type: 'error' });
         }
     }
 
@@ -227,7 +233,7 @@ export default class ExportManager {
     private generatePdfHtml(data: ChatData): string {
         const turnsHtml = data.conversation
             .map((turn) => {
-                const roleLabel = turn.role === 'user' ? 'You' : 'Gemini';
+                const roleLabel = turn.role === 'user' ? 'You' : 'DeepSeek';
                 const roleClass = turn.role === 'user' ? 'user-role' : 'model-role';
                 // Use the extracted HTML if available, otherwise convert Markdown to HTML
                 const contentHtml = turn.html || marked.parse(turn.text);

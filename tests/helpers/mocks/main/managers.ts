@@ -57,6 +57,13 @@ export interface MockWindowManager {
     activateVoiceChat: ReturnType<typeof vi.fn>;
     focusMainWindow: ReturnType<typeof vi.fn>;
     getMainWindow: ReturnType<typeof vi.fn>;
+    getDeepSeekTabContents: ReturnType<typeof vi.fn>;
+    getActiveDeepSeekContents: ReturnType<typeof vi.fn>;
+    getActiveDeepSeekTabId: ReturnType<typeof vi.fn>;
+    reloadDeepSeekTab: ReturnType<typeof vi.fn>;
+    syncDeepSeekTabs: ReturnType<typeof vi.fn>;
+    setDeepSeekTabBounds: ReturnType<typeof vi.fn>;
+    setDeepSeekTabVisible: ReturnType<typeof vi.fn>;
     getQuickChatWindow: ReturnType<typeof vi.fn>;
     restoreFromTray: ReturnType<typeof vi.fn>;
     hideToTray: ReturnType<typeof vi.fn>;
@@ -192,6 +199,13 @@ export function createMockWindowManager(overrides?: Partial<Omit<MockWindowManag
         activateVoiceChat: vi.fn(),
         focusMainWindow: vi.fn(),
         getMainWindow: vi.fn().mockReturnValue(null),
+        getDeepSeekTabContents: vi.fn().mockReturnValue(null),
+        getActiveDeepSeekContents: vi.fn().mockReturnValue(null),
+        getActiveDeepSeekTabId: vi.fn().mockReturnValue(null),
+        reloadDeepSeekTab: vi.fn().mockReturnValue(false),
+        syncDeepSeekTabs: vi.fn(),
+        setDeepSeekTabBounds: vi.fn(),
+        setDeepSeekTabVisible: vi.fn(),
         getQuickChatWindow: vi.fn().mockReturnValue(null),
         restoreFromTray: vi.fn(),
         hideToTray: vi.fn(),

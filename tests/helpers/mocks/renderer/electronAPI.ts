@@ -91,6 +91,11 @@ export function createMockElectronAPI(overrides: MockElectronAPIOverrides = {}):
         updateTabTitle: vi.fn(),
         getTabState: vi.fn().mockResolvedValue(null),
         saveTabState: vi.fn(),
+        syncTabs: vi.fn(),
+        setTabBounds: vi.fn(),
+        setTabVisible: vi.fn(),
+        onTabReady: vi.fn().mockReturnValue(defaultUnsubscribe),
+        onTabLoadError: vi.fn().mockReturnValue(defaultUnsubscribe),
         onTabShortcutTriggered: vi.fn().mockReturnValue(defaultUnsubscribe),
 
         // =========================================================================

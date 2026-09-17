@@ -83,6 +83,8 @@ describe('TabStateIpcHandler', () => {
 
         expect(mockIpcMain.handle).toHaveBeenCalledWith(IPC_CHANNELS.TABS_GET_STATE, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SAVE_STATE, expect.any(Function));
+        expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SYNC, expect.any(Function));
+        expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_SET_BOUNDS, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_UPDATE_TITLE, expect.any(Function));
         expect(mockIpcMain.on).toHaveBeenCalledWith(IPC_CHANNELS.TABS_RELOAD, expect.any(Function));
 
@@ -116,11 +118,11 @@ describe('TabStateIpcHandler', () => {
             },
         };
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
+        mockWindowManager.reloadDeepSeekTab.mockReturnValue(true);
 
         reloadListener?.({}, { activeTabId });
 
-        expect(activeFrame.reload).toHaveBeenCalledTimes(1);
-        expect(backgroundFrame.reload).not.toHaveBeenCalled();
+        expect(mockWindowManager.reloadDeepSeekTab).toHaveBeenCalledExactlyOnceWith(activeTabId);
 
         handler.unregister();
     });
@@ -162,11 +164,11 @@ describe('TabStateIpcHandler', () => {
             },
         };
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
+        mockWindowManager.reloadDeepSeekTab.mockReturnValue(true);
 
         reloadListener?.({}, { activeTabId: 'tab-new' });
 
-        expect(newFrame.reload).toHaveBeenCalledTimes(1);
-        expect(oldFrame.reload).not.toHaveBeenCalled();
+        expect(mockWindowManager.reloadDeepSeekTab).toHaveBeenCalledExactlyOnceWith('tab-new');
 
         handler.unregister();
     });
@@ -210,7 +212,7 @@ describe('TabStateIpcHandler', () => {
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
 
         reloadListener?.({}, { activeTabId: 'tab-a' });
-        expect(targetFrame.reload).not.toHaveBeenCalled();
+        expect(mockWindowManager.reloadDeepSeekTab).toHaveBeenCalledWith('tab-a');
 
         handler.unregister();
     });
@@ -234,11 +236,12 @@ describe('TabStateIpcHandler', () => {
             },
         };
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
+        mockWindowManager.reloadDeepSeekTab.mockReturnValue(true);
 
         reloadListener?.({}, { activeTabId: 'tab-a' });
         reloadListener?.({}, { activeTabId: 'tab-a' });
 
-        expect(targetFrame.reload).toHaveBeenCalledTimes(1);
+        expect(mockWindowManager.reloadDeepSeekTab).toHaveBeenCalledTimes(1);
 
         handler.unregister();
     });
@@ -264,10 +267,12 @@ describe('TabStateIpcHandler', () => {
         };
 
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
+        mockWindowManager.getActiveDeepSeekTabId.mockReturnValue('tab-fallback');
+        mockWindowManager.reloadDeepSeekTab.mockReturnValue(true);
 
         reloadListener?.({}, undefined);
 
-        expect(fallbackFrame.reload).toHaveBeenCalledTimes(1);
+        expect(mockWindowManager.reloadDeepSeekTab).toHaveBeenCalledExactlyOnceWith('tab-fallback');
         handler.unregister();
     });
 
@@ -408,6 +413,7 @@ describe('TabStateIpcHandler', () => {
         };
 
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
+        mockWindowManager.getDeepSeekTabContents.mockReturnValue({ mainFrame: targetFrame });
 
         // Advance past the polling interval to trigger title extraction
         await vi.advanceTimersByTimeAsync(3000);
@@ -467,6 +473,7 @@ describe('TabStateIpcHandler', () => {
         };
 
         vi.spyOn(mockWindowManager, 'getMainWindow').mockReturnValue(mockMainWindow as never);
+        mockWindowManager.getDeepSeekTabContents.mockReturnValue({ mainFrame: targetFrame });
 
         await vi.advanceTimersByTimeAsync(3000);
 

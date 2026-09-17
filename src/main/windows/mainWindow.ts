@@ -28,6 +28,9 @@ import { getIconPath, getDistHtmlPath } from '../utils/paths';
 import type { PlatformAdapter } from '../platform/PlatformAdapter';
 import { getPlatformAdapter } from '../platform/platformAdapterFactory';
 import type { TabShortcutPayload } from '../../shared/types/tabs';
+import type { TabsState } from '../../shared/types/tabs';
+import type { WebContents } from 'electron';
+import { DeepSeekTabs } from './deepSeekTabs';
 
 /**
  * Main application window.
@@ -39,6 +42,7 @@ export default class MainWindow extends BaseWindow {
 
     /** Whether the app is quitting (vs closing to tray) */
     private isQuitting = false;
+    private deepSeekTabs: DeepSeekTabs | null = null;
 
     /** Callback to create auth window for OAuth flows */
     private createAuthWindowCallback?: (url: string) => void;
@@ -150,6 +154,41 @@ export default class MainWindow extends BaseWindow {
         this.setupFullscreenHandlers();
 
         return win;
+    }
+
+    syncDeepSeekTabs(state: TabsState): void {
+        if (!this.window || this.window.isDestroyed()) return;
+        if (!this.deepSeekTabs) {
+            this.deepSeekTabs = new DeepSeekTabs(this.window);
+            this.window.once('closed', () => {
+                this.deepSeekTabs = null;
+            });
+        }
+        this.deepSeekTabs?.sync(state);
+    }
+
+    setDeepSeekTabBounds(bounds: Electron.Rectangle): void {
+        this.deepSeekTabs?.setBounds(bounds);
+    }
+
+    setDeepSeekTabVisible(visible: boolean): void {
+        this.deepSeekTabs?.setVisible(visible);
+    }
+
+    getDeepSeekTabContents(tabId: string): WebContents | null {
+        return this.deepSeekTabs?.getContents(tabId) ?? null;
+    }
+
+    getActiveDeepSeekContents(): WebContents | null {
+        return this.deepSeekTabs?.getActiveContents() ?? null;
+    }
+
+    getActiveDeepSeekTabId(): string | null {
+        return this.deepSeekTabs?.getActiveId() ?? null;
+    }
+
+    reloadDeepSeekTab(tabId: string): boolean {
+        return this.deepSeekTabs?.reload(tabId) ?? false;
     }
 
     /**

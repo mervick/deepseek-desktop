@@ -6,7 +6,6 @@ import SettingsStore from '../../store';
 import { IPC_CHANNELS, isGeminiDomain } from '../../utils/constants';
 import { GEMINI_APP_URL } from '../../../shared/constants/urls';
 import type { TabState, TabsState } from '../../../shared/types/tabs';
-import { getTabFrameName } from '../../../shared/types/tabs';
 import { BaseIpcHandler } from './BaseIpcHandler';
 import { TITLE_EXTRACTION_SCRIPT } from '../../utils/chatExtraction';
 
@@ -121,6 +120,31 @@ export class TabStateIpcHandler extends BaseIpcHandler {
         ipcMain.on(IPC_CHANNELS.TABS_SAVE_STATE, (_event, state: unknown) => {
             this._handleSaveState(state);
         });
+        ipcMain.on(IPC_CHANNELS.TABS_SYNC, (event, state: unknown) => {
+            const mainWindow = this.deps.windowManager.getMainWindow();
+            if (!mainWindow || event.sender !== mainWindow.webContents) return;
+            const normalized = normalizeTabsState(state);
+            if (normalized && normalized.tabs.length <= 20) this.deps.windowManager.syncDeepSeekTabs(normalized);
+        });
+        ipcMain.on(IPC_CHANNELS.TABS_SET_BOUNDS, (event, bounds: unknown) => {
+            const mainWindow = this.deps.windowManager.getMainWindow();
+            if (!mainWindow || event.sender !== mainWindow.webContents || !isRecord(bounds)) return;
+            const { x, y, width, height } = bounds;
+            if ([x, y, width, height].every((value) => typeof value === 'number' && Number.isFinite(value))) {
+                this.deps.windowManager.setDeepSeekTabBounds({
+                    x: x as number,
+                    y: y as number,
+                    width: width as number,
+                    height: height as number,
+                });
+            }
+        });
+        ipcMain.on(IPC_CHANNELS.TABS_SET_VISIBLE, (event, visible: unknown) => {
+            const mainWindow = this.deps.windowManager.getMainWindow();
+            if (mainWindow && event.sender === mainWindow.webContents && typeof visible === 'boolean') {
+                this.deps.windowManager.setDeepSeekTabVisible(visible);
+            }
+        });
         ipcMain.on(IPC_CHANNELS.TABS_UPDATE_TITLE, (_event, payload: unknown) => {
             this._handleUpdateTitle(payload);
         });
@@ -232,15 +256,12 @@ export class TabStateIpcHandler extends BaseIpcHandler {
             }
 
             const activeTabId = normalizedState.activeTabId;
-            const targetFrameName = getTabFrameName(activeTabId);
-            const frames = mainWindow.webContents.mainFrame.frames;
-            const targetFrame = frames.find((frame) => frame.name === targetFrameName);
+            const targetFrame = this.deps.windowManager.getDeepSeekTabContents(activeTabId)?.mainFrame;
 
             if (!targetFrame) {
                 this.logger.warn('Cannot sync tab title: active tab frame not found', {
                     activeTabId,
-                    targetFrameName,
-                    frameCount: frames.length,
+                    tabId: activeTabId,
                 });
                 return;
             }
@@ -289,17 +310,7 @@ export class TabStateIpcHandler extends BaseIpcHandler {
             return null;
         }
 
-        const activeGeminiFrame = mainWindow.webContents.mainFrame.frames.find(
-            (frame) => !frame.isDestroyed() && isGeminiDomain(frame.url)
-        );
-
-        if (!activeGeminiFrame) {
-            return null;
-        }
-
-        const match = /^gemini-tab-(.+)$/.exec(activeGeminiFrame.name);
-        const derivedTabId = match?.[1]?.trim();
-        return derivedTabId || null;
+        return this.deps.windowManager.getActiveDeepSeekTabId();
     }
 
     private _scheduleDelayedTitlePoll(): void {
@@ -346,25 +357,13 @@ export class TabStateIpcHandler extends BaseIpcHandler {
                 activeTabId = fallbackFrameTabId;
                 source = 'frame';
             }
-            const targetFrameName = getTabFrameName(activeTabId);
-            const targetFrame = mainWindow.webContents.mainFrame.frames.find((frame) => frame.name === targetFrameName);
-
-            if (!targetFrame || targetFrame.isDestroyed()) {
-                this.logger.warn('Cannot reload active tab: target frame missing or destroyed', {
-                    activeTabId,
-                    targetFrameName,
-                    source,
-                });
-                return;
-            }
-
-            const reloadStarted = targetFrame.reload();
+            const reloadStarted = this.deps.windowManager.reloadDeepSeekTab(activeTabId);
+            if (!reloadStarted) return;
             this.lastReloadAt = now;
 
             this.logger.log('Active tab reload requested', {
                 activeTabId,
                 source,
-                targetFrameName,
                 reloadStarted,
             });
 
@@ -377,6 +376,9 @@ export class TabStateIpcHandler extends BaseIpcHandler {
     unregister(): void {
         ipcMain.removeHandler(IPC_CHANNELS.TABS_GET_STATE);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SAVE_STATE);
+        ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SYNC);
+        ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SET_BOUNDS);
+        ipcMain.removeAllListeners(IPC_CHANNELS.TABS_SET_VISIBLE);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_UPDATE_TITLE);
         ipcMain.removeAllListeners(IPC_CHANNELS.TABS_RELOAD);
 

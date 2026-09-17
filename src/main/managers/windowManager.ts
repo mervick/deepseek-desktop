@@ -8,17 +8,16 @@
  * @module WindowManager
  */
 
-import { BrowserWindow, type WebFrameMain } from 'electron';
+import { BrowserWindow, type WebContents, type WebFrameMain } from 'electron';
 import { EventEmitter } from 'events';
 import { createLogger } from '../utils/logger';
 import { isGeminiDomain } from '../utils/constants';
-import SettingsStore from '../store';
 import { activateMicrophoneInFrame } from '../utils/micActivation';
 import MainWindow from '../windows/mainWindow';
 import AuthWindow from '../windows/authWindow';
 import OptionsWindow from '../windows/optionsWindow';
 import QuickChatWindow from '../windows/quickChatWindow';
-import { getTabFrameName, type TabsState } from '../../shared/types/tabs';
+import type { TabsState } from '../../shared/types/tabs';
 
 const logger = createLogger('[WindowManager]');
 
@@ -27,7 +26,6 @@ const logger = createLogger('[WindowManager]');
  * Range: 50% to 200% inclusive.
  */
 export const ZOOM_LEVEL_STEPS = [50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200] as const;
-const TAB_STATE_CONFIG_NAME = 'tabs-state';
 
 export default class WindowManager extends EventEmitter {
     readonly isDev: boolean;
@@ -36,7 +34,6 @@ export default class WindowManager extends EventEmitter {
     private authWindow: AuthWindow;
     private quickChatWindow: QuickChatWindow;
     private _zoomLevel: number = 100;
-    private tabStateStore: SettingsStore<{ tabsState: TabsState | null }>;
 
     /**
      * Creates a new WindowManager instance.
@@ -51,13 +48,6 @@ export default class WindowManager extends EventEmitter {
         this.optionsWindow = new OptionsWindow(isDev);
         this.authWindow = new AuthWindow(isDev);
         this.quickChatWindow = new QuickChatWindow(isDev);
-
-        this.tabStateStore = new SettingsStore<{ tabsState: TabsState | null }>({
-            configName: TAB_STATE_CONFIG_NAME,
-            defaults: {
-                tabsState: null,
-            },
-        });
 
         // Wire up callbacks between windows
         this.mainWindow.setAuthWindowCallback((url) => this.createAuthWindow(url));
@@ -134,6 +124,34 @@ export default class WindowManager extends EventEmitter {
      */
     getMainWindowInstance(): MainWindow {
         return this.mainWindow;
+    }
+
+    getDeepSeekTabContents(tabId: string): WebContents | null {
+        return this.mainWindow.getDeepSeekTabContents(tabId);
+    }
+
+    getActiveDeepSeekContents(): WebContents | null {
+        return this.mainWindow.getActiveDeepSeekContents();
+    }
+
+    getActiveDeepSeekTabId(): string | null {
+        return this.mainWindow.getActiveDeepSeekTabId();
+    }
+
+    syncDeepSeekTabs(state: TabsState): void {
+        this.mainWindow.syncDeepSeekTabs(state);
+    }
+
+    setDeepSeekTabBounds(bounds: Electron.Rectangle): void {
+        this.mainWindow.setDeepSeekTabBounds(bounds);
+    }
+
+    setDeepSeekTabVisible(visible: boolean): void {
+        this.mainWindow.setDeepSeekTabVisible(visible);
+    }
+
+    reloadDeepSeekTab(tabId: string): boolean {
+        return this.mainWindow.reloadDeepSeekTab(tabId);
     }
 
     /**
@@ -251,37 +269,9 @@ export default class WindowManager extends EventEmitter {
                 return;
             }
 
-            const frames = mainWindow.webContents.mainFrame.frames;
-            const tabState = this.tabStateStore.get('tabsState');
-            const activeTabId = tabState?.activeTabId;
-            const targetFrameName = activeTabId ? getTabFrameName(activeTabId) : null;
-            const targetFrame = targetFrameName ? frames.find((frame) => frame.name === targetFrameName) : undefined;
-
-            if (!targetFrame) {
-                const fallbackFrame = frames.find((frame) => isGeminiDomain(frame.url));
-                if (!fallbackFrame) {
-                    logger.debug('Voice chat activation skipped: active tab frame not found', {
-                        activeTabId,
-                        targetFrameName,
-                        framesCount: frames.length,
-                        frameNames: frames.map((frame) => frame.name),
-                    });
-                    return;
-                }
-
-                const fallbackResult = await activateMicrophoneInFrame(fallbackFrame as WebFrameMain);
-                if (fallbackResult.success) {
-                    logger.log('Voice chat microphone activation succeeded');
-                } else {
-                    logger.error('Voice chat microphone activation failed', fallbackResult.error);
-                }
-                return;
-            }
-
-            if (!isGeminiDomain(targetFrame.url)) {
-                logger.debug('Voice chat activation skipped: active frame not Gemini domain', {
-                    url: targetFrame.url,
-                });
+            const targetFrame = this.getActiveDeepSeekContents()?.mainFrame;
+            if (!targetFrame || !isGeminiDomain(targetFrame.url)) {
+                logger.debug('Voice chat activation skipped: active DeepSeek tab not available');
                 return;
             }
 

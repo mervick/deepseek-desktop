@@ -1,139 +1,47 @@
-import { GEMINI_CONVERSATION_TITLE_SELECTORS } from './geminiSelectors';
-
-const TITLE_SELECTORS_JSON = JSON.stringify(GEMINI_CONVERSATION_TITLE_SELECTORS);
-
+/** Scripts executed only in an allowlisted DeepSeek webContents. */
 export const CHAT_EXTRACTION_SCRIPT = `
 (() => {
     try {
-        const selectors = {
-            turns: ['chat-turn', 'conversation-turn', '.conversation-container', '.conversation-turn'],
-            userQuery: ['.user-query', '.user-prompt-container', 'user-query'],
-            userQueryText: ['.query-text', '.user-prompt-container', '.query-text-line'],
-            modelResponse: ['.model-response', 'model-response', '.markdown'],
-            modelResponseContent: ['.message-content', '.markdown', '.model-response-text'],
-            title: ${TITLE_SELECTORS_JSON},
-            codeBlocks: 'pre',
-            tables: 'table'
-        };
-
-        const findElements = (selList) => {
-            for (const sel of selList) {
-                const els = document.querySelectorAll(sel);
-                if (els && els.length > 0) return { elements: els, selector: sel };
-            }
-            return { elements: [], selector: null };
-        };
-
-        const findFirstElement = (selList) => {
-            for (const sel of selList) {
-                const el = document.querySelector(sel);
-                if (el) return el;
-            }
-            return null;
-        };
-
-        const { elements: turns, selector: turnSelector } = findElements(selectors.turns);
-        console.log('[Extraction] Found turns:', turns.length, 'using selector:', turnSelector);
-        
+        const text = (element) => (element?.innerText || element?.textContent || '').trim();
+        const selectors = '[data-role="user"], [data-role="assistant"], [data-message-role="user"], [data-message-role="assistant"], .ds-message, [data-testid="chat-message"]';
+        const nodes = Array.from(document.querySelectorAll(selectors));
         const conversation = [];
 
-        turns.forEach((turn, index) => {
-            let userText = '';
-            let modelText = '';
-            let modelHtml = '';
-
-            for (const sel of selectors.userQuery) {
-                const el = turn.querySelector(sel);
-                if (el) {
-                    // Try to find the specific text container
-                    let textEl = null;
-                    for (const textSel of selectors.userQueryText) {
-                        textEl = el.querySelector(textSel);
-                        if (textEl) break;
-                    }
-                    userText = (textEl || el).innerText.trim();
-                    if (userText) break;
-                }
-            }
-
-            for (const sel of selectors.modelResponse) {
-                const el = turn.querySelector(sel);
-                if (el) {
-                    let textEl = null;
-                    for (const textSel of selectors.modelResponseContent) {
-                        textEl = el.querySelector(textSel);
-                        if (textEl) break;
-                    }
-                    const target = textEl || el;
-                    modelText = target.innerText.trim();
-                    modelHtml = target.innerHTML;
-                    if (modelText) break;
-                }
-            }
-
-            if (userText) conversation.push({ role: 'user', text: userText });
-            if (modelText) conversation.push({ role: 'model', text: modelText, html: modelHtml });
-        });
-
-        console.log('[Extraction] Final conversation turns captured:', conversation.length);
-
-        // Try to find the conversation title from the DOM first
-        const titleEl = findFirstElement(selectors.title);
-        let extractedTitle = titleEl ? titleEl.innerText.trim() : '';
-        
-        // Fallback to document title if DOM element not found or empty
-        if (!extractedTitle) {
-            extractedTitle = document.title.replace(' - Gemini', '').trim();
+        for (const node of nodes) {
+            // A message container can contain nested role-marked elements; export each turn once.
+            if (nodes.some((other) => other !== node && node.contains(other))) continue;
+            const roleAttribute = node.getAttribute('data-role') || node.getAttribute('data-message-role');
+            const markdown = node.querySelector('.ds-markdown, .markdown, [data-testid="message-content"]');
+            const user = roleAttribute === 'user' || node.matches('.ds-user-message, .user-message, [data-testid="user-message"]');
+            const model = roleAttribute === 'assistant' || roleAttribute === 'model' || !!markdown;
+            if (!user && !model) continue;
+            const content = markdown || node.querySelector('.ds-message__content, .message-content') || node;
+            const value = text(content);
+            if (!value) continue;
+            conversation.push({ role: user ? 'user' : 'model', text: value,
+                ...(user ? {} : { html: content.innerHTML }) });
         }
 
+        const titleElement = document.querySelector('[data-testid="conversation-title"], [aria-current="page"]');
+        const title = text(titleElement) || document.title.replace(/\\s*[-|]\\s*DeepSeek.*$/i, '').trim();
         return {
-            title: extractedTitle || 'Untitled Conversation',
+            title: title && title !== 'DeepSeek' ? title : 'Untitled Conversation',
             timestamp: new Date().toISOString(),
             conversation,
-            diagnostics: {
-                turnSelector,
-                totalTurns: turns.length,
-                capturedTurns: conversation.length,
-                url: window.location.href,
-                titleSelector: titleEl ? selectors.title.find(s => document.querySelector(s) === titleEl) : null
-            }
+            diagnostics: { candidates: nodes.length, capturedTurns: conversation.length }
         };
-    } catch (err) {
-        console.error('[Extraction Error]', err);
-        return {
-            title: 'Error',
-            timestamp: new Date().toISOString(),
-            conversation: [],
-            error: err.message
-        };
+    } catch (error) {
+        return { title: 'Error', timestamp: new Date().toISOString(), conversation: [],
+            error: String(error) };
     }
 })()
 `;
 
 export const TITLE_EXTRACTION_SCRIPT = `
 (() => {
-    try {
-        const selectors = ${TITLE_SELECTORS_JSON};
-        for (const selector of selectors) {
-            const el = document.querySelector(selector);
-            if (el) {
-                const text = el.textContent?.trim();
-                // Only accept titles from the top bar, not the sidebar chat list
-                const isInTopBar = !!el.closest('top-bar-actions') || !!el.closest('.conversation-title-container');
-                if (text && isInTopBar) {
-                    return text;
-                }
-            }
-        }
-
-        const docTitle = document.title.replace(' - Gemini', '').trim();
-        if (docTitle) {
-            return docTitle;
-        }
-
-        return '';
-    } catch (err) {
-        return '';
-    }
+    const titleElement = document.querySelector('[data-testid="conversation-title"], [aria-current="page"]');
+    const title = (titleElement?.innerText || titleElement?.textContent ||
+        document.title.replace(/\\s*[-|]\\s*DeepSeek.*$/i, '')).trim();
+    return title === 'DeepSeek' ? '' : title;
 })()
 `;

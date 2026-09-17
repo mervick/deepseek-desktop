@@ -15,6 +15,7 @@ type NavigatePayload = { requestId: string; targetTabId: string; text: string };
 
 function createElectronApiMock() {
     let navigateListener: ((payload: NavigatePayload) => void) | null = null;
+    let readyListener: ((tabId: string) => void) | null = null;
 
     const api = setupMockElectronAPI({
         getTabState: vi.fn().mockResolvedValue(null),
@@ -30,6 +31,12 @@ function createElectronApiMock() {
             };
         }),
         signalGeminiReady: vi.fn(),
+        onTabReady: vi.fn((listener: (tabId: string) => void) => {
+            readyListener = listener;
+            return () => {
+                readyListener = null;
+            };
+        }),
         onTabShortcutTriggered: vi.fn().mockReturnValue(() => undefined),
     });
 
@@ -37,6 +44,9 @@ function createElectronApiMock() {
         api,
         emitNavigate(payload: NavigatePayload) {
             navigateListener?.(payload);
+        },
+        emitReady(tabId: string) {
+            readyListener?.(tabId);
         },
     };
 }
@@ -55,7 +65,7 @@ describe('App', () => {
         cleanup();
     });
 
-    it('renders tabbed shell with a default active iframe', async () => {
+    it('renders tabbed shell with a native-view placeholder', async () => {
         createElectronApiMock();
         render(<App />);
 
@@ -64,7 +74,8 @@ describe('App', () => {
         });
 
         expect(screen.getByTestId('tab-new-button')).toBeTruthy();
-        expect(screen.getByTestId('gemini-iframe')).toBeTruthy();
+        expect(screen.getByTestId('tab-panel')).toBeTruthy();
+        expect(document.querySelector('iframe')).toBeNull();
         expect(document.querySelector('.tab')).toBeTruthy();
     });
 
@@ -85,7 +96,7 @@ describe('App', () => {
         });
     });
 
-    it('creates target tab from navigate event and signals ready on iframe load', async () => {
+    it('creates target tab from navigate event and signals ready on native view load', async () => {
         const electron = createElectronApiMock();
         render(<App />);
 
@@ -107,8 +118,7 @@ describe('App', () => {
             expect(document.querySelectorAll('.tab').length).toBe(2);
         });
 
-        const activeIframe = screen.getByTestId('gemini-iframe');
-        fireEvent.load(activeIframe);
+        act(() => electron.emitReady(payload.targetTabId));
 
         await waitFor(() => {
             expect(electron.api.signalGeminiReady).toHaveBeenCalledWith({

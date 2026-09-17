@@ -100,6 +100,12 @@ describe('QuickChatIpcHandler', () => {
 
         // Mock windowManager.getMainWindow to return our mock
         (mockWindowManager.getMainWindow as ReturnType<typeof vi.fn>).mockReturnValue(mockMainWindow);
+        mockWindowManager.getDeepSeekTabContents.mockImplementation((tabId: string) => {
+            const frame = mockMainWindow.webContents.mainFrame.frames.find(
+                (item) => item.name === getTabFrameName(tabId)
+            );
+            return frame ? { mainFrame: frame } : null;
+        });
 
         mockDeps = {
             store: createMockStore({}),
