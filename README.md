@@ -2,10 +2,6 @@
 
 > **Unofficial open-source desktop client for DeepSeek. This project is not affiliated with, endorsed by, or sponsored by DeepSeek.**
 
-[![Platform](<https://img.shields.io/badge/platform-Windows%20(x64%2C%20ARM64)%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square>)](https://github.com/mervick/deepseek-desktop/releases)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/mervick/deepseek-desktop/badge)](https://securityscorecards.dev/viewer/?uri=github.com/mervick/deepseek-desktop)
-[![CodeQL](https://img.shields.io/badge/CodeQL-enabled-brightgreen?logo=github)](https://github.com/mervick/deepseek-desktop/security/code-scanning)
-
 A privacy-focused desktop client that brings DeepSeek into a dedicated native-style application with global shortcuts, Quick Chat, multi-tab conversations, and desktop integrations — without telemetry.
 
 DeepSeek Desktop is based on the unofficial [Gemini Desktop](https://github.com/bwendell/gemini-desktop) project originally created by [Ben Wendell](https://github.com/bwendell).
